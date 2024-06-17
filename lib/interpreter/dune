@@ -1,0 +1,3 @@
+(library
+ (name yulinterpreter)
+ (libraries evm_shanghai))

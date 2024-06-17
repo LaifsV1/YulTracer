@@ -1,0 +1,26 @@
+opam-version: "2.0"
+maintainer: "linhouy@tcd.ie"
+authors: ["Yu-Yang Lin <linhouy@tcd.ie>"]
+# homepage: "https://example.com/yultracer"
+# bug-reports: "https://example.com/yultracer/issues"
+# dev-repo: "git+https://example.com/yultracer.git"
+# license: "MIT"
+    
+build: [
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs ]
+]
+  
+depends: [
+  "dune" {>= "2.8"}
+  "ocaml" {>= "4.08.0"}
+  # Add dependencies here, for example:
+  "menhir" {>= "20200624"}
+]
+  
+synopsis: "A Yul symbolic execution tracer"
+description: """
+YulTracer is a tool that symbolically traces the execution of Yul code. This project is designed to be modular on dialects for Yul. For this, we also provide in this repository an EVM dialect for Yul in the form of an OCaml implementation of the Shanghai version of the EVM Execution Specifications.
+"""
+
+tags: ["yul" "evm" "interpreter" "symbolic-execution" "blockchain" "ethereum"]

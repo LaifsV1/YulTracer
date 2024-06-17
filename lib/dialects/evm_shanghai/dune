@@ -1,0 +1,6 @@
+(include_subdirs unqualified)
+
+(library
+ (name evm_shanghai)
+ (libraries zarith
+            z3))

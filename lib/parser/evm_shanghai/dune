@@ -1,0 +1,8 @@
+(library
+ (name yul_evm_shanghai_parser)
+ (libraries yulinterpreter))
+
+(menhir
+ (modules parser))
+
+(ocamllex lexer)
