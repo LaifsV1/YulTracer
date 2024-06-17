@@ -75,11 +75,11 @@ port install opam
 ```
 opam init
 ```
-After initialisation, one has to create the switch to a specific compiler. Any version 4.08 and over works. The command below uses `4.08.1`, but one can use the latest version listed.
+and run `eval $(opam env --switch=default)` when it is done as instructed. After initialisation, one has to create the switch to a specific compiler. Any version 4.10 and over works. The command below uses `4.08.1`, but one can use the latest version listed.
 ```
-opam switch create 4.08.1
+opam switch create 4.10.1
 ```
-If this does not work, it could be because `opam` is missing a dependency. This depends on how minimal the installation of the system is. Check the error messages to know what is missing. From our experience, these are the dependencies typically missing for a fresh installation of Ubuntu:
+and run `eval $(opam env --switch=4.08.1)` when it is done as instructed. If this does not work, it could be because `opam` is missing a dependency. This depends on how minimal the installation of the system is. Check the error messages to know what is missing. From our experience, these are the dependencies typically missing for a fresh installation of Ubuntu:
 ```
 apt install build-essential
 apt install gcc
