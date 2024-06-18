@@ -1,4 +1,5 @@
 # YulTracer
+[![DOI](https://zenodo.org/badge/816446887.svg)](https://zenodo.org/doi/10.5281/zenodo.12098663)
 
 `YulTracer` is an interpreter and future symbolic execution engine for [Yul](https://docs.soliditylang.org/en/latest/yul.html) written in OCaml with Z3 for symbolic reasoning and compiled using the Dune build system. This project is currently in a pre-alpha stage.
 
