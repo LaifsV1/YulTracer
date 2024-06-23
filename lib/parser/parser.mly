@@ -1,28 +1,35 @@
+%parameter<Dialect : sig
+  type value_type (* we can create an instance with evm_val as the type *)
+  type configuration_type (* this would be our EVM.t type *)
+  type opcode (* this would be the type of EVM instructions *)
+  val zero : value_type
+  val get_bool : value_type -> bool
+  val compare : value_type -> value_type -> int
+  val value_of_string : string -> value_type
+  val string_of_value : value_type -> string
+  val opcode_of_string_opt : string -> opcode option
+  val string_of_opcode_opt : opcode -> string option
+  (* evm -> op -> vs -> [evm * v] *)
+  val opcode_dispatcher : configuration_type -> opcode -> value_type list
+                          -> (configuration_type * (value_type option)) list
+  val init : configuration_type
+end>
+
 %{
     open Yulinterpreter
     open Yul_ast
-    open Yul_interpreter
-    open YulAST(EvmDialect)
-
+    open YulAST(Dialect)
+                         
     (* we check if OPCODE or FUN here *)
     let op_or_fun string args =
-      match EvmDialect.opcode_of_string_opt string with
+      match Dialect.opcode_of_string_opt string with
       | None        -> FunApp (string , List.rev args)
       | Some opcode -> OpApp  (opcode , List.rev args)
 %}
 
-%token <string> IDENT
-%token <string> DATA
-%token <string> STRING
-%token <string> NUMBER
-%token <string> HEXLIT
-%token EOF LBRACE RBRACE FUNCTION LPAREN RPAREN ARROW LET COLONEQUAL IF SWITCH CASE DEFAULT FOR BREAK CONTINUE LEAVE COMMA OBJECT CODE
-
-(** TODO: no associativity in Yul? **)
-
-%type <YulAST(EvmDialect).parsed_yul> parsed_yul
-%type <YulAST(EvmDialect).yul_object> yul_object
-%start <YulAST(EvmDialect).parsed_yul> main
+%type <YulAST(Dialect).parsed_yul> parsed_yul
+%type <YulAST(Dialect).yul_object> yul_object
+%start <YulAST(Dialect).parsed_yul> main
 
 %%
 
@@ -88,9 +95,9 @@ variable_decl :
       match idents with
       | [] -> failwith "Let binding cannot be empty"
       | _ :: [] ->
-         LetNew (idents , Val (EvmDialect.zero))
+         LetNew (idents , Val (Dialect.zero))
       | xs      ->
-         LetNew (idents , Tuple (List.map (fun _ -> EvmDialect.zero) xs))
+         LetNew (idents , Tuple (List.map (fun _ -> Dialect.zero) xs))
     }
   | LET idents = ident_list COLONEQUAL expr = expression { LetNew (idents , expr) }
 
@@ -143,8 +150,8 @@ ident_list :
   | ident COMMA ident_list { $1 :: $3 }
 
 value :
-  | NUMBER { EvmDialect.value_of_string $1 }
-  | HEXLIT { EvmDialect.value_of_string ("0x" ^ $1) }
+  | NUMBER { Dialect.value_of_string $1 }
+  | HEXLIT { Dialect.value_of_string ("0x" ^ $1) }
 
 ident :
   | IDENT { $1 }

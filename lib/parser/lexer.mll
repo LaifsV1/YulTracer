@@ -1,5 +1,5 @@
 {
-  open Parser
+  open Tokens
   open Lexing
 
   let get_lex_pos lexbuf = 
