@@ -41,7 +41,7 @@ dune build
 ```
 The dependencies are:
 - Opam package manager (+initialisation)
-- OCaml 4.08+ compiler
+- OCaml 4.10+ compiler
 - Menhir parser generator
 - Z3 package for OCaml bindings
 - Zarith package for arbitrary-precision integers
@@ -75,9 +75,9 @@ port install opam
 ```
 opam init
 ```
-After initialisation, one has to create the switch to a specific compiler. Any version 4.08 and over works. The command below uses `4.08.1`, but one can use the latest version listed.
+After initialisation, one has to create the switch to a specific compiler. Any version 4.10 and over works. The command below uses `4.10.1`, but one can use the latest version listed.
 ```
-opam switch create 4.08.1
+opam switch create 4.10.1
 ```
 If this does not work, it could be because `opam` is missing a dependency. This depends on how minimal the installation of the system is. Check the error messages to know what is missing. From our experience, these are the dependencies typically missing for a fresh installation of Ubuntu:
 ```
