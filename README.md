@@ -1,5 +1,8 @@
 # YulTracer
 
+[![DOI](https://zenodo.org/badge/816446887.svg)](https://zenodo.org/doi/10.5281/zenodo.12098663)
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+
 `YulTracer` is an interpreter and future symbolic execution engine for [Yul](https://docs.soliditylang.org/en/latest/yul.html) written in OCaml with Z3 for symbolic reasoning and compiled using the Dune build system. This project is currently in a pre-alpha stage.
 
 The interpreter in `YulTracer` implements a CEK machine based on our formal small-step operational semantics for Yul and is designed to be modular and extensible on dialect implementations. Currently, `YulTracer` only runs Yul programs written in the EVM dialect of Yul. This is because the EVM dialect is the only officially specified dialect for Yul. At the moment, symbolic execution is yet to be integrated with the interpreter, but Z3 is still required for compilation as a dependency to our EVM dialect, which partially implements symbolic reasoning.
