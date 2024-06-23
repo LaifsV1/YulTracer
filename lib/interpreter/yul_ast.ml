@@ -135,6 +135,63 @@ module YulEvalConf (D : Dialect) = struct
    *)
   type red_conf = {s : cek_term ; g : environment ; l : store ; n : nameset}
 
+  (** function to restrict the domain of L *)
+  let restrict_l l_to_restrict l_filter =
+    IdentMap.filter
+      (fun key _ ->
+        match IdentMap.find_opt key l_filter with
+        | None -> false
+        | Some _ -> true)
+      l_to_restrict
+
+  (** function to check if dom(M1) is a subset of dom(M2) *)
+  let is_domain_subset map1 map2 =
+    IdentMap.fold (fun key _ acc -> acc && IdentMap.mem key map2) map1 true
+
+  (** function to remove the next frame if it is an empty S_Block with subset dom(L) and equal N.
+      in practice slower because checking for subset is slow. *)
+  let remove_redundant_block_frames l_top n_top stack =
+    match stack with
+    | S_Block ([], l_next , n_next) :: rest ->
+       if (is_domain_subset l_top l_next)
+          && (IdentMap.equal (=) n_top n_next)
+       then rest
+       else stack
+    | _ -> stack
+  
+  (** function to remove the next frame if it is an empty S_Block with subset dom(L) and empty N.
+      very minimal impact because checking for subset is slow. *)
+  let remove_redundant_block_frames_2 l_top n_top stack =
+    match stack with
+    | S_Block ([], l_next , n_next) :: rest ->
+       if (is_domain_subset l_top l_next)
+          && (IdentMap.is_empty n_top) && (IdentMap.is_empty n_next)
+       then rest
+       else stack
+    | _ -> stack
+
+  (** function to remove the next frame if it is an empty S_Block with empty dom(L) and equal N.
+      in practice slower because checking for subset is slow. *)
+  let remove_redundant_block_frames3 l_top n_top stack =
+    match stack with
+    | S_Block ([], l_next , n_next) :: rest ->
+       if (IdentMap.is_empty l_top)
+          && (IdentMap.is_empty l_next)
+          && (IdentMap.equal (=) n_top n_next)
+       then rest
+       else stack
+    | _ -> stack
+  
+  (** function to drop entire sequences of empty S_Block if they are all subset of dom(L) and same N.
+      in practice slow or no impact because checking for subset is slow. *)
+  let rec drop_reduandant_block_sequence l n stack =
+    match stack with
+    | S_Block ([], l_next , n_next) :: rest ->
+       if (is_domain_subset l l_next) && (IdentMap.equal (=) n n_next)
+       then drop_reduandant_block_sequence l n rest
+       else stack
+    | _ -> stack
+  
   (** function returns true iff the regexp [S_Block*S_Cnt] is matched in the context.
       i.e. any number of S_Blocks followed by a S_Cnt *)
   let rec subsequent_s_brk ecxt =

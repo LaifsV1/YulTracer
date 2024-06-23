@@ -1,5 +1,5 @@
 (executable
  (name yult)
  (public_name yultracer)
- (libraries yul_evm_shanghai_parser
+ (libraries yul_parser
             yulinterpreter))

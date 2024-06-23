@@ -1,8 +1,5 @@
 # YulTracer
 
-[![DOI](https://zenodo.org/badge/816446887.svg)](https://zenodo.org/doi/10.5281/zenodo.12098663)
-![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-
 `YulTracer` is an interpreter and future symbolic execution engine for [Yul](https://docs.soliditylang.org/en/latest/yul.html) written in OCaml with Z3 for symbolic reasoning and compiled using the Dune build system. This project is currently in a pre-alpha stage.
 
 The interpreter in `YulTracer` implements a CEK machine based on our formal small-step operational semantics for Yul and is designed to be modular and extensible on dialect implementations. Currently, `YulTracer` only runs Yul programs written in the EVM dialect of Yul. This is because the EVM dialect is the only officially specified dialect for Yul. At the moment, symbolic execution is yet to be integrated with the interpreter, but Z3 is still required for compilation as a dependency to our EVM dialect, which partially implements symbolic reasoning.
@@ -44,7 +41,7 @@ dune build
 ```
 The dependencies are:
 - Opam package manager (+initialisation)
-- OCaml 4.10+ compiler
+- OCaml 4.08+ compiler
 - Menhir parser generator
 - Z3 package for OCaml bindings
 - Zarith package for arbitrary-precision integers
@@ -78,11 +75,11 @@ port install opam
 ```
 opam init
 ```
-and run `eval $(opam env --switch=default)` when it is done as instructed. After initialisation, one has to create the switch to a specific compiler. Any version 4.10 and over works. The command below uses `4.10.1`, but one can use the latest version listed.
+After initialisation, one has to create the switch to a specific compiler. Any version 4.08 and over works. The command below uses `4.08.1`, but one can use the latest version listed.
 ```
-opam switch create 4.10.1
+opam switch create 4.08.1
 ```
-and run `eval $(opam env --switch=4.10.1)` when it is done as instructed. If this does not work, it could be because `opam` is missing a dependency. This depends on how minimal the installation of the system is. Check the error messages to know what is missing. From our experience, these are the dependencies typically missing for a fresh installation of Ubuntu:
+If this does not work, it could be because `opam` is missing a dependency. This depends on how minimal the installation of the system is. Check the error messages to know what is missing. From our experience, these are the dependencies typically missing for a fresh installation of Ubuntu:
 ```
 apt install build-essential
 apt install gcc
@@ -121,13 +118,10 @@ YulTracer/
 │   ├── yult.ml                   # main file; produces executable
 |   └── dune                      # dune configuration file
 ├── lib/
-│   ├── parser/
-│   │   ├── evm_shanghai/         # parser for EVM dialect
-│   │   |   ├── lexer.mll         # tokenizer for Shanghai version
-│   │   |   ├── parser.mly        # Menhir parser file for Shanghai version
-|   |   |   |                     # additional dialect parsers go here
-|   |   |   └── dune              # dune configuration file
-|   |   └── ...
+│   ├── parser/                   # dialect-independent parser
+│   │   ├── lexer.mll             # tokenizer
+│   │   ├── parser.mly            # Menhir parser file
+|   |   └── dune                  # dune configuration file
 │   ├── interpreter/
 |   |   ├── yul_ast.ml            # implements the Yul AST as a Functor; 
 |   |   |                         # defines module signature for Dialects
@@ -167,12 +161,33 @@ At the moment, only the following EVM opcode categories are implemented and inte
 
 More specifically, `YulTracer` only executes *closed programs*. That is, programs which do not interact with external programs (e.g. other contracts via calls in the System opcode category) or make use blockchain-specific instructions (e.g. those in the Block, Environment or Log categories). Lastly, while our EVM dialect does provide an opcode for `keccak` in the Keccak category, it currently uses a model that requires symbolic execution, which is yet to be integrated with the interpreter.
 
-## Structure and Extensibility
+## Extending YulTracer with a new dialect
 
-Creating Yul dialects at the moment requires inspecting the codebase for reference with some scrutiny. We aim to change this in the future.
+Creating Yul dialects requires some inspection of the codebase for reference. The current structure of `YulTracer` is such that the Yul semantics is parametrised on a given dialect implementation. For this, we assume familiarity with OCaml and Dune.
+1. First, you will need to define all the machine instructions and their behaviour in `lib/dialects`, e.g. `lib/dialects/new_dialect`. Add and update `dune` files as required.
+2. This behaviour can be used to instantiate a new dialect `NewDialect` in `lib/interpreter/yul_interpreter.ml`. Dialects must follow the module signature defined in `yul_ast.ml`. e.g.
+```
+module NewDialect :(Dialect) = struct
+  open New_dialect
+  (* implement all necessary behaviours...*)
+end
+```
+3. A new interpreter can then be created by instantiating `Interpreter` with `D`. e.g.
+```
+module YulEvmInterpreter = Interpreter(NewDialect)
+```
+4. Lastly, the main file `bin/yult.ml` needs to be updated to add the new dialect to the selector function `get_dialect`. e.g.
+```
+let new_dialect = "new_dialect" (* added new dialect here *)
 
-The current structure of `YulTracer` is such that the Yul semantics is parametrised on a given dialect implementation. For this, we assume familiarity with OCaml and Dune. First, you will need to define all the machine instructions and their behaviour in `lib/dialects`. This behaviour can be used to instantiate a new dialect `D` in `yul_interpreter.ml`. Dialects must follow the module signature defined in `yul_ast.ml`. A new interpreter can then be created by instantiating `Interpreter` with `D`. For instance:
+let get_dialect s :(module Yul_ast.Dialect) =
+  match s with
+  ...
+  | c with c = new_dialect ->  (module Yul_interpreter.NewDialect) (* new dialect added here *)
+  ...
 ```
-module YulEvmInterpreter = Interpreter(EvmDialect)
+Although not necessary, for user convenience the new dialect should be added to the help menu. e.g.  
 ```
-which defines the Yul interpreter for the EVM dialect. At the moment, however, the front-end of `YulTracer` is not parametric. More specifically, the parser and main file `yult.ml` are not parametric on dialects. We aim to change this in the future.
+("-dialect", Arg.Set_string dialect,
+  (def_msg_s "e.g. ... \"new_dialect\"" !dialect));
+```

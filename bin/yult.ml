@@ -1,12 +1,11 @@
-(** Temporary Main file for YulTracer
+(** Main file for YulTracer
     @author Yu-Yang Lin
     created 24-Apr-2024
  *)
 
 open Lexing
-open Yul_evm_shanghai_parser
+open Yul_parser
 open Yulinterpreter
-open Yul_interpreter.YulEvmInterpreter
 
 (* report_error: string -> lexbuf -> string -> unit
 Fucntion printing an error
@@ -21,17 +20,26 @@ let report_error filename lexbuf msg =
   let lc = e.pos_cnum - b.pos_bol + 1 in
   Printf.eprintf "File \"%s\", line %d, characters %d-%d: %s\n" filename b.pos_lnum fc lc msg
 
+(*======================*)
+(* DEFINE DIALECTS HERE *)
+let evm_shanghai = "evm_shanghai"
+(* e.g. let new_dialect = "new_dialect" *)
+let get_dialect s :(module Yul_ast.Dialect) =
+  match s with
+  | c when c = evm_shanghai -> (module Yul_interpreter.EvmDialect)
+  (* MATCH DIALECTS HERE. e.g.:
+     | c with c = new_dialect -> (module Yul_interpreter.NewDialect) *)
+  | _ -> failwith (Printf.sprintf "invalid dialect <%s> selected" s)
+(*======================*)
+
+(* OPTIONS *)
 let just_parse = ref false
 let verbose    = ref false
 let debug      = ref ""
 let inputFile  = ref "<stdin>"
 let bound      = ref 12
 let memo_size  = ref 10000
-
-let parse_debug str :(CEK.debug_flags) =
-  let contains c = String.contains str c in
-  let print_confs = contains 'c' in
-  {print_confs}
+let dialect    = ref evm_shanghai
 
 let main =
   begin
@@ -41,7 +49,12 @@ let main =
     let speclist =
       [
         ("-d", Arg.Set_string debug,
-         (def_msg_s "debug mode: e.g. \"c\" to print \n    [c]onfigurations" !debug));
+         (def_msg_s "debug mode: e.g. \"c\" to print \n\t[c]onfigurations" !debug));
+        (*======================*)
+        (* ADD NEW DIALECT TO HELP MENU HERE: *)
+        ("-dialect", Arg.Set_string dialect,
+         (def_msg_s "e.g.\"evm_shanghai\"" !dialect));
+        (*======================*)
         ("-i", Arg.Set_string (inputFile),
          (def_msg_s "input file" !inputFile));
         (* ("-b", Arg.Set_int (bound),
@@ -65,20 +78,31 @@ let main =
       print_endline "****************";
     in
     if !verbose then verbose_intro ();
-    
+
+    (* DIALECT SELECTOR AND MODULE INSTANTIATION USING DIALECT *)
+    let (module Dialect) = get_dialect !dialect in
+    let module DialectParser = Parser.Make(Dialect) in
+    let module DialectInterpreter = Yul_interpreter.Interpreter(Dialect) in
+    let parse_debug str :(DialectInterpreter.CEK.debug_flags) =
+      let contains c = String.contains str c in
+      let print_confs = contains 'c' in
+      {print_confs}
+    in
+
+    (* START PARSING AND EVALUATING THE PARSED FILE *)
     (* Opening the file *)
     let input = if (!inputFile = "<stdin>") then stdin else open_in !inputFile in
     (* Lexing *)
     let filebuf = Lexing.from_channel input in
     try
       (* Parsing *)
-      let pgm = Parser.main Lexer.token filebuf  in
+      let pgm = DialectParser.main Lexer.token filebuf  in
       let verbose_parse () =
         Format.print_string "--- BEGIN: PROGRAM PARSED ---";
         Format.force_newline ();
         (match pgm with
-         | YulCode code  -> print_code code
-         | YulObject pgm -> print_object pgm
+         | YulCode code  -> DialectInterpreter.print_code code
+         | YulObject pgm -> DialectInterpreter.print_object pgm
         );
         Format.print_string "--- END: PROGRAM PARSED ---";
         Format.force_newline ();
@@ -90,18 +114,18 @@ let main =
 
           (* Set flags *)
           let debug_flags = parse_debug !debug in
-          set_flags debug_flags;
+          DialectInterpreter.set_flags debug_flags;
 
           (* Evaluate program *)
           let _ =
             match pgm with
-            | YulCode code -> evaluate code
-            | YulObject pgm -> evaluate pgm.code
+            | YulCode code -> DialectInterpreter.evaluate code
+            | YulObject pgm -> DialectInterpreter.evaluate pgm.code
           in
           ()
         end
     with
-    | Parser.Error -> 
+    | DialectParser.Error -> 
        Error.report_error_f_lex !inputFile (Lexer.get_lex_start_end_p filebuf)
          (Printf.sprintf "Parsing Error. Last seen: %s" (Lexing.lexeme filebuf))
     | Error.LexE (lex_pos, m)

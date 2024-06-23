@@ -82,14 +82,7 @@ module YulCEK (D : Dialect) = struct
       | Continue , S_Block (_ , l , n) :: rest
       | Leave , S_Block (_ , l , n) :: rest
       | Regular , S_Block ([], l , n) :: rest ->
-       let new_l =
-         IdentMap.filter
-           (fun key _ ->
-             match IdentMap.find_opt key l with
-             | None -> false
-             | Some _ -> true)
-           c.l
-       in
+       let new_l = restrict_l c.l l in
        Some ({c with s = {ecxt = rest ; term = c.s.term} ; l = new_l ; n} :: [])
     | Function _ , ecxt ->
        Some ({c with s = {ecxt = ecxt ; term = Regular}} :: [])
@@ -113,7 +106,7 @@ module YulCEK (D : Dialect) = struct
        Some ({c with s = {ecxt = rest ; term = Regular} ; l = new_l} :: [])
     | Expression (Val v) , S_LetNew [i] :: rest ->
        assert(not (IdentMap.exists (fun key _ -> key = i) c.l));
-       let new_l =IdentMap.add i v c.l in
+       let new_l = IdentMap.add i v c.l in
        Some ({c with s = {ecxt = rest ; term = Regular} ; l = new_l} :: [])
     | Expression (Val v) , S_Assign [i] :: rest ->
        assert(match IdentMap.find_opt i c.l with None -> false | Some _ -> true);
