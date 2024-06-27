@@ -73,6 +73,8 @@ rule token = parse
   | "leave"            { LEAVE }
   | ','                { COMMA }
   | string_lit as text { STRING (String.sub text 1 ((String.length text) - 2)) }
+  | "true"             { BOOL true }
+  | "false"            { BOOL false }
   | num_lit as num     { NUMBER num }
   (** TODO: does ID need to be parsed at the end? **)
   | identifier as text { IDENT text }

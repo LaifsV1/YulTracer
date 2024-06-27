@@ -1,19 +1,4 @@
-%parameter<Dialect : sig
-  type value_type (* we can create an instance with evm_val as the type *)
-  type configuration_type (* this would be our EVM.t type *)
-  type opcode (* this would be the type of EVM instructions *)
-  val zero : value_type
-  val get_bool : value_type -> bool
-  val compare : value_type -> value_type -> int
-  val value_of_string : string -> value_type
-  val string_of_value : value_type -> string
-  val opcode_of_string_opt : string -> opcode option
-  val string_of_opcode_opt : opcode -> string option
-  (* evm -> op -> vs -> [evm * v] *)
-  val opcode_dispatcher : configuration_type -> opcode -> value_type list
-                          -> (configuration_type * (value_type option)) list
-  val init : configuration_type
-end>
+%parameter<Dialect : Yulinterpreter.Yul_ast.Dialect>
 
 %{
     open Yulinterpreter
@@ -152,6 +137,7 @@ ident_list :
 value :
   | NUMBER { Dialect.value_of_string $1 }
   | HEXLIT { Dialect.value_of_string ("0x" ^ $1) }
+  | BOOL   { Dialect.val_of_bool $1 }
 
 ident :
   | IDENT { $1 }

@@ -34,6 +34,7 @@ module type Dialect = sig
   type opcode (* this would be the type of EVM instructions *)
   val zero : value_type
   val get_bool : value_type -> bool
+  val val_of_bool : bool -> value_type
   val compare : value_type -> value_type -> int
   val value_of_string : string -> value_type
   val string_of_value : value_type -> string

@@ -33,12 +33,18 @@ module EvmDialect :(Dialect) = struct
   (** zero *)
   let zero = U256_val U256.zero
   
-  (** function to convert emv_values to booleans. will need to do something about symbolic values. *)
+  (** function to convert evm_values to booleans. will need to do something about symbolic values. *)
   let get_bool (v : evm_val) =
     match v with
     | U256_val v -> if v = U256.zero then false else true
     | S256_val _ -> failwith "get_bool S256 not implemented"
 
+  (** function to convert bools to evm_values *)
+  let val_of_bool (b : bool) :(evm_val) =
+    match b with
+    | true -> U256_val U256.one
+    | false -> U256_val U256.zero
+  
   (** function to compare two evm values. will need to handle symbolic values too. *)
   let compare = EvmVal.compare
 
