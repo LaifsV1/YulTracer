@@ -45,6 +45,7 @@ dune build
 The dependencies are:
 - Opam package manager (+initialisation)
 - OCaml 4.10+ compiler
+- Dune build system for OCaml projects
 - Menhir parser generator
 - Z3 package for OCaml bindings
 - Zarith package for arbitrary-precision integers
