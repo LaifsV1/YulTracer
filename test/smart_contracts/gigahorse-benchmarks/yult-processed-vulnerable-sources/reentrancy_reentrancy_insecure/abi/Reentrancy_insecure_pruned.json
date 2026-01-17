@@ -1,0 +1,25 @@
+[
+  {
+    "name": "Reentrancy_insecure_50_deployed",
+    "abi": [
+      {
+        "inputs": [],
+        "name": "deposit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "deposit()",
+        "hash": "0xd0e30db0"
+      },
+      {
+        "inputs": [],
+        "name": "withdrawBalance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "withdrawBalance()",
+        "hash": "0x5fd8c710"
+      }
+    ]
+  }
+]

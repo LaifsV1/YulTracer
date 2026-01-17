@@ -1,0 +1,159 @@
+[
+  {
+    "name": "TokenBank_191_deployed",
+    "abi": [
+      {
+        "inputs": [],
+        "name": "Deposit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "Deposit()",
+        "hash": "0xed21248c"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "Holders",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "Holders(address)",
+        "hash": "0xeec0ddd7"
+      },
+      {
+        "inputs": [],
+        "name": "MinDeposit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "MinDeposit()",
+        "hash": "0x11bcd830"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "WitdrawTokenToHolder",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "WitdrawTokenToHolder(address,address,uint256)",
+        "hash": "0x2e2a51bd"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_addr",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_wei",
+            "type": "uint256"
+          }
+        ],
+        "name": "WithdrawToHolder",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "WithdrawToHolder(address,uint256)",
+        "hash": "0xf8ff612e"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          }
+        ],
+        "name": "WithdrawToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "WithdrawToken(address,uint256,address)",
+        "hash": "0xc7de2d13"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "addr",
+            "type": "address"
+          }
+        ],
+        "name": "changeOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "changeOwner(address)",
+        "hash": "0xa6f9dae1"
+      },
+      {
+        "inputs": [],
+        "name": "confirmOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "confirmOwner()",
+        "hash": "0xbd9b6d86"
+      },
+      {
+        "inputs": [],
+        "name": "initTokenBank",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "initTokenBank()",
+        "hash": "0x290b1e5f"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ]
+  }
+]

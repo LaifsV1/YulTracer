@@ -1,0 +1,167 @@
+[
+  {
+    "name": "PERSONAL_BANK_112_deployed",
+    "abi": [
+      {
+        "stateMutability": "payable",
+        "type": "fallback"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_am",
+            "type": "uint256"
+          }
+        ],
+        "name": "Collect",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "Collect(uint256)",
+        "hash": "0x3fe43822"
+      },
+      {
+        "inputs": [],
+        "name": "Deposit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "Deposit()",
+        "hash": "0xed21248c"
+      },
+      {
+        "inputs": [],
+        "name": "Log",
+        "outputs": [
+          {
+            "internalType": "contract LogFile",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "Log()",
+        "hash": "0x5e7df75d"
+      },
+      {
+        "inputs": [],
+        "name": "MinSum",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "MinSum()",
+        "hash": "0xc2808d1a"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_val",
+            "type": "uint256"
+          }
+        ],
+        "name": "SetMinSum",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "SetMinSum(uint256)",
+        "hash": "0x640d3017"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "balances",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "balances(address)",
+        "hash": "0x27e235e3"
+      }
+    ]
+  },
+  {
+    "name": "LogFile_170_deployed",
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_adr",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_val",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "_data",
+            "type": "string"
+          }
+        ],
+        "name": "AddMessage",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "AddMessage(address,uint256,string)",
+        "hash": "0x4c2f04a4"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "History",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "Sender",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "Data",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "Val",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "Time",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "History(uint256)",
+        "hash": "0xa21f0368"
+      }
+    ]
+  }
+]

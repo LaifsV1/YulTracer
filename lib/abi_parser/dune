@@ -1,0 +1,5 @@
+(library
+ (name abi_parser)
+ (libraries yojson str)
+ ; (preprocess  (pps ppx_deriving_yojson))
+ )

@@ -1,0 +1,110 @@
+[
+  {
+    "name": "PRIVATE_ETH_CELL_132_deployed",
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_am",
+            "type": "uint256"
+          }
+        ],
+        "name": "Collect",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "Collect(uint256)",
+        "hash": "0x3fe43822"
+      },
+      {
+        "inputs": [],
+        "name": "Deposit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "Deposit()",
+        "hash": "0xed21248c"
+      },
+      {
+        "inputs": [],
+        "name": "Initialized",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "Initialized()",
+        "hash": "0x5daa87a0"
+      },
+      {
+        "inputs": [],
+        "name": "MinSum",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "MinSum()",
+        "hash": "0xc2808d1a"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_log",
+            "type": "address"
+          }
+        ],
+        "name": "SetLogFile",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "SetLogFile(address)",
+        "hash": "0x303b9379"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_val",
+            "type": "uint256"
+          }
+        ],
+        "name": "SetMinSum",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "SetMinSum(uint256)",
+        "hash": "0x640d3017"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "balances",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "balances(address)",
+        "hash": "0x27e235e3"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ]
+  }
+]

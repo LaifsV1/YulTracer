@@ -1,0 +1,70 @@
+[
+  {
+    "name": "PredyParticipant_675_deployed",
+    "abi": [
+      {
+        "inputs": [],
+        "name": "createPredyPool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "createPredyPool()",
+        "hash": "0xcf8954a4"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bool",
+            "name": "toQuoteAsset",
+            "type": "bool"
+          }
+        ],
+        "name": "supplyLiquidity",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "supplyLiquidity(bool)",
+        "hash": "0xe854bf37"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bool",
+            "name": "toQuoteAsset",
+            "type": "bool"
+          }
+        ],
+        "name": "take",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "take(bool)",
+        "hash": "0xacb9f007"
+      },
+      {
+        "inputs": [],
+        "name": "trade",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "trade()",
+        "hash": "0x1f0ba6c9"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bool",
+            "name": "toQuoteAsset",
+            "type": "bool"
+          }
+        ],
+        "name": "withdrawLiquidity",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "withdrawLiquidity(bool)",
+        "hash": "0xa38f1eb3"
+      }
+    ]
+  }
+]

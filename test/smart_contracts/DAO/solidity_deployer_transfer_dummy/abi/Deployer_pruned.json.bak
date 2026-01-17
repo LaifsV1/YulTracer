@@ -1,0 +1,143 @@
+[
+  {
+    "name": "DAO_3187_deployed",
+    "abi": [
+      {
+        "stateMutability": "payable",
+        "type": "fallback"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "_description",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes",
+            "name": "_transactionData",
+            "type": "bytes"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_debatingPeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "_newCurator",
+            "type": "bool"
+          }
+        ],
+        "name": "newProposal",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "_proposalID",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "newProposal(address,uint256,string,bytes,uint256,bool)",
+        "hash": "0x612e45a3"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_proposalID",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "_newCurator",
+            "type": "address"
+          }
+        ],
+        "name": "splitDAO",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "_success",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "splitDAO(uint256,address)",
+        "hash": "0x82661dc4"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "transfer(address,uint256)",
+        "hash": "0xa9059cbb"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_proposalID",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "_supportsProposal",
+            "type": "bool"
+          }
+        ],
+        "name": "vote",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "vote(uint256,bool)",
+        "hash": "0xc9d27afe"
+      }
+    ]
+  },
+  {
+    "name": "DummyTransferer_55_deployed",
+    "abi": [
+      {
+        "inputs": [],
+        "name": "transferToCaller",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "transferToCaller()",
+        "hash": "0x70cedd18"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2 @@
+Entry Point,Solidity LoC (*.sol),Yul LoC (DummyRouter.yul),DummyRouter ABI functions,Time Taken,Parameters
+DummyRouter,1113,12615,7,0m2.004s,"-b 2 o-call-stack 3 -deploy-value 0 -o-uint-domain ""2000000000000000000000"" -o-default-spending 1 -no-wait -o-ret"

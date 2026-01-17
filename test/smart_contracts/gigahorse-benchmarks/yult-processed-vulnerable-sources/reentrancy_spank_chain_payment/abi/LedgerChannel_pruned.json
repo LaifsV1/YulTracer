@@ -1,0 +1,57 @@
+[
+  {
+    "name": "LedgerChannel_3495_deployed",
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_lcID",
+            "type": "bytes32"
+          }
+        ],
+        "name": "LCOpenTimeout",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "LCOpenTimeout(bytes32)",
+        "hash": "0x002e1d7e"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_lcID",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "_partyI",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_confirmTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256[2]",
+            "name": "_balances",
+            "type": "uint256[2]"
+          }
+        ],
+        "name": "createChannel",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "createChannel(bytes32,address,uint256,address,uint256[2])",
+        "hash": "0xaeba142c"
+      }
+    ]
+  }
+]

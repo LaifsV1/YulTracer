@@ -1,0 +1,5 @@
+"Directory","Entry Point","Solidity LoC (*.sol)","Yul LoC (Deployer.yul)","Functions in ABI","Time","Functions in full ABI (DAO only)","Parameters"
+"solidity_deployer","Deployer (in DAO.sol)",3993,20059,3,"0m0.325s",48,"-o-uint-domain ""0x0,604800"" -wait-first"
+"solidity_deployer_safe","Deployer (in DAO.sol)",3993,20059,3,"0m1.404s",48,"-o-uint-domain ""0x0,604800"" -wait-first"
+"solidity_deployer_transfer","Deployer (in DAO.sol)",4003,20249,4,"2m46.377s",48,"-o-uint-domain ""0x0,604800"" -o-address-count 2 -wait-first"
+"solidity_deployer_transfer_dummy","Deployer (in DAO.sol)",4027,21002,5,"0m7.975s",50,"-o-uint-domain ""0x0,604800"" -o-address-domain ""0x2cd8a8ac"" -wait-first"

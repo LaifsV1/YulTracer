@@ -1,0 +1,64 @@
+
+/// @use-src 118:"uniswap/v3-core-1.0.0/contracts/libraries/TickMath.sol"
+object "TickMath_5633" {
+    code {
+        /// @src 118:343:8682  "library TickMath {..."
+        mstore(64, memoryguard(128))
+        if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+
+        let _1 := allocate_unbounded()
+        codecopy(_1, dataoffset("TickMath_5633_deployed"), datasize("TickMath_5633_deployed"))
+
+        setimmutable(_1, "library_deploy_address", address())
+
+        return(_1, datasize("TickMath_5633_deployed"))
+
+        function allocate_unbounded() -> memPtr {
+            memPtr := mload(64)
+        }
+
+        function revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() {
+            revert(0, 0)
+        }
+
+        /// @src 118:343:8682  "library TickMath {..."
+        function constructor_TickMath_5633() {
+
+            /// @src 118:343:8682  "library TickMath {..."
+
+        }
+        /// @src 118:343:8682  "library TickMath {..."
+
+    }
+    /// @use-src 118:"uniswap/v3-core-1.0.0/contracts/libraries/TickMath.sol"
+    object "TickMath_5633_deployed" {
+        code {
+            /// @src 118:343:8682  "library TickMath {..."
+            mstore(64, memoryguard(128))
+
+            let called_via_delegatecall := iszero(eq(loadimmutable("library_deploy_address"), address()))
+
+            revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74()
+
+            function shift_right_224_unsigned(value) -> newValue {
+                newValue :=
+
+                shr(224, value)
+
+            }
+
+            function allocate_unbounded() -> memPtr {
+                memPtr := mload(64)
+            }
+
+            function revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74() {
+                revert(0, 0)
+            }
+
+        }
+
+        data ".metadata" hex"a2646970667358221220a1056acc32e5e42e1728217ee885ffae0604c9e096901eb1bb7d12359982183764736f6c634300081e0033"
+    }
+
+}
+

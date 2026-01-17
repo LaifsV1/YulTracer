@@ -1,0 +1,1941 @@
+
+/// @use-src 34:"openzeppelin-contracts-3.4.1-solc-0.7-2/contracts/token/ERC20/ERC20.sol", 35:"openzeppelin-contracts-3.4.1-solc-0.7-2/contracts/token/ERC20/IERC20.sol", 42:"openzeppelin-contracts-3.4.1-solc-0.7-2/contracts/utils/Context.sol"
+object "ERC20_1884" {
+    code {
+        /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+        mstore(64, memoryguard(128))
+        if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+
+        let _1, _2 := copy_arguments_for_constructor_1433_object_ERC20_1884()
+        constructor_ERC20_1884(_1, _2)
+
+        let _3 := allocate_unbounded()
+        codecopy(_3, dataoffset("ERC20_1884_deployed"), datasize("ERC20_1884_deployed"))
+
+        return(_3, datasize("ERC20_1884_deployed"))
+
+        function allocate_unbounded() -> memPtr {
+            memPtr := mload(64)
+        }
+
+        function revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() {
+            revert(0, 0)
+        }
+
+        function round_up_to_mul_of_32(value) -> result {
+            result := and(add(value, 31), not(31))
+        }
+
+        function panic_error_0x41() {
+            mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)
+            mstore(4, 0x41)
+            revert(0, 0x24)
+        }
+
+        function finalize_allocation(memPtr, size) {
+            let newFreePtr := add(memPtr, round_up_to_mul_of_32(size))
+            // protect against overflow
+            if or(gt(newFreePtr, 0xffffffffffffffff), lt(newFreePtr, memPtr)) { panic_error_0x41() }
+            mstore(64, newFreePtr)
+        }
+
+        function allocate_memory(size) -> memPtr {
+            memPtr := allocate_unbounded()
+            finalize_allocation(memPtr, size)
+        }
+
+        function revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() {
+            revert(0, 0)
+        }
+
+        function revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db() {
+            revert(0, 0)
+        }
+
+        function revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d() {
+            revert(0, 0)
+        }
+
+        function revert_error_987264b3b1d58a9c7f8255e93e81c77d86d6299019c33110a076957a3e06e2ae() {
+            revert(0, 0)
+        }
+
+        function array_allocation_size_t_string_memory_ptr(length) -> size {
+            // Make sure we can allocate memory without overflow
+            if gt(length, 0xffffffffffffffff) { panic_error_0x41() }
+
+            size := round_up_to_mul_of_32(length)
+
+            // add length slot
+            size := add(size, 0x20)
+
+        }
+
+        function copy_memory_to_memory_with_cleanup(src, dst, length) {
+
+            mcopy(dst, src, length)
+            mstore(add(dst, length), 0)
+
+        }
+
+        function abi_decode_available_length_t_string_memory_ptr_fromMemory(src, length, end) -> array {
+            array := allocate_memory(array_allocation_size_t_string_memory_ptr(length))
+            mstore(array, length)
+            let dst := add(array, 0x20)
+            if gt(add(src, length), end) { revert_error_987264b3b1d58a9c7f8255e93e81c77d86d6299019c33110a076957a3e06e2ae() }
+            copy_memory_to_memory_with_cleanup(src, dst, length)
+        }
+
+        // string
+        function abi_decode_t_string_memory_ptr_fromMemory(offset, end) -> array {
+            if iszero(slt(add(offset, 0x1f), end)) { revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d() }
+            let length := mload(offset)
+            array := abi_decode_available_length_t_string_memory_ptr_fromMemory(add(offset, 0x20), length, end)
+        }
+
+        function abi_decode_tuple_t_string_memory_ptrt_string_memory_ptr_fromMemory(headStart, dataEnd) -> value0, value1 {
+            if slt(sub(dataEnd, headStart), 64) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }
+
+            {
+
+                let offset := mload(add(headStart, 0))
+                if gt(offset, 0xffffffffffffffff) { revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db() }
+
+                value0 := abi_decode_t_string_memory_ptr_fromMemory(add(headStart, offset), dataEnd)
+            }
+
+            {
+
+                let offset := mload(add(headStart, 32))
+                if gt(offset, 0xffffffffffffffff) { revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db() }
+
+                value1 := abi_decode_t_string_memory_ptr_fromMemory(add(headStart, offset), dataEnd)
+            }
+
+        }
+
+        function copy_arguments_for_constructor_1433_object_ERC20_1884() -> ret_param_0, ret_param_1 {
+
+            let programSize := datasize("ERC20_1884")
+            let argSize := sub(codesize(), programSize)
+
+            let memoryDataOffset := allocate_memory(argSize)
+            codecopy(memoryDataOffset, programSize, argSize)
+
+            ret_param_0, ret_param_1 := abi_decode_tuple_t_string_memory_ptrt_string_memory_ptr_fromMemory(memoryDataOffset, add(memoryDataOffset, argSize))
+        }
+
+        function panic_error_0x00() {
+            mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)
+            mstore(4, 0x00)
+            revert(0, 0x24)
+        }
+
+        function array_length_t_string_memory_ptr(value) -> length {
+
+            length := mload(value)
+
+        }
+
+        function panic_error_0x22() {
+            mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)
+            mstore(4, 0x22)
+            revert(0, 0x24)
+        }
+
+        function extract_byte_array_length(data) -> length {
+            length := div(data, 2)
+            let outOfPlaceEncoding := and(data, 1)
+            if iszero(outOfPlaceEncoding) {
+                length := and(length, 0x7f)
+            }
+
+            if eq(outOfPlaceEncoding, lt(length, 32)) {
+                panic_error_0x22()
+            }
+        }
+
+        function array_dataslot_t_string_storage(ptr) -> data {
+            data := ptr
+
+            mstore(0, ptr)
+            data := keccak256(0, 0x20)
+
+        }
+
+        function divide_by_32_ceil(value) -> result {
+            result := div(add(value, 31), 32)
+        }
+
+        function shift_left_dynamic(bits, value) -> newValue {
+            newValue :=
+
+            shl(bits, value)
+
+        }
+
+        function update_byte_slice_dynamic32(value, shiftBytes, toInsert) -> result {
+            let shiftBits := mul(shiftBytes, 8)
+            let mask := shift_left_dynamic(shiftBits, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff)
+            toInsert := shift_left_dynamic(shiftBits, toInsert)
+            value := and(value, not(mask))
+            result := or(value, and(toInsert, mask))
+        }
+
+        function cleanup_t_uint256(value) -> cleaned {
+            cleaned := value
+        }
+
+        function identity(value) -> ret {
+            ret := value
+        }
+
+        function convert_t_uint256_to_t_uint256(value) -> converted {
+            converted := cleanup_t_uint256(identity(cleanup_t_uint256(value)))
+        }
+
+        function prepare_store_t_uint256(value) -> ret {
+            ret := value
+        }
+
+        function update_storage_value_t_uint256_to_t_uint256(slot, offset, value_0) {
+            let convertedValue_0 := convert_t_uint256_to_t_uint256(value_0)
+            sstore(slot, update_byte_slice_dynamic32(sload(slot), offset, prepare_store_t_uint256(convertedValue_0)))
+        }
+
+        function zero_value_for_split_t_uint256() -> ret {
+            ret := 0
+        }
+
+        function storage_set_to_zero_t_uint256(slot, offset) {
+            let zero_0 := zero_value_for_split_t_uint256()
+            update_storage_value_t_uint256_to_t_uint256(slot, offset, zero_0)
+        }
+
+        function clear_storage_range_t_bytes1(start, end) {
+            for {} lt(start, end) { start := add(start, 1) }
+            {
+                storage_set_to_zero_t_uint256(start, 0)
+            }
+        }
+
+        function clean_up_bytearray_end_slots_t_string_storage(array, len, startIndex) {
+
+            if gt(len, 31) {
+                let dataArea := array_dataslot_t_string_storage(array)
+                let deleteStart := add(dataArea, divide_by_32_ceil(startIndex))
+                // If we are clearing array to be short byte array, we want to clear only data starting from array data area.
+                if lt(startIndex, 32) { deleteStart := dataArea }
+                clear_storage_range_t_bytes1(deleteStart, add(dataArea, divide_by_32_ceil(len)))
+            }
+
+        }
+
+        function shift_right_unsigned_dynamic(bits, value) -> newValue {
+            newValue :=
+
+            shr(bits, value)
+
+        }
+
+        function mask_bytes_dynamic(data, bytes) -> result {
+            let mask := not(shift_right_unsigned_dynamic(mul(8, bytes), not(0)))
+            result := and(data, mask)
+        }
+        function extract_used_part_and_set_length_of_short_byte_array(data, len) -> used {
+            // we want to save only elements that are part of the array after resizing
+            // others should be set to zero
+            data := mask_bytes_dynamic(data, len)
+            used := or(data, mul(2, len))
+        }
+        function copy_byte_array_to_storage_from_t_string_memory_ptr_to_t_string_storage(slot, src) {
+
+            let newLen := array_length_t_string_memory_ptr(src)
+            // Make sure array length is sane
+            if gt(newLen, 0xffffffffffffffff) { panic_error_0x41() }
+
+            let oldLen := extract_byte_array_length(sload(slot))
+
+            // potentially truncate data
+            clean_up_bytearray_end_slots_t_string_storage(slot, oldLen, newLen)
+
+            let srcOffset := 0
+
+            srcOffset := 0x20
+
+            switch gt(newLen, 31)
+            case 1 {
+                let loopEnd := and(newLen, not(0x1f))
+
+                let dstPtr := array_dataslot_t_string_storage(slot)
+                let i := 0
+                for { } lt(i, loopEnd) { i := add(i, 0x20) } {
+                    sstore(dstPtr, mload(add(src, srcOffset)))
+                    dstPtr := add(dstPtr, 1)
+                    srcOffset := add(srcOffset, 32)
+                }
+                if lt(loopEnd, newLen) {
+                    let lastValue := mload(add(src, srcOffset))
+                    sstore(dstPtr, mask_bytes_dynamic(lastValue, and(newLen, 0x1f)))
+                }
+                sstore(slot, add(mul(newLen, 2), 1))
+            }
+            default {
+                let value := 0
+                if newLen {
+                    value := mload(add(src, srcOffset))
+                }
+                sstore(slot, extract_used_part_and_set_length_of_short_byte_array(value, newLen))
+            }
+        }
+
+        function update_storage_value_offset_0_t_string_memory_ptr_to_t_string_storage(slot, value_0) {
+
+            copy_byte_array_to_storage_from_t_string_memory_ptr_to_t_string_storage(slot, value_0)
+        }
+
+        function cleanup_t_rational_18_by_1(value) -> cleaned {
+            cleaned := value
+        }
+
+        function cleanup_t_uint8(value) -> cleaned {
+            cleaned := and(value, 0xff)
+        }
+
+        function convert_t_rational_18_by_1_to_t_uint8(value) -> converted {
+            converted := cleanup_t_uint8(identity(cleanup_t_rational_18_by_1(value)))
+        }
+
+        function shift_left_0(value) -> newValue {
+            newValue :=
+
+            shl(0, value)
+
+        }
+
+        function update_byte_slice_1_shift_0(value, toInsert) -> result {
+            let mask := 255
+            toInsert := shift_left_0(toInsert)
+            value := and(value, not(mask))
+            result := or(value, and(toInsert, mask))
+        }
+
+        function convert_t_uint8_to_t_uint8(value) -> converted {
+            converted := cleanup_t_uint8(identity(cleanup_t_uint8(value)))
+        }
+
+        function prepare_store_t_uint8(value) -> ret {
+            ret := value
+        }
+
+        function update_storage_value_offset_0_t_uint8_to_t_uint8(slot, value_0) {
+            let convertedValue_0 := convert_t_uint8_to_t_uint8(value_0)
+            sstore(slot, update_byte_slice_1_shift_0(sload(slot), prepare_store_t_uint8(convertedValue_0)))
+        }
+
+        /// @ast-id 1433
+        /// @src 34:1987:2125  "constructor (string memory name_, string memory symbol_) {..."
+        function constructor_ERC20_1884(var_name__1415_mpos, var_symbol__1417_mpos) {
+
+            /// @src 34:1987:2125  "constructor (string memory name_, string memory symbol_) {..."
+            constructor_IERC20_1962()
+
+            /// @src 34:2062:2067  "name_"
+            let _4_mpos := var_name__1415_mpos
+            let expr_1421_mpos := _4_mpos
+            /// @src 34:2054:2067  "_name = name_"
+            update_storage_value_offset_0_t_string_memory_ptr_to_t_string_storage(0x03, expr_1421_mpos)
+            let _5_slot := 0x03
+            let expr_1422_slot := _5_slot
+            /// @src 34:2087:2094  "symbol_"
+            let _6_mpos := var_symbol__1417_mpos
+            let expr_1425_mpos := _6_mpos
+            /// @src 34:2077:2094  "_symbol = symbol_"
+            update_storage_value_offset_0_t_string_memory_ptr_to_t_string_storage(0x04, expr_1425_mpos)
+            let _7_slot := 0x04
+            let expr_1426_slot := _7_slot
+            /// @src 34:2116:2118  "18"
+            let expr_1429 := 0x12
+            /// @src 34:2104:2118  "_decimals = 18"
+            let _8 := convert_t_rational_18_by_1_to_t_uint8(expr_1429)
+            update_storage_value_offset_0_t_uint8_to_t_uint8(0x05, _8)
+            let expr_1430 := _8
+
+        }
+        /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+        /// @src 35:166:2732  "interface IERC20 {..."
+        function constructor_IERC20_1962() {
+
+            /// @src 35:166:2732  "interface IERC20 {..."
+            constructor_Context_6014()
+
+        }
+        /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+        /// @src 42:603:986  "abstract contract Context {..."
+        function constructor_Context_6014() {
+
+            /// @src 42:603:986  "abstract contract Context {..."
+
+        }
+        /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+    }
+    /// @use-src 32:"openzeppelin-contracts-3.4.1-solc-0.7-2/contracts/math/SafeMath.sol", 34:"openzeppelin-contracts-3.4.1-solc-0.7-2/contracts/token/ERC20/ERC20.sol", 42:"openzeppelin-contracts-3.4.1-solc-0.7-2/contracts/utils/Context.sol"
+    object "ERC20_1884_deployed" {
+        code {
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+            mstore(64, memoryguard(128))
+
+            if iszero(lt(calldatasize(), 4))
+            {
+                let selector := shift_right_224_unsigned(calldataload(0))
+                switch selector
+
+                case 0x06fdde03
+                {
+                    // name()
+
+                    external_fun_name_1442()
+                }
+
+                case 0x095ea7b3
+                {
+                    // approve(address,uint256)
+
+                    external_fun_approve_1544()
+                }
+
+                case 0x18160ddd
+                {
+                    // totalSupply()
+
+                    external_fun_totalSupply_1470()
+                }
+
+                case 0x23b872dd
+                {
+                    // transferFrom(address,address,uint256)
+
+                    external_fun_transferFrom_1582()
+                }
+
+                case 0x313ce567
+                {
+                    // decimals()
+
+                    external_fun_decimals_1460()
+                }
+
+                case 0x39509351
+                {
+                    // increaseAllowance(address,uint256)
+
+                    external_fun_increaseAllowance_1610()
+                }
+
+                case 0x70a08231
+                {
+                    // balanceOf(address)
+
+                    external_fun_balanceOf_1484()
+                }
+
+                case 0x95d89b41
+                {
+                    // symbol()
+
+                    external_fun_symbol_1451()
+                }
+
+                case 0xa457c2d7
+                {
+                    // decreaseAllowance(address,uint256)
+
+                    external_fun_decreaseAllowance_1639()
+                }
+
+                case 0xa9059cbb
+                {
+                    // transfer(address,uint256)
+
+                    external_fun_transfer_1505()
+                }
+
+                case 0xdd62ed3e
+                {
+                    // allowance(address,address)
+
+                    external_fun_allowance_1523()
+                }
+
+                default {}
+            }
+
+            revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74()
+
+            function shift_right_224_unsigned(value) -> newValue {
+                newValue :=
+
+                shr(224, value)
+
+            }
+
+            function allocate_unbounded() -> memPtr {
+                memPtr := mload(64)
+            }
+
+            function revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() {
+                revert(0, 0)
+            }
+
+            function revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() {
+                revert(0, 0)
+            }
+
+            function abi_decode_tuple_(headStart, dataEnd)   {
+                if slt(sub(dataEnd, headStart), 0) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }
+
+            }
+
+            function array_length_t_string_memory_ptr(value) -> length {
+
+                length := mload(value)
+
+            }
+
+            function array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, length) -> updated_pos {
+                mstore(pos, length)
+                updated_pos := add(pos, 0x20)
+            }
+
+            function copy_memory_to_memory_with_cleanup(src, dst, length) {
+
+                mcopy(dst, src, length)
+                mstore(add(dst, length), 0)
+
+            }
+
+            function round_up_to_mul_of_32(value) -> result {
+                result := and(add(value, 31), not(31))
+            }
+
+            function abi_encode_t_string_memory_ptr_to_t_string_memory_ptr_fromStack(value, pos) -> end {
+                let length := array_length_t_string_memory_ptr(value)
+                pos := array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, length)
+                copy_memory_to_memory_with_cleanup(add(value, 0x20), pos, length)
+                end := add(pos, round_up_to_mul_of_32(length))
+            }
+
+            function abi_encode_tuple_t_string_memory_ptr__to_t_string_memory_ptr__fromStack(headStart , value0) -> tail {
+                tail := add(headStart, 32)
+
+                mstore(add(headStart, 0), sub(tail, headStart))
+                tail := abi_encode_t_string_memory_ptr_to_t_string_memory_ptr_fromStack(value0,  tail)
+
+            }
+
+            function external_fun_name_1442() {
+
+                if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+                abi_decode_tuple_(4, calldatasize())
+                let ret_0 :=  fun_name_1442()
+                let memPos := allocate_unbounded()
+                let memEnd := abi_encode_tuple_t_string_memory_ptr__to_t_string_memory_ptr__fromStack(memPos , ret_0)
+                return(memPos, sub(memEnd, memPos))
+
+            }
+
+            function revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db() {
+                revert(0, 0)
+            }
+
+            function cleanup_t_uint160(value) -> cleaned {
+                cleaned := and(value, 0xffffffffffffffffffffffffffffffffffffffff)
+            }
+
+            function cleanup_t_address(value) -> cleaned {
+                cleaned := cleanup_t_uint160(value)
+            }
+
+            function validator_revert_t_address(value) {
+                if iszero(eq(value, cleanup_t_address(value))) { revert(0, 0) }
+            }
+
+            function abi_decode_t_address(offset, end) -> value {
+                value := calldataload(offset)
+                validator_revert_t_address(value)
+            }
+
+            function cleanup_t_uint256(value) -> cleaned {
+                cleaned := value
+            }
+
+            function validator_revert_t_uint256(value) {
+                if iszero(eq(value, cleanup_t_uint256(value))) { revert(0, 0) }
+            }
+
+            function abi_decode_t_uint256(offset, end) -> value {
+                value := calldataload(offset)
+                validator_revert_t_uint256(value)
+            }
+
+            function abi_decode_tuple_t_addresst_uint256(headStart, dataEnd) -> value0, value1 {
+                if slt(sub(dataEnd, headStart), 64) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }
+
+                {
+
+                    let offset := 0
+
+                    value0 := abi_decode_t_address(add(headStart, offset), dataEnd)
+                }
+
+                {
+
+                    let offset := 32
+
+                    value1 := abi_decode_t_uint256(add(headStart, offset), dataEnd)
+                }
+
+            }
+
+            function cleanup_t_bool(value) -> cleaned {
+                cleaned := iszero(iszero(value))
+            }
+
+            function abi_encode_t_bool_to_t_bool_fromStack(value, pos) {
+                mstore(pos, cleanup_t_bool(value))
+            }
+
+            function abi_encode_tuple_t_bool__to_t_bool__fromStack(headStart , value0) -> tail {
+                tail := add(headStart, 32)
+
+                abi_encode_t_bool_to_t_bool_fromStack(value0,  add(headStart, 0))
+
+            }
+
+            function external_fun_approve_1544() {
+
+                if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+                let param_0, param_1 :=  abi_decode_tuple_t_addresst_uint256(4, calldatasize())
+                let ret_0 :=  fun_approve_1544(param_0, param_1)
+                let memPos := allocate_unbounded()
+                let memEnd := abi_encode_tuple_t_bool__to_t_bool__fromStack(memPos , ret_0)
+                return(memPos, sub(memEnd, memPos))
+
+            }
+
+            function abi_encode_t_uint256_to_t_uint256_fromStack(value, pos) {
+                mstore(pos, cleanup_t_uint256(value))
+            }
+
+            function abi_encode_tuple_t_uint256__to_t_uint256__fromStack(headStart , value0) -> tail {
+                tail := add(headStart, 32)
+
+                abi_encode_t_uint256_to_t_uint256_fromStack(value0,  add(headStart, 0))
+
+            }
+
+            function external_fun_totalSupply_1470() {
+
+                if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+                abi_decode_tuple_(4, calldatasize())
+                let ret_0 :=  fun_totalSupply_1470()
+                let memPos := allocate_unbounded()
+                let memEnd := abi_encode_tuple_t_uint256__to_t_uint256__fromStack(memPos , ret_0)
+                return(memPos, sub(memEnd, memPos))
+
+            }
+
+            function abi_decode_tuple_t_addresst_addresst_uint256(headStart, dataEnd) -> value0, value1, value2 {
+                if slt(sub(dataEnd, headStart), 96) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }
+
+                {
+
+                    let offset := 0
+
+                    value0 := abi_decode_t_address(add(headStart, offset), dataEnd)
+                }
+
+                {
+
+                    let offset := 32
+
+                    value1 := abi_decode_t_address(add(headStart, offset), dataEnd)
+                }
+
+                {
+
+                    let offset := 64
+
+                    value2 := abi_decode_t_uint256(add(headStart, offset), dataEnd)
+                }
+
+            }
+
+            function external_fun_transferFrom_1582() {
+
+                if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+                let param_0, param_1, param_2 :=  abi_decode_tuple_t_addresst_addresst_uint256(4, calldatasize())
+                let ret_0 :=  fun_transferFrom_1582(param_0, param_1, param_2)
+                let memPos := allocate_unbounded()
+                let memEnd := abi_encode_tuple_t_bool__to_t_bool__fromStack(memPos , ret_0)
+                return(memPos, sub(memEnd, memPos))
+
+            }
+
+            function cleanup_t_uint8(value) -> cleaned {
+                cleaned := and(value, 0xff)
+            }
+
+            function abi_encode_t_uint8_to_t_uint8_fromStack(value, pos) {
+                mstore(pos, cleanup_t_uint8(value))
+            }
+
+            function abi_encode_tuple_t_uint8__to_t_uint8__fromStack(headStart , value0) -> tail {
+                tail := add(headStart, 32)
+
+                abi_encode_t_uint8_to_t_uint8_fromStack(value0,  add(headStart, 0))
+
+            }
+
+            function external_fun_decimals_1460() {
+
+                if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+                abi_decode_tuple_(4, calldatasize())
+                let ret_0 :=  fun_decimals_1460()
+                let memPos := allocate_unbounded()
+                let memEnd := abi_encode_tuple_t_uint8__to_t_uint8__fromStack(memPos , ret_0)
+                return(memPos, sub(memEnd, memPos))
+
+            }
+
+            function external_fun_increaseAllowance_1610() {
+
+                if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+                let param_0, param_1 :=  abi_decode_tuple_t_addresst_uint256(4, calldatasize())
+                let ret_0 :=  fun_increaseAllowance_1610(param_0, param_1)
+                let memPos := allocate_unbounded()
+                let memEnd := abi_encode_tuple_t_bool__to_t_bool__fromStack(memPos , ret_0)
+                return(memPos, sub(memEnd, memPos))
+
+            }
+
+            function abi_decode_tuple_t_address(headStart, dataEnd) -> value0 {
+                if slt(sub(dataEnd, headStart), 32) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }
+
+                {
+
+                    let offset := 0
+
+                    value0 := abi_decode_t_address(add(headStart, offset), dataEnd)
+                }
+
+            }
+
+            function external_fun_balanceOf_1484() {
+
+                if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+                let param_0 :=  abi_decode_tuple_t_address(4, calldatasize())
+                let ret_0 :=  fun_balanceOf_1484(param_0)
+                let memPos := allocate_unbounded()
+                let memEnd := abi_encode_tuple_t_uint256__to_t_uint256__fromStack(memPos , ret_0)
+                return(memPos, sub(memEnd, memPos))
+
+            }
+
+            function external_fun_symbol_1451() {
+
+                if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+                abi_decode_tuple_(4, calldatasize())
+                let ret_0 :=  fun_symbol_1451()
+                let memPos := allocate_unbounded()
+                let memEnd := abi_encode_tuple_t_string_memory_ptr__to_t_string_memory_ptr__fromStack(memPos , ret_0)
+                return(memPos, sub(memEnd, memPos))
+
+            }
+
+            function external_fun_decreaseAllowance_1639() {
+
+                if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+                let param_0, param_1 :=  abi_decode_tuple_t_addresst_uint256(4, calldatasize())
+                let ret_0 :=  fun_decreaseAllowance_1639(param_0, param_1)
+                let memPos := allocate_unbounded()
+                let memEnd := abi_encode_tuple_t_bool__to_t_bool__fromStack(memPos , ret_0)
+                return(memPos, sub(memEnd, memPos))
+
+            }
+
+            function external_fun_transfer_1505() {
+
+                if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+                let param_0, param_1 :=  abi_decode_tuple_t_addresst_uint256(4, calldatasize())
+                let ret_0 :=  fun_transfer_1505(param_0, param_1)
+                let memPos := allocate_unbounded()
+                let memEnd := abi_encode_tuple_t_bool__to_t_bool__fromStack(memPos , ret_0)
+                return(memPos, sub(memEnd, memPos))
+
+            }
+
+            function abi_decode_tuple_t_addresst_address(headStart, dataEnd) -> value0, value1 {
+                if slt(sub(dataEnd, headStart), 64) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }
+
+                {
+
+                    let offset := 0
+
+                    value0 := abi_decode_t_address(add(headStart, offset), dataEnd)
+                }
+
+                {
+
+                    let offset := 32
+
+                    value1 := abi_decode_t_address(add(headStart, offset), dataEnd)
+                }
+
+            }
+
+            function external_fun_allowance_1523() {
+
+                if callvalue() { revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb() }
+                let param_0, param_1 :=  abi_decode_tuple_t_addresst_address(4, calldatasize())
+                let ret_0 :=  fun_allowance_1523(param_0, param_1)
+                let memPos := allocate_unbounded()
+                let memEnd := abi_encode_tuple_t_uint256__to_t_uint256__fromStack(memPos , ret_0)
+                return(memPos, sub(memEnd, memPos))
+
+            }
+
+            function revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74() {
+                revert(0, 0)
+            }
+
+            function zero_value_for_split_t_string_memory_ptr() -> ret {
+                ret := 96
+            }
+
+            function panic_error_0x22() {
+                mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)
+                mstore(4, 0x22)
+                revert(0, 0x24)
+            }
+
+            function extract_byte_array_length(data) -> length {
+                length := div(data, 2)
+                let outOfPlaceEncoding := and(data, 1)
+                if iszero(outOfPlaceEncoding) {
+                    length := and(length, 0x7f)
+                }
+
+                if eq(outOfPlaceEncoding, lt(length, 32)) {
+                    panic_error_0x22()
+                }
+            }
+
+            function array_storeLengthForEncoding_t_string_memory_ptr(pos, length) -> updated_pos {
+                mstore(pos, length)
+                updated_pos := add(pos, 0x20)
+            }
+
+            function array_dataslot_t_string_storage(ptr) -> data {
+                data := ptr
+
+                mstore(0, ptr)
+                data := keccak256(0, 0x20)
+
+            }
+
+            // string -> string
+            function abi_encode_t_string_storage_to_t_string_memory_ptr(value, pos) -> ret {
+                let slotValue := sload(value)
+                let length := extract_byte_array_length(slotValue)
+                pos := array_storeLengthForEncoding_t_string_memory_ptr(pos, length)
+                switch and(slotValue, 1)
+                case 0 {
+                    // short byte array
+                    mstore(pos, and(slotValue, not(0xff)))
+                    ret := add(pos, mul(0x20, iszero(iszero(length))))
+                }
+                case 1 {
+                    // long byte array
+                    let dataPos := array_dataslot_t_string_storage(value)
+                    let i := 0
+                    for { } lt(i, length) { i := add(i, 0x20) } {
+                        mstore(add(pos, i), sload(dataPos))
+                        dataPos := add(dataPos, 1)
+                    }
+                    ret := add(pos, i)
+                }
+            }
+
+            function abi_encodeUpdatedPos_t_string_storage_to_t_string_memory_ptr(value0, pos) -> updatedPos {
+                updatedPos := abi_encode_t_string_storage_to_t_string_memory_ptr(value0, pos)
+            }
+
+            function panic_error_0x41() {
+                mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)
+                mstore(4, 0x41)
+                revert(0, 0x24)
+            }
+
+            function finalize_allocation(memPtr, size) {
+                let newFreePtr := add(memPtr, round_up_to_mul_of_32(size))
+                // protect against overflow
+                if or(gt(newFreePtr, 0xffffffffffffffff), lt(newFreePtr, memPtr)) { panic_error_0x41() }
+                mstore(64, newFreePtr)
+            }
+
+            function copy_array_from_storage_to_memory_t_string_storage(slot) -> memPtr {
+                memPtr := allocate_unbounded()
+                let end := abi_encodeUpdatedPos_t_string_storage_to_t_string_memory_ptr(slot, memPtr)
+                finalize_allocation(memPtr, sub(end, memPtr))
+            }
+
+            function convert_array_t_string_storage_to_t_string_memory_ptr(value) -> converted  {
+
+                // Copy the array to a free position in memory
+                converted :=
+
+                copy_array_from_storage_to_memory_t_string_storage(value)
+
+            }
+
+            /// @ast-id 1442
+            /// @src 34:2190:2279  "function name() public view virtual returns (string memory) {..."
+            function fun_name_1442() -> var__1437_mpos {
+                /// @src 34:2235:2248  "string memory"
+                let zero_t_string_memory_ptr_1_mpos := zero_value_for_split_t_string_memory_ptr()
+                var__1437_mpos := zero_t_string_memory_ptr_1_mpos
+
+                /// @src 34:2267:2272  "_name"
+                let _2_slot := 0x03
+                let expr_1439_slot := _2_slot
+                /// @src 34:2260:2272  "return _name"
+                var__1437_mpos := convert_array_t_string_storage_to_t_string_memory_ptr(expr_1439_slot)
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            function zero_value_for_split_t_bool() -> ret {
+                ret := 0
+            }
+
+            function identity(value) -> ret {
+                ret := value
+            }
+
+            function convert_t_uint160_to_t_uint160(value) -> converted {
+                converted := cleanup_t_uint160(identity(cleanup_t_uint160(value)))
+            }
+
+            function convert_t_uint160_to_t_address(value) -> converted {
+                converted := convert_t_uint160_to_t_uint160(value)
+            }
+
+            function convert_t_address_payable_to_t_address(value) -> converted {
+                converted := convert_t_uint160_to_t_address(value)
+            }
+
+            /// @ast-id 1544
+            /// @src 34:4266:4432  "function approve(address spender, uint256 amount) public virtual override returns (bool) {..."
+            function fun_approve_1544(var_spender_1526, var_amount_1528) -> var__1532 {
+                /// @src 34:4349:4353  "bool"
+                let zero_t_bool_3 := zero_value_for_split_t_bool()
+                var__1532 := zero_t_bool_3
+
+                /// @src 34:4374:4386  "_msgSender()"
+                let expr_1536 := fun__msgSender_6002()
+                /// @src 34:4388:4395  "spender"
+                let _4 := var_spender_1526
+                let expr_1537 := _4
+                /// @src 34:4397:4403  "amount"
+                let _5 := var_amount_1528
+                let expr_1538 := _5
+                /// @src 34:4365:4404  "_approve(_msgSender(), spender, amount)"
+                let _6 := convert_t_address_payable_to_t_address(expr_1536)
+                fun__approve_1861(_6, expr_1537, expr_1538)
+                /// @src 34:4421:4425  "true"
+                let expr_1541 := 0x01
+                /// @src 34:4414:4425  "return true"
+                var__1532 := expr_1541
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            function zero_value_for_split_t_uint256() -> ret {
+                ret := 0
+            }
+
+            function shift_right_0_unsigned(value) -> newValue {
+                newValue :=
+
+                shr(0, value)
+
+            }
+
+            function cleanup_from_storage_t_uint256(value) -> cleaned {
+                cleaned := value
+            }
+
+            function extract_from_storage_value_offset_0_t_uint256(slot_value) -> value {
+                value := cleanup_from_storage_t_uint256(shift_right_0_unsigned(slot_value))
+            }
+
+            function read_from_storage_split_offset_0_t_uint256(slot) -> value {
+                value := extract_from_storage_value_offset_0_t_uint256(sload(slot))
+
+            }
+
+            /// @ast-id 1470
+            /// @src 34:3257:3363  "function totalSupply() public view virtual override returns (uint256) {..."
+            function fun_totalSupply_1470() -> var__1465 {
+                /// @src 34:3318:3325  "uint256"
+                let zero_t_uint256_7 := zero_value_for_split_t_uint256()
+                var__1465 := zero_t_uint256_7
+
+                /// @src 34:3344:3356  "_totalSupply"
+                let _8 := read_from_storage_split_offset_0_t_uint256(0x02)
+                let expr_1467 := _8
+                /// @src 34:3337:3356  "return _totalSupply"
+                var__1465 := expr_1467
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            function convert_t_address_to_t_address(value) -> converted {
+                converted := convert_t_uint160_to_t_address(value)
+            }
+
+            function mapping_index_access_t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$_of_t_address(slot , key) -> dataSlot {
+                mstore(0, convert_t_address_to_t_address(key))
+                mstore(0x20, slot)
+                dataSlot := keccak256(0, 0x40)
+            }
+
+            function mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address_payable(slot , key) -> dataSlot {
+                mstore(0, convert_t_address_payable_to_t_address(key))
+                mstore(0x20, slot)
+                dataSlot := keccak256(0, 0x40)
+            }
+
+            function allocate_memory(size) -> memPtr {
+                memPtr := allocate_unbounded()
+                finalize_allocation(memPtr, size)
+            }
+
+            function array_allocation_size_t_string_memory_ptr(length) -> size {
+                // Make sure we can allocate memory without overflow
+                if gt(length, 0xffffffffffffffff) { panic_error_0x41() }
+
+                size := round_up_to_mul_of_32(length)
+
+                // add length slot
+                size := add(size, 0x20)
+
+            }
+
+            function allocate_memory_array_t_string_memory_ptr(length) -> memPtr {
+                let allocSize := array_allocation_size_t_string_memory_ptr(length)
+                memPtr := allocate_memory(allocSize)
+
+                mstore(memPtr, length)
+
+            }
+
+            function store_literal_in_memory_974d1b4421da69cc60b481194f0dad36a5bb4e23da810da7a7fb30cdba178330(memPtr) {
+
+                mstore(add(memPtr, 0), "ERC20: transfer amount exceeds a")
+
+                mstore(add(memPtr, 32), "llowance")
+
+            }
+
+            function copy_literal_to_memory_974d1b4421da69cc60b481194f0dad36a5bb4e23da810da7a7fb30cdba178330() -> memPtr {
+                memPtr := allocate_memory_array_t_string_memory_ptr(40)
+                store_literal_in_memory_974d1b4421da69cc60b481194f0dad36a5bb4e23da810da7a7fb30cdba178330(add(memPtr, 32))
+            }
+
+            function convert_t_stringliteral_974d1b4421da69cc60b481194f0dad36a5bb4e23da810da7a7fb30cdba178330_to_t_string_memory_ptr() -> converted {
+                converted := copy_literal_to_memory_974d1b4421da69cc60b481194f0dad36a5bb4e23da810da7a7fb30cdba178330()
+            }
+
+            /// @ast-id 1582
+            /// @src 34:4899:5216  "function transferFrom(address sender, address recipient, uint256 amount) public virtual override returns (bool) {..."
+            function fun_transferFrom_1582(var_sender_1547, var_recipient_1549, var_amount_1551) -> var__1555 {
+                /// @src 34:5005:5009  "bool"
+                let zero_t_bool_9 := zero_value_for_split_t_bool()
+                var__1555 := zero_t_bool_9
+
+                /// @src 34:5031:5037  "sender"
+                let _10 := var_sender_1547
+                let expr_1558 := _10
+                /// @src 34:5039:5048  "recipient"
+                let _11 := var_recipient_1549
+                let expr_1559 := _11
+                /// @src 34:5050:5056  "amount"
+                let _12 := var_amount_1551
+                let expr_1560 := _12
+                fun__transfer_1705(expr_1558, expr_1559, expr_1560)
+                /// @src 34:5076:5082  "sender"
+                let _13 := var_sender_1547
+                let expr_1564 := _13
+                /// @src 34:5084:5096  "_msgSender()"
+                let expr_1566 := fun__msgSender_6002()
+                /// @src 34:5098:5109  "_allowances"
+                let _14_slot := 0x01
+                let expr_1567_slot := _14_slot
+                /// @src 34:5110:5116  "sender"
+                let _15 := var_sender_1547
+                let expr_1568 := _15
+                /// @src 34:5098:5117  "_allowances[sender]"
+                let _16 := mapping_index_access_t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$_of_t_address(expr_1567_slot,expr_1568)
+                let _17_slot := _16
+                let expr_1569_slot := _17_slot
+                /// @src 34:5118:5130  "_msgSender()"
+                let expr_1571 := fun__msgSender_6002()
+                /// @src 34:5098:5131  "_allowances[sender][_msgSender()]"
+                let _18 := mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address_payable(expr_1569_slot,expr_1571)
+                let _19 := read_from_storage_split_offset_0_t_uint256(_18)
+                let expr_1572 := _19
+                /// @src 34:5098:5135  "_allowances[sender][_msgSender()].sub"
+                let expr_1573_self := expr_1572
+                /// @src 34:5136:5142  "amount"
+                let _20 := var_amount_1551
+                let expr_1574 := _20
+                /// @src 34:5098:5187  "_allowances[sender][_msgSender()].sub(amount, \"ERC20: transfer amount exceeds allowance\")"
+                let _21_mpos := convert_t_stringliteral_974d1b4421da69cc60b481194f0dad36a5bb4e23da810da7a7fb30cdba178330_to_t_string_memory_ptr()
+                let expr_1576 := fun_sub_5939(expr_1573_self, expr_1574, _21_mpos)
+                /// @src 34:5067:5188  "_approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, \"ERC20: transfer amount exceeds allowance\"))"
+                let _22 := convert_t_address_payable_to_t_address(expr_1566)
+                fun__approve_1861(expr_1564, _22, expr_1576)
+                /// @src 34:5205:5209  "true"
+                let expr_1579 := 0x01
+                /// @src 34:5198:5209  "return true"
+                var__1555 := expr_1579
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            function zero_value_for_split_t_uint8() -> ret {
+                ret := 0
+            }
+
+            function cleanup_from_storage_t_uint8(value) -> cleaned {
+                cleaned := and(value, 0xff)
+            }
+
+            function extract_from_storage_value_offset_0_t_uint8(slot_value) -> value {
+                value := cleanup_from_storage_t_uint8(shift_right_0_unsigned(slot_value))
+            }
+
+            function read_from_storage_split_offset_0_t_uint8(slot) -> value {
+                value := extract_from_storage_value_offset_0_t_uint8(sload(slot))
+
+            }
+
+            /// @ast-id 1460
+            /// @src 34:3108:3197  "function decimals() public view virtual returns (uint8) {..."
+            function fun_decimals_1460() -> var__1455 {
+                /// @src 34:3157:3162  "uint8"
+                let zero_t_uint8_23 := zero_value_for_split_t_uint8()
+                var__1455 := zero_t_uint8_23
+
+                /// @src 34:3181:3190  "_decimals"
+                let _24 := read_from_storage_split_offset_0_t_uint8(0x05)
+                let expr_1457 := _24
+                /// @src 34:3174:3190  "return _decimals"
+                var__1455 := expr_1457
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            function mapping_index_access_t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$_of_t_address_payable(slot , key) -> dataSlot {
+                mstore(0, convert_t_address_payable_to_t_address(key))
+                mstore(0x20, slot)
+                dataSlot := keccak256(0, 0x40)
+            }
+
+            function mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address(slot , key) -> dataSlot {
+                mstore(0, convert_t_address_to_t_address(key))
+                mstore(0x20, slot)
+                dataSlot := keccak256(0, 0x40)
+            }
+
+            /// @ast-id 1610
+            /// @src 34:5611:5826  "function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {..."
+            function fun_increaseAllowance_1610(var_spender_1585, var_addedValue_1587) -> var__1590 {
+                /// @src 34:5699:5703  "bool"
+                let zero_t_bool_25 := zero_value_for_split_t_bool()
+                var__1590 := zero_t_bool_25
+
+                /// @src 34:5724:5736  "_msgSender()"
+                let expr_1594 := fun__msgSender_6002()
+                /// @src 34:5738:5745  "spender"
+                let _26 := var_spender_1585
+                let expr_1595 := _26
+                /// @src 34:5747:5758  "_allowances"
+                let _27_slot := 0x01
+                let expr_1596_slot := _27_slot
+                /// @src 34:5759:5771  "_msgSender()"
+                let expr_1598 := fun__msgSender_6002()
+                /// @src 34:5747:5772  "_allowances[_msgSender()]"
+                let _28 := mapping_index_access_t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$_of_t_address_payable(expr_1596_slot,expr_1598)
+                let _29_slot := _28
+                let expr_1599_slot := _29_slot
+                /// @src 34:5773:5780  "spender"
+                let _30 := var_spender_1585
+                let expr_1600 := _30
+                /// @src 34:5747:5781  "_allowances[_msgSender()][spender]"
+                let _31 := mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address(expr_1599_slot,expr_1600)
+                let _32 := read_from_storage_split_offset_0_t_uint256(_31)
+                let expr_1601 := _32
+                /// @src 34:5747:5785  "_allowances[_msgSender()][spender].add"
+                let expr_1602_self := expr_1601
+                /// @src 34:5786:5796  "addedValue"
+                let _33 := var_addedValue_1587
+                let expr_1603 := _33
+                /// @src 34:5747:5797  "_allowances[_msgSender()][spender].add(addedValue)"
+                let expr_1604 := fun_add_5815(expr_1602_self, expr_1603)
+                /// @src 34:5715:5798  "_approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue))"
+                let _34 := convert_t_address_payable_to_t_address(expr_1594)
+                fun__approve_1861(_34, expr_1595, expr_1604)
+                /// @src 34:5815:5819  "true"
+                let expr_1607 := 0x01
+                /// @src 34:5808:5819  "return true"
+                var__1590 := expr_1607
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            /// @ast-id 1484
+            /// @src 34:3421:3546  "function balanceOf(address account) public view virtual override returns (uint256) {..."
+            function fun_balanceOf_1484(var_account_1473) -> var__1477 {
+                /// @src 34:3495:3502  "uint256"
+                let zero_t_uint256_35 := zero_value_for_split_t_uint256()
+                var__1477 := zero_t_uint256_35
+
+                /// @src 34:3521:3530  "_balances"
+                let _36_slot := 0x00
+                let expr_1479_slot := _36_slot
+                /// @src 34:3531:3538  "account"
+                let _37 := var_account_1473
+                let expr_1480 := _37
+                /// @src 34:3521:3539  "_balances[account]"
+                let _38 := mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address(expr_1479_slot,expr_1480)
+                let _39 := read_from_storage_split_offset_0_t_uint256(_38)
+                let expr_1481 := _39
+                /// @src 34:3514:3539  "return _balances[account]"
+                var__1477 := expr_1481
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            /// @ast-id 1451
+            /// @src 34:2392:2485  "function symbol() public view virtual returns (string memory) {..."
+            function fun_symbol_1451() -> var__1446_mpos {
+                /// @src 34:2439:2452  "string memory"
+                let zero_t_string_memory_ptr_40_mpos := zero_value_for_split_t_string_memory_ptr()
+                var__1446_mpos := zero_t_string_memory_ptr_40_mpos
+
+                /// @src 34:2471:2478  "_symbol"
+                let _41_slot := 0x04
+                let expr_1448_slot := _41_slot
+                /// @src 34:2464:2478  "return _symbol"
+                var__1446_mpos := convert_array_t_string_storage_to_t_string_memory_ptr(expr_1448_slot)
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            function store_literal_in_memory_f8b476f7d28209d77d4a4ac1fe36b9f8259aa1bb6bddfa6e89de7e51615cf8a8(memPtr) {
+
+                mstore(add(memPtr, 0), "ERC20: decreased allowance below")
+
+                mstore(add(memPtr, 32), " zero")
+
+            }
+
+            function copy_literal_to_memory_f8b476f7d28209d77d4a4ac1fe36b9f8259aa1bb6bddfa6e89de7e51615cf8a8() -> memPtr {
+                memPtr := allocate_memory_array_t_string_memory_ptr(37)
+                store_literal_in_memory_f8b476f7d28209d77d4a4ac1fe36b9f8259aa1bb6bddfa6e89de7e51615cf8a8(add(memPtr, 32))
+            }
+
+            function convert_t_stringliteral_f8b476f7d28209d77d4a4ac1fe36b9f8259aa1bb6bddfa6e89de7e51615cf8a8_to_t_string_memory_ptr() -> converted {
+                converted := copy_literal_to_memory_f8b476f7d28209d77d4a4ac1fe36b9f8259aa1bb6bddfa6e89de7e51615cf8a8()
+            }
+
+            /// @ast-id 1639
+            /// @src 34:6313:6579  "function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {..."
+            function fun_decreaseAllowance_1639(var_spender_1613, var_subtractedValue_1615) -> var__1618 {
+                /// @src 34:6406:6410  "bool"
+                let zero_t_bool_42 := zero_value_for_split_t_bool()
+                var__1618 := zero_t_bool_42
+
+                /// @src 34:6431:6443  "_msgSender()"
+                let expr_1622 := fun__msgSender_6002()
+                /// @src 34:6445:6452  "spender"
+                let _43 := var_spender_1613
+                let expr_1623 := _43
+                /// @src 34:6454:6465  "_allowances"
+                let _44_slot := 0x01
+                let expr_1624_slot := _44_slot
+                /// @src 34:6466:6478  "_msgSender()"
+                let expr_1626 := fun__msgSender_6002()
+                /// @src 34:6454:6479  "_allowances[_msgSender()]"
+                let _45 := mapping_index_access_t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$_of_t_address_payable(expr_1624_slot,expr_1626)
+                let _46_slot := _45
+                let expr_1627_slot := _46_slot
+                /// @src 34:6480:6487  "spender"
+                let _47 := var_spender_1613
+                let expr_1628 := _47
+                /// @src 34:6454:6488  "_allowances[_msgSender()][spender]"
+                let _48 := mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address(expr_1627_slot,expr_1628)
+                let _49 := read_from_storage_split_offset_0_t_uint256(_48)
+                let expr_1629 := _49
+                /// @src 34:6454:6492  "_allowances[_msgSender()][spender].sub"
+                let expr_1630_self := expr_1629
+                /// @src 34:6493:6508  "subtractedValue"
+                let _50 := var_subtractedValue_1615
+                let expr_1631 := _50
+                /// @src 34:6454:6550  "_allowances[_msgSender()][spender].sub(subtractedValue, \"ERC20: decreased allowance below zero\")"
+                let _51_mpos := convert_t_stringliteral_f8b476f7d28209d77d4a4ac1fe36b9f8259aa1bb6bddfa6e89de7e51615cf8a8_to_t_string_memory_ptr()
+                let expr_1633 := fun_sub_5939(expr_1630_self, expr_1631, _51_mpos)
+                /// @src 34:6422:6551  "_approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, \"ERC20: decreased allowance below zero\"))"
+                let _52 := convert_t_address_payable_to_t_address(expr_1622)
+                fun__approve_1861(_52, expr_1623, expr_1633)
+                /// @src 34:6568:6572  "true"
+                let expr_1636 := 0x01
+                /// @src 34:6561:6572  "return true"
+                var__1618 := expr_1636
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            /// @ast-id 1505
+            /// @src 34:3749:3921  "function transfer(address recipient, uint256 amount) public virtual override returns (bool) {..."
+            function fun_transfer_1505(var_recipient_1487, var_amount_1489) -> var__1493 {
+                /// @src 34:3835:3839  "bool"
+                let zero_t_bool_53 := zero_value_for_split_t_bool()
+                var__1493 := zero_t_bool_53
+
+                /// @src 34:3861:3873  "_msgSender()"
+                let expr_1497 := fun__msgSender_6002()
+                /// @src 34:3875:3884  "recipient"
+                let _54 := var_recipient_1487
+                let expr_1498 := _54
+                /// @src 34:3886:3892  "amount"
+                let _55 := var_amount_1489
+                let expr_1499 := _55
+                /// @src 34:3851:3893  "_transfer(_msgSender(), recipient, amount)"
+                let _56 := convert_t_address_payable_to_t_address(expr_1497)
+                fun__transfer_1705(_56, expr_1498, expr_1499)
+                /// @src 34:3910:3914  "true"
+                let expr_1502 := 0x01
+                /// @src 34:3903:3914  "return true"
+                var__1493 := expr_1502
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            /// @ast-id 1523
+            /// @src 34:3979:4128  "function allowance(address owner, address spender) public view virtual override returns (uint256) {..."
+            function fun_allowance_1523(var_owner_1508, var_spender_1510) -> var__1514 {
+                /// @src 34:4068:4075  "uint256"
+                let zero_t_uint256_57 := zero_value_for_split_t_uint256()
+                var__1514 := zero_t_uint256_57
+
+                /// @src 34:4094:4105  "_allowances"
+                let _58_slot := 0x01
+                let expr_1516_slot := _58_slot
+                /// @src 34:4106:4111  "owner"
+                let _59 := var_owner_1508
+                let expr_1517 := _59
+                /// @src 34:4094:4112  "_allowances[owner]"
+                let _60 := mapping_index_access_t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$_of_t_address(expr_1516_slot,expr_1517)
+                let _61_slot := _60
+                let expr_1518_slot := _61_slot
+                /// @src 34:4113:4120  "spender"
+                let _62 := var_spender_1510
+                let expr_1519 := _62
+                /// @src 34:4094:4121  "_allowances[owner][spender]"
+                let _63 := mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address(expr_1518_slot,expr_1519)
+                let _64 := read_from_storage_split_offset_0_t_uint256(_63)
+                let expr_1520 := _64
+                /// @src 34:4087:4121  "return _allowances[owner][spender]"
+                var__1514 := expr_1520
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            function zero_value_for_split_t_address_payable() -> ret {
+                ret := 0
+            }
+
+            function convert_t_uint160_to_t_address_payable(value) -> converted {
+                converted := convert_t_uint160_to_t_uint160(value)
+            }
+
+            function convert_t_address_to_t_address_payable(value) -> converted {
+                converted := convert_t_uint160_to_t_address_payable(value)
+            }
+
+            /// @ast-id 6002
+            /// @src 42:635:748  "function _msgSender() internal view virtual returns (address payable) {..."
+            function fun__msgSender_6002() -> var__5993 {
+                /// @src 42:688:703  "address payable"
+                let zero_t_address_payable_65 := zero_value_for_split_t_address_payable()
+                var__5993 := zero_t_address_payable_65
+
+                /// @src 42:730:740  "msg.sender"
+                let expr_5998 := caller()
+                /// @src 42:722:741  "payable(msg.sender)"
+                let expr_5999 := convert_t_address_to_t_address_payable(expr_5998)
+                /// @src 42:715:741  "return payable(msg.sender)"
+                var__5993 := expr_5999
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            function cleanup_t_rational_0_by_1(value) -> cleaned {
+                cleaned := value
+            }
+
+            function convert_t_rational_0_by_1_to_t_uint160(value) -> converted {
+                converted := cleanup_t_uint160(identity(cleanup_t_rational_0_by_1(value)))
+            }
+
+            function convert_t_rational_0_by_1_to_t_address(value) -> converted {
+                converted := convert_t_rational_0_by_1_to_t_uint160(value)
+            }
+
+            function store_literal_in_memory_c953f4879035ed60e766b34720f656aab5c697b141d924c283124ecedb91c208(memPtr) {
+
+                mstore(add(memPtr, 0), "ERC20: approve from the zero add")
+
+                mstore(add(memPtr, 32), "ress")
+
+            }
+
+            function abi_encode_t_stringliteral_c953f4879035ed60e766b34720f656aab5c697b141d924c283124ecedb91c208_to_t_string_memory_ptr_fromStack(pos) -> end {
+                pos := array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, 36)
+                store_literal_in_memory_c953f4879035ed60e766b34720f656aab5c697b141d924c283124ecedb91c208(pos)
+                end := add(pos, 64)
+            }
+
+            function abi_encode_tuple_t_stringliteral_c953f4879035ed60e766b34720f656aab5c697b141d924c283124ecedb91c208__to_t_string_memory_ptr__fromStack(headStart ) -> tail {
+                tail := add(headStart, 32)
+
+                mstore(add(headStart, 0), sub(tail, headStart))
+                tail := abi_encode_t_stringliteral_c953f4879035ed60e766b34720f656aab5c697b141d924c283124ecedb91c208_to_t_string_memory_ptr_fromStack( tail)
+
+            }
+
+            function require_helper_t_stringliteral_c953f4879035ed60e766b34720f656aab5c697b141d924c283124ecedb91c208(condition ) {
+                if iszero(condition)
+                {
+
+                    let memPtr := allocate_unbounded()
+
+                    mstore(memPtr, 0x08c379a000000000000000000000000000000000000000000000000000000000)
+                    let end := abi_encode_tuple_t_stringliteral_c953f4879035ed60e766b34720f656aab5c697b141d924c283124ecedb91c208__to_t_string_memory_ptr__fromStack(add(memPtr, 4) )
+                    revert(memPtr, sub(end, memPtr))
+                }
+            }
+
+            function store_literal_in_memory_24883cc5fe64ace9d0df1893501ecb93c77180f0ff69cca79affb3c316dc8029(memPtr) {
+
+                mstore(add(memPtr, 0), "ERC20: approve to the zero addre")
+
+                mstore(add(memPtr, 32), "ss")
+
+            }
+
+            function abi_encode_t_stringliteral_24883cc5fe64ace9d0df1893501ecb93c77180f0ff69cca79affb3c316dc8029_to_t_string_memory_ptr_fromStack(pos) -> end {
+                pos := array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, 34)
+                store_literal_in_memory_24883cc5fe64ace9d0df1893501ecb93c77180f0ff69cca79affb3c316dc8029(pos)
+                end := add(pos, 64)
+            }
+
+            function abi_encode_tuple_t_stringliteral_24883cc5fe64ace9d0df1893501ecb93c77180f0ff69cca79affb3c316dc8029__to_t_string_memory_ptr__fromStack(headStart ) -> tail {
+                tail := add(headStart, 32)
+
+                mstore(add(headStart, 0), sub(tail, headStart))
+                tail := abi_encode_t_stringliteral_24883cc5fe64ace9d0df1893501ecb93c77180f0ff69cca79affb3c316dc8029_to_t_string_memory_ptr_fromStack( tail)
+
+            }
+
+            function require_helper_t_stringliteral_24883cc5fe64ace9d0df1893501ecb93c77180f0ff69cca79affb3c316dc8029(condition ) {
+                if iszero(condition)
+                {
+
+                    let memPtr := allocate_unbounded()
+
+                    mstore(memPtr, 0x08c379a000000000000000000000000000000000000000000000000000000000)
+                    let end := abi_encode_tuple_t_stringliteral_24883cc5fe64ace9d0df1893501ecb93c77180f0ff69cca79affb3c316dc8029__to_t_string_memory_ptr__fromStack(add(memPtr, 4) )
+                    revert(memPtr, sub(end, memPtr))
+                }
+            }
+
+            function shift_left_0(value) -> newValue {
+                newValue :=
+
+                shl(0, value)
+
+            }
+
+            function update_byte_slice_32_shift_0(value, toInsert) -> result {
+                let mask := 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+                toInsert := shift_left_0(toInsert)
+                value := and(value, not(mask))
+                result := or(value, and(toInsert, mask))
+            }
+
+            function convert_t_uint256_to_t_uint256(value) -> converted {
+                converted := cleanup_t_uint256(identity(cleanup_t_uint256(value)))
+            }
+
+            function prepare_store_t_uint256(value) -> ret {
+                ret := value
+            }
+
+            function update_storage_value_offset_0_t_uint256_to_t_uint256(slot, value_0) {
+                let convertedValue_0 := convert_t_uint256_to_t_uint256(value_0)
+                sstore(slot, update_byte_slice_32_shift_0(sload(slot), prepare_store_t_uint256(convertedValue_0)))
+            }
+
+            /// @ast-id 1861
+            /// @src 34:9377:9717  "function _approve(address owner, address spender, uint256 amount) internal virtual {..."
+            function fun__approve_1861(var_owner_1819, var_spender_1821, var_amount_1823) {
+
+                /// @src 34:9478:9483  "owner"
+                let _66 := var_owner_1819
+                let expr_1827 := _66
+                /// @src 34:9495:9496  "0"
+                let expr_1830 := 0x00
+                /// @src 34:9487:9497  "address(0)"
+                let expr_1831 := convert_t_rational_0_by_1_to_t_address(expr_1830)
+                /// @src 34:9478:9497  "owner != address(0)"
+                let expr_1832 := iszero(eq(cleanup_t_address(expr_1827), cleanup_t_address(expr_1831)))
+                /// @src 34:9470:9538  "require(owner != address(0), \"ERC20: approve from the zero address\")"
+                require_helper_t_stringliteral_c953f4879035ed60e766b34720f656aab5c697b141d924c283124ecedb91c208(expr_1832)
+                /// @src 34:9556:9563  "spender"
+                let _67 := var_spender_1821
+                let expr_1837 := _67
+                /// @src 34:9575:9576  "0"
+                let expr_1840 := 0x00
+                /// @src 34:9567:9577  "address(0)"
+                let expr_1841 := convert_t_rational_0_by_1_to_t_address(expr_1840)
+                /// @src 34:9556:9577  "spender != address(0)"
+                let expr_1842 := iszero(eq(cleanup_t_address(expr_1837), cleanup_t_address(expr_1841)))
+                /// @src 34:9548:9616  "require(spender != address(0), \"ERC20: approve to the zero address\")"
+                require_helper_t_stringliteral_24883cc5fe64ace9d0df1893501ecb93c77180f0ff69cca79affb3c316dc8029(expr_1842)
+                /// @src 34:9657:9663  "amount"
+                let _68 := var_amount_1823
+                let expr_1851 := _68
+                /// @src 34:9627:9638  "_allowances"
+                let _69_slot := 0x01
+                let expr_1846_slot := _69_slot
+                /// @src 34:9639:9644  "owner"
+                let _70 := var_owner_1819
+                let expr_1847 := _70
+                /// @src 34:9627:9645  "_allowances[owner]"
+                let _71 := mapping_index_access_t_mapping$_t_address_$_t_mapping$_t_address_$_t_uint256_$_$_of_t_address(expr_1846_slot,expr_1847)
+                let _72_slot := _71
+                let expr_1849_slot := _72_slot
+                /// @src 34:9646:9653  "spender"
+                let _73 := var_spender_1821
+                let expr_1848 := _73
+                /// @src 34:9627:9654  "_allowances[owner][spender]"
+                let _74 := mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address(expr_1849_slot,expr_1848)
+                /// @src 34:9627:9663  "_allowances[owner][spender] = amount"
+                update_storage_value_offset_0_t_uint256_to_t_uint256(_74, expr_1851)
+                let expr_1852 := expr_1851
+                /// @src 34:9687:9692  "owner"
+                let _75 := var_owner_1819
+                let expr_1855 := _75
+                /// @src 34:9694:9701  "spender"
+                let _76 := var_spender_1821
+                let expr_1856 := _76
+                /// @src 34:9703:9709  "amount"
+                let _77 := var_amount_1823
+                let expr_1857 := _77
+                /// @src 34:9678:9710  "Approval(owner, spender, amount)"
+                let _78 := 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925
+                let _79 := convert_t_address_to_t_address(expr_1855)
+                let _80 := convert_t_address_to_t_address(expr_1856)
+                {
+                    let _81 := allocate_unbounded()
+                    let _82 := abi_encode_tuple_t_uint256__to_t_uint256__fromStack(_81 , expr_1857)
+                    log3(_81, sub(_82, _81) , _78, _79, _80)
+                }
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            function store_literal_in_memory_baecc556b46f4ed0f2b4cb599d60785ac8563dd2dc0a5bf12edea1c39e5e1fea(memPtr) {
+
+                mstore(add(memPtr, 0), "ERC20: transfer from the zero ad")
+
+                mstore(add(memPtr, 32), "dress")
+
+            }
+
+            function abi_encode_t_stringliteral_baecc556b46f4ed0f2b4cb599d60785ac8563dd2dc0a5bf12edea1c39e5e1fea_to_t_string_memory_ptr_fromStack(pos) -> end {
+                pos := array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, 37)
+                store_literal_in_memory_baecc556b46f4ed0f2b4cb599d60785ac8563dd2dc0a5bf12edea1c39e5e1fea(pos)
+                end := add(pos, 64)
+            }
+
+            function abi_encode_tuple_t_stringliteral_baecc556b46f4ed0f2b4cb599d60785ac8563dd2dc0a5bf12edea1c39e5e1fea__to_t_string_memory_ptr__fromStack(headStart ) -> tail {
+                tail := add(headStart, 32)
+
+                mstore(add(headStart, 0), sub(tail, headStart))
+                tail := abi_encode_t_stringliteral_baecc556b46f4ed0f2b4cb599d60785ac8563dd2dc0a5bf12edea1c39e5e1fea_to_t_string_memory_ptr_fromStack( tail)
+
+            }
+
+            function require_helper_t_stringliteral_baecc556b46f4ed0f2b4cb599d60785ac8563dd2dc0a5bf12edea1c39e5e1fea(condition ) {
+                if iszero(condition)
+                {
+
+                    let memPtr := allocate_unbounded()
+
+                    mstore(memPtr, 0x08c379a000000000000000000000000000000000000000000000000000000000)
+                    let end := abi_encode_tuple_t_stringliteral_baecc556b46f4ed0f2b4cb599d60785ac8563dd2dc0a5bf12edea1c39e5e1fea__to_t_string_memory_ptr__fromStack(add(memPtr, 4) )
+                    revert(memPtr, sub(end, memPtr))
+                }
+            }
+
+            function store_literal_in_memory_0557e210f7a69a685100a7e4e3d0a7024c546085cee28910fd17d0b081d9516f(memPtr) {
+
+                mstore(add(memPtr, 0), "ERC20: transfer to the zero addr")
+
+                mstore(add(memPtr, 32), "ess")
+
+            }
+
+            function abi_encode_t_stringliteral_0557e210f7a69a685100a7e4e3d0a7024c546085cee28910fd17d0b081d9516f_to_t_string_memory_ptr_fromStack(pos) -> end {
+                pos := array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, 35)
+                store_literal_in_memory_0557e210f7a69a685100a7e4e3d0a7024c546085cee28910fd17d0b081d9516f(pos)
+                end := add(pos, 64)
+            }
+
+            function abi_encode_tuple_t_stringliteral_0557e210f7a69a685100a7e4e3d0a7024c546085cee28910fd17d0b081d9516f__to_t_string_memory_ptr__fromStack(headStart ) -> tail {
+                tail := add(headStart, 32)
+
+                mstore(add(headStart, 0), sub(tail, headStart))
+                tail := abi_encode_t_stringliteral_0557e210f7a69a685100a7e4e3d0a7024c546085cee28910fd17d0b081d9516f_to_t_string_memory_ptr_fromStack( tail)
+
+            }
+
+            function require_helper_t_stringliteral_0557e210f7a69a685100a7e4e3d0a7024c546085cee28910fd17d0b081d9516f(condition ) {
+                if iszero(condition)
+                {
+
+                    let memPtr := allocate_unbounded()
+
+                    mstore(memPtr, 0x08c379a000000000000000000000000000000000000000000000000000000000)
+                    let end := abi_encode_tuple_t_stringliteral_0557e210f7a69a685100a7e4e3d0a7024c546085cee28910fd17d0b081d9516f__to_t_string_memory_ptr__fromStack(add(memPtr, 4) )
+                    revert(memPtr, sub(end, memPtr))
+                }
+            }
+
+            function store_literal_in_memory_4107e8a8b9e94bf8ff83080ddec1c0bffe897ebc2241b89d44f66b3d274088b6(memPtr) {
+
+                mstore(add(memPtr, 0), "ERC20: transfer amount exceeds b")
+
+                mstore(add(memPtr, 32), "alance")
+
+            }
+
+            function copy_literal_to_memory_4107e8a8b9e94bf8ff83080ddec1c0bffe897ebc2241b89d44f66b3d274088b6() -> memPtr {
+                memPtr := allocate_memory_array_t_string_memory_ptr(38)
+                store_literal_in_memory_4107e8a8b9e94bf8ff83080ddec1c0bffe897ebc2241b89d44f66b3d274088b6(add(memPtr, 32))
+            }
+
+            function convert_t_stringliteral_4107e8a8b9e94bf8ff83080ddec1c0bffe897ebc2241b89d44f66b3d274088b6_to_t_string_memory_ptr() -> converted {
+                converted := copy_literal_to_memory_4107e8a8b9e94bf8ff83080ddec1c0bffe897ebc2241b89d44f66b3d274088b6()
+            }
+
+            /// @ast-id 1705
+            /// @src 34:7053:7583  "function _transfer(address sender, address recipient, uint256 amount) internal virtual {..."
+            function fun__transfer_1705(var_sender_1642, var_recipient_1644, var_amount_1646) {
+
+                /// @src 34:7158:7164  "sender"
+                let _83 := var_sender_1642
+                let expr_1650 := _83
+                /// @src 34:7176:7177  "0"
+                let expr_1653 := 0x00
+                /// @src 34:7168:7178  "address(0)"
+                let expr_1654 := convert_t_rational_0_by_1_to_t_address(expr_1653)
+                /// @src 34:7158:7178  "sender != address(0)"
+                let expr_1655 := iszero(eq(cleanup_t_address(expr_1650), cleanup_t_address(expr_1654)))
+                /// @src 34:7150:7220  "require(sender != address(0), \"ERC20: transfer from the zero address\")"
+                require_helper_t_stringliteral_baecc556b46f4ed0f2b4cb599d60785ac8563dd2dc0a5bf12edea1c39e5e1fea(expr_1655)
+                /// @src 34:7238:7247  "recipient"
+                let _84 := var_recipient_1644
+                let expr_1660 := _84
+                /// @src 34:7259:7260  "0"
+                let expr_1663 := 0x00
+                /// @src 34:7251:7261  "address(0)"
+                let expr_1664 := convert_t_rational_0_by_1_to_t_address(expr_1663)
+                /// @src 34:7238:7261  "recipient != address(0)"
+                let expr_1665 := iszero(eq(cleanup_t_address(expr_1660), cleanup_t_address(expr_1664)))
+                /// @src 34:7230:7301  "require(recipient != address(0), \"ERC20: transfer to the zero address\")"
+                require_helper_t_stringliteral_0557e210f7a69a685100a7e4e3d0a7024c546085cee28910fd17d0b081d9516f(expr_1665)
+                /// @src 34:7333:7339  "sender"
+                let _85 := var_sender_1642
+                let expr_1670 := _85
+                /// @src 34:7341:7350  "recipient"
+                let _86 := var_recipient_1644
+                let expr_1671 := _86
+                /// @src 34:7352:7358  "amount"
+                let _87 := var_amount_1646
+                let expr_1672 := _87
+                fun__beforeTokenTransfer_1883(expr_1670, expr_1671, expr_1672)
+                /// @src 34:7390:7399  "_balances"
+                let _88_slot := 0x00
+                let expr_1678_slot := _88_slot
+                /// @src 34:7400:7406  "sender"
+                let _89 := var_sender_1642
+                let expr_1679 := _89
+                /// @src 34:7390:7407  "_balances[sender]"
+                let _90 := mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address(expr_1678_slot,expr_1679)
+                let _91 := read_from_storage_split_offset_0_t_uint256(_90)
+                let expr_1680 := _91
+                /// @src 34:7390:7411  "_balances[sender].sub"
+                let expr_1681_self := expr_1680
+                /// @src 34:7412:7418  "amount"
+                let _92 := var_amount_1646
+                let expr_1682 := _92
+                /// @src 34:7390:7461  "_balances[sender].sub(amount, \"ERC20: transfer amount exceeds balance\")"
+                let _93_mpos := convert_t_stringliteral_4107e8a8b9e94bf8ff83080ddec1c0bffe897ebc2241b89d44f66b3d274088b6_to_t_string_memory_ptr()
+                let expr_1684 := fun_sub_5939(expr_1681_self, expr_1682, _93_mpos)
+                /// @src 34:7370:7379  "_balances"
+                let _94_slot := 0x00
+                let expr_1675_slot := _94_slot
+                /// @src 34:7380:7386  "sender"
+                let _95 := var_sender_1642
+                let expr_1676 := _95
+                /// @src 34:7370:7387  "_balances[sender]"
+                let _96 := mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address(expr_1675_slot,expr_1676)
+                /// @src 34:7370:7461  "_balances[sender] = _balances[sender].sub(amount, \"ERC20: transfer amount exceeds balance\")"
+                update_storage_value_offset_0_t_uint256_to_t_uint256(_96, expr_1684)
+                let expr_1685 := expr_1684
+                /// @src 34:7494:7503  "_balances"
+                let _97_slot := 0x00
+                let expr_1690_slot := _97_slot
+                /// @src 34:7504:7513  "recipient"
+                let _98 := var_recipient_1644
+                let expr_1691 := _98
+                /// @src 34:7494:7514  "_balances[recipient]"
+                let _99 := mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address(expr_1690_slot,expr_1691)
+                let _100 := read_from_storage_split_offset_0_t_uint256(_99)
+                let expr_1692 := _100
+                /// @src 34:7494:7518  "_balances[recipient].add"
+                let expr_1693_self := expr_1692
+                /// @src 34:7519:7525  "amount"
+                let _101 := var_amount_1646
+                let expr_1694 := _101
+                /// @src 34:7494:7526  "_balances[recipient].add(amount)"
+                let expr_1695 := fun_add_5815(expr_1693_self, expr_1694)
+                /// @src 34:7471:7480  "_balances"
+                let _102_slot := 0x00
+                let expr_1687_slot := _102_slot
+                /// @src 34:7481:7490  "recipient"
+                let _103 := var_recipient_1644
+                let expr_1688 := _103
+                /// @src 34:7471:7491  "_balances[recipient]"
+                let _104 := mapping_index_access_t_mapping$_t_address_$_t_uint256_$_of_t_address(expr_1687_slot,expr_1688)
+                /// @src 34:7471:7526  "_balances[recipient] = _balances[recipient].add(amount)"
+                update_storage_value_offset_0_t_uint256_to_t_uint256(_104, expr_1695)
+                let expr_1696 := expr_1695
+                /// @src 34:7550:7556  "sender"
+                let _105 := var_sender_1642
+                let expr_1699 := _105
+                /// @src 34:7558:7567  "recipient"
+                let _106 := var_recipient_1644
+                let expr_1700 := _106
+                /// @src 34:7569:7575  "amount"
+                let _107 := var_amount_1646
+                let expr_1701 := _107
+                /// @src 34:7541:7576  "Transfer(sender, recipient, amount)"
+                let _108 := 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+                let _109 := convert_t_address_to_t_address(expr_1699)
+                let _110 := convert_t_address_to_t_address(expr_1700)
+                {
+                    let _111 := allocate_unbounded()
+                    let _112 := abi_encode_tuple_t_uint256__to_t_uint256__fromStack(_111 , expr_1701)
+                    log3(_111, sub(_112, _111) , _108, _109, _110)
+                }
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            function require_helper_t_string_memory_ptr(condition , expr_5931_mpos) {
+                if iszero(condition)
+                {
+
+                    let memPtr := allocate_unbounded()
+
+                    mstore(memPtr, 0x08c379a000000000000000000000000000000000000000000000000000000000)
+                    let end := abi_encode_tuple_t_string_memory_ptr__to_t_string_memory_ptr__fromStack(add(memPtr, 4) , expr_5931_mpos)
+                    revert(memPtr, sub(end, memPtr))
+                }
+            }
+
+            function panic_error_0x11() {
+                mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)
+                mstore(4, 0x11)
+                revert(0, 0x24)
+            }
+
+            function checked_sub_t_uint256(x, y) -> diff {
+                x := cleanup_t_uint256(x)
+                y := cleanup_t_uint256(y)
+                diff := sub(x, y)
+
+                if gt(diff, x) { panic_error_0x11() }
+
+            }
+
+            /// @ast-id 5939
+            /// @src 32:5461:5624  "function sub(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {..."
+            function fun_sub_5939(var_a_5918, var_b_5920, var_errorMessage_5922_mpos) -> var__5925 {
+                /// @src 32:5547:5554  "uint256"
+                let zero_t_uint256_113 := zero_value_for_split_t_uint256()
+                var__5925 := zero_t_uint256_113
+
+                /// @src 32:5574:5575  "b"
+                let _114 := var_b_5920
+                let expr_5928 := _114
+                /// @src 32:5579:5580  "a"
+                let _115 := var_a_5918
+                let expr_5929 := _115
+                /// @src 32:5574:5580  "b <= a"
+                let expr_5930 := iszero(gt(cleanup_t_uint256(expr_5928), cleanup_t_uint256(expr_5929)))
+                /// @src 32:5582:5594  "errorMessage"
+                let _116_mpos := var_errorMessage_5922_mpos
+                let expr_5931_mpos := _116_mpos
+                /// @src 32:5566:5595  "require(b <= a, errorMessage)"
+                require_helper_t_string_memory_ptr(expr_5930, expr_5931_mpos)
+                /// @src 32:5612:5613  "a"
+                let _117 := var_a_5918
+                let expr_5934 := _117
+                /// @src 32:5616:5617  "b"
+                let _118 := var_b_5920
+                let expr_5935 := _118
+                /// @src 32:5612:5617  "a - b"
+                let expr_5936 := checked_sub_t_uint256(expr_5934, expr_5935)
+
+                /// @src 32:5605:5617  "return a - b"
+                var__5925 := expr_5936
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            function checked_add_t_uint256(x, y) -> sum {
+                x := cleanup_t_uint256(x)
+                y := cleanup_t_uint256(y)
+                sum := add(x, y)
+
+                if gt(x, sum) { panic_error_0x11() }
+
+            }
+
+            function store_literal_in_memory_30cc447bcc13b3e22b45cef0dd9b0b514842d836dd9b6eb384e20dedfb47723a(memPtr) {
+
+                mstore(add(memPtr, 0), "SafeMath: addition overflow")
+
+            }
+
+            function abi_encode_t_stringliteral_30cc447bcc13b3e22b45cef0dd9b0b514842d836dd9b6eb384e20dedfb47723a_to_t_string_memory_ptr_fromStack(pos) -> end {
+                pos := array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, 27)
+                store_literal_in_memory_30cc447bcc13b3e22b45cef0dd9b0b514842d836dd9b6eb384e20dedfb47723a(pos)
+                end := add(pos, 32)
+            }
+
+            function abi_encode_tuple_t_stringliteral_30cc447bcc13b3e22b45cef0dd9b0b514842d836dd9b6eb384e20dedfb47723a__to_t_string_memory_ptr__fromStack(headStart ) -> tail {
+                tail := add(headStart, 32)
+
+                mstore(add(headStart, 0), sub(tail, headStart))
+                tail := abi_encode_t_stringliteral_30cc447bcc13b3e22b45cef0dd9b0b514842d836dd9b6eb384e20dedfb47723a_to_t_string_memory_ptr_fromStack( tail)
+
+            }
+
+            function require_helper_t_stringliteral_30cc447bcc13b3e22b45cef0dd9b0b514842d836dd9b6eb384e20dedfb47723a(condition ) {
+                if iszero(condition)
+                {
+
+                    let memPtr := allocate_unbounded()
+
+                    mstore(memPtr, 0x08c379a000000000000000000000000000000000000000000000000000000000)
+                    let end := abi_encode_tuple_t_stringliteral_30cc447bcc13b3e22b45cef0dd9b0b514842d836dd9b6eb384e20dedfb47723a__to_t_string_memory_ptr__fromStack(add(memPtr, 4) )
+                    revert(memPtr, sub(end, memPtr))
+                }
+            }
+
+            /// @ast-id 5815
+            /// @src 32:2719:2894  "function add(uint256 a, uint256 b) internal pure returns (uint256) {..."
+            function fun_add_5815(var_a_5792, var_b_5794) -> var__5797 {
+                /// @src 32:2777:2784  "uint256"
+                let zero_t_uint256_119 := zero_value_for_split_t_uint256()
+                var__5797 := zero_t_uint256_119
+
+                /// @src 32:2808:2809  "a"
+                let _120 := var_a_5792
+                let expr_5801 := _120
+                /// @src 32:2812:2813  "b"
+                let _121 := var_b_5794
+                let expr_5802 := _121
+                /// @src 32:2808:2813  "a + b"
+                let expr_5803 := checked_add_t_uint256(expr_5801, expr_5802)
+
+                /// @src 32:2796:2813  "uint256 c = a + b"
+                let var_c_5800 := expr_5803
+                /// @src 32:2831:2832  "c"
+                let _122 := var_c_5800
+                let expr_5806 := _122
+                /// @src 32:2836:2837  "a"
+                let _123 := var_a_5792
+                let expr_5807 := _123
+                /// @src 32:2831:2837  "c >= a"
+                let expr_5808 := iszero(lt(cleanup_t_uint256(expr_5806), cleanup_t_uint256(expr_5807)))
+                /// @src 32:2823:2869  "require(c >= a, \"SafeMath: addition overflow\")"
+                require_helper_t_stringliteral_30cc447bcc13b3e22b45cef0dd9b0b514842d836dd9b6eb384e20dedfb47723a(expr_5808)
+                /// @src 32:2886:2887  "c"
+                let _124 := var_c_5800
+                let expr_5812 := _124
+                /// @src 32:2879:2887  "return c"
+                var__5797 := expr_5812
+                leave
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+            /// @ast-id 1883
+            /// @src 34:10723:10815  "function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual { }"
+            function fun__beforeTokenTransfer_1883(var_from_1875, var_to_1877, var_amount_1879) {
+
+            }
+            /// @src 34:1350:10817  "contract ERC20 is Context, IERC20 {..."
+
+        }
+
+        data ".metadata" hex"a264697066735822122073b654b95e1e54adef81721d627f191f74137bd7fbabdac011ba5295f7622a7864736f6c634300081e0033"
+    }
+
+}
+

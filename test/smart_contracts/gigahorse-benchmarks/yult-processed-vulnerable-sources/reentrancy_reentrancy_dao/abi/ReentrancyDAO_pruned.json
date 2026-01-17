@@ -1,0 +1,25 @@
+[
+  {
+    "name": "ReentrancyDAO_66_deployed",
+    "abi": [
+      {
+        "inputs": [],
+        "name": "deposit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "deposit()",
+        "hash": "0xd0e30db0"
+      },
+      {
+        "inputs": [],
+        "name": "withdrawAll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "withdrawAll()",
+        "hash": "0x853828b6"
+      }
+    ]
+  }
+]

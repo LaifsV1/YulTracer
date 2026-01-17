@@ -1,0 +1,142 @@
+[
+  {
+    "name": "ETH_VAULT_98_deployed",
+    "abi": [
+      {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_am",
+            "type": "uint256"
+          }
+        ],
+        "name": "CashOut",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "CashOut(uint256)",
+        "hash": "0x9ffa0711"
+      },
+      {
+        "inputs": [],
+        "name": "Deposit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "Deposit()",
+        "hash": "0xed21248c"
+      },
+      {
+        "inputs": [],
+        "name": "MinDeposit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "MinDeposit()",
+        "hash": "0x11bcd830"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "balances",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "balances(address)",
+        "hash": "0x27e235e3"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ]
+  },
+  {
+    "name": "Log_156_deployed",
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_adr",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_val",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "_data",
+            "type": "string"
+          }
+        ],
+        "name": "AddMessage",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "AddMessage(address,uint256,string)",
+        "hash": "0x4c2f04a4"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "History",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "Sender",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "Data",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "Val",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "Time",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "History(uint256)",
+        "hash": "0xa21f0368"
+      }
+    ]
+  }
+]

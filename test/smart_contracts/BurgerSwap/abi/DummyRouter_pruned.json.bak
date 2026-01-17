@@ -1,0 +1,149 @@
+[
+  {
+    "name": "DummyRouter_620_deployed",
+    "abi": [
+      {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [],
+        "name": "burgerToken",
+        "outputs": [
+          {
+            "internalType": "contract BurgerToken",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "burgerToken()",
+        "hash": "0xea330efd"
+      },
+      {
+        "inputs": [],
+        "name": "config",
+        "outputs": [
+          {
+            "internalType": "contract ConfigStub",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "config()",
+        "hash": "0x79502c55"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "tokenA",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenB",
+            "type": "address"
+          }
+        ],
+        "name": "createPair",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "pair",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "createPair(address,address)",
+        "hash": "0xc9c65396"
+      },
+      {
+        "inputs": [],
+        "name": "dgas",
+        "outputs": [
+          {
+            "internalType": "contract DgasStub",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "dgas()",
+        "hash": "0xf30234a0"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "pairAddr",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "mintShares",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "mintShares(address,uint256)",
+        "hash": "0x528c198a"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "pairs",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "pairs(address,address)",
+        "hash": "0x69454b86"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "pairAddr",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "zeroForOne",
+            "type": "bool"
+          }
+        ],
+        "name": "swapExactTokensForTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "swapExactTokensForTokens(address,bool)",
+        "hash": "0x8b3872b4"
+      }
+    ]
+  }
+]

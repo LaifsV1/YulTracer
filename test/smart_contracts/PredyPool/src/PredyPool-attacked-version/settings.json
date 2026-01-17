@@ -1,0 +1,41 @@
+{
+	"optimizer": {
+		"enabled": true,
+		"runs": 200
+	},
+	"outputSelection": {
+		"*": {
+			"*": [
+				"evm.bytecode",
+				"evm.deployedBytecode",
+				"devdoc",
+				"userdoc",
+				"metadata",
+				"abi"
+			]
+		}
+	},
+	"metadata": {
+		"useLiteralContent": true
+	},
+	"libraries": {
+		"src/libraries/logic/AddPairLogic.sol": {
+			"AddPairLogic": "0x2d756f7912b5c61f35ca3e5b310c7c133a90977c"
+		},
+		"src/libraries/logic/LiquidationLogic.sol": {
+			"LiquidationLogic": "0x0493a63109f37f08376fd0c321b012c34f946ca7"
+		},
+		"src/libraries/logic/ReaderLogic.sol": {
+			"ReaderLogic": "0x2140f617e8cedb9e7f1b4f2c3f79cd064c7c088a"
+		},
+		"src/libraries/logic/ReallocationLogic.sol": {
+			"ReallocationLogic": "0xe64ccc2549ed5e51417f30cc57b0830759a30e25"
+		},
+		"src/libraries/logic/SupplyLogic.sol": {
+			"SupplyLogic": "0x5e8d28bd2abe77e9d3e9dd8ccc1727eda616ace0"
+		},
+		"src/libraries/logic/TradeLogic.sol": {
+			"TradeLogic": "0xde12aa19734dacbd34cedde14f8290a70a85537f"
+		}
+	}
+}

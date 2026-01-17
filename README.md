@@ -1,41 +1,44 @@
 # YulTracer
 
-[![DOI](https://zenodo.org/badge/816446887.svg)](https://zenodo.org/doi/10.5281/zenodo.12098663)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-`YulTracer` is an interpreter and future symbolic execution engine for [Yul](https://docs.soliditylang.org/en/latest/yul.html) written in OCaml with Z3 for symbolic reasoning and compiled using the Dune build system. This project is currently in a pre-alpha stage.
+`YulTracer` is a bounded safety checker (finds assertion violations) and interpreter for [Yul](https://docs.soliditylang.org/en/latest/yul.html). `YulTracer` performs reachability analysis for programs written in Yul and is also able to analyse smart contracts written in Solidity via the Solidity compiler -- we provide examples in this repository showing automatic tool-chains set up to analyse large code bases. For more details, see [arXiv:2512.22417](https://arxiv.org/abs/2512.22417).
 
-The interpreter in `YulTracer` implements a CEK machine based on our formal small-step operational semantics for Yul and is designed to be modular and extensible on dialect implementations. Currently, `YulTracer` only runs Yul programs written in the EVM dialect of Yul. This is because the EVM dialect is the only officially specified dialect for Yul. At the moment, symbolic execution is yet to be integrated with the interpreter, but Z3 is still required for compilation as a dependency to our EVM dialect, which partially implements symbolic reasoning.
+We envision `YulTracer` to be used in semi-automatic fashion by developers and auditors. The exploration is fully automatic, but assertions need to be added to the code to specify safety. Additionally, we expect exploration parameters need to be specified for complex projects.
 
+---
+### Current Release (0.2.x)
+
+The core technical contribution of this release is the addition of a semantically grounded attacker/environment model that exhaustively enumerates all possible traces reachable by an external user interacting with the set of contracts being analysed. We use Game Semantics to model the environment and perform an on-the-fly depth-bounded reachability analysis of the Game Semantics for said set of smart contracts. The tool constructs a finite exploration tree that is an unfolding of the interaction LTS, and reports a counterexample trace when an assertion-violating configuration is reachable within depth explored.
+
+The above makes the tool sound and complete up to the bound provided and with respect to the fidelity of our Yul interpreter and EVM model; i.e. `YulTracer` is precise with regards to the trace enumeration (no false positives up to). Our Yul interpreter implements a CEK machine based on our formal small-step operational semantics for Yul (see [10.1007/978-3-031-77382-2_19](https://doi.org/10.1007/978-3-031-77382-2_19)). Our EVM model is a line-by-line port of the Shanghai fork of the [Ethereum Execution Client Specifications](https://github.com/ethereum/execution-specs), extended with Symbolic Execution and abstracted for compatibility with Yul and our Games. 
+
+`YulTracer` currently features limited support for Symbolic Execution via Z3 BitVectors: symbolic reasoning is present for arithmetic and branching, but not for symbolic pointers. As a result, symbolic execution is not recommended at this stage and is not used in any of the smart contract use-case examples provided in this repository.
+
+### Previous Release (0.1.x)
+
+For the previous interpreter-only version `0.1` of YulTracer, please see commit [`57f9202`](https://github.com/LaifsV1/YulTracer/tree/57f92027b94c89c76dd88f308a99b55b9ad9df41) and [release 0.1.1](https://github.com/LaifsV1/YulTracer/releases/tag/v0.1.1-alpha) ([DOI 10.5281/zenodo.12098663](https://doi.org/10.5281/zenodo.12098663)). 
+
+---
 ## Testing
-Provided under `YulTracer/test/scripts/` are `Bash` scripts that run tests for the following categories: 
-1) **Sequence Generators**: implementations of generators for Catalan numbers, the Heighway dragon curve, Fibonacci numbers, Pell numbers, Prime
-numbers, and the Thue–Morse sequence.
-2) **Sorting Algorithms**: implementations of bubble, heap, insertion, quick and shell sort on arrays of 6, 300 and 1000 items.
-3) [**Solidity Yul Interpreter Tests**](https://github.com/ethereum/solidity/tree/develop/test/libyul/yulInterpreterTests): out of the 50 files (c.f. commit [2b2c76c](https://github.com/ethereum/solidity/tree/2b2c76c214c9c5770856f91601426ab6b79a2d0b/test/libyul/yulInterpreterTests)), we kept 19 files that do not use unimplemented instructions (e.g. opcodes introduced in the Cancun update), of which we marked and omitted 3 files that do not behave according to the official specifications of the EVM.
-
-To run the scripts, you can use:
-```
-cd test/scripts/
-bash test_sequence_generators.sh
-bash test_sorting_algorithms.sh
-bash test_solidity_yulInterpreterTests.sh
-```
-for each category of tests respectively. Each script:
-1. Runs `YulTracer` on programs in `YulTracer/test/programs/<category>`
-2. Produces an output directory in `YulTracer/test/scripts/out/<category>`
-3. Compares the contents of the output directory with a directory of expected outputs at `YulTracer/test/programs/<category>/expected_output/`
-
-You can manually inspect the output produced by looking in the output directory specified in (2), and inspect the expected output by looking in the directory specified in (3).
-
-To run individual programs, see the Usage section below.
+Provided under `YulTracer/test/` are two directories:
+- **`smart_contracts`**: Contains directories documenting our application of `YulTracer` to various real-world on-chain smart contracts exploits and benchmarks from literature. Each subdirectory contains its own `README` file explaining how to compile and run the examples.
+- **`yul_tests`**: Contains tests from the previous release written in Yul to test the interpreter.
 
 ## Usage
 To run `YulTracer` on a given program, use the `-i` option:
 ```
-dune exec -- yultracer -i <path>.yul
+dune exec -- yult -i <target-path>.yul
 ```
-This compiles the project and executes the resulting binary with option `-i <path>.yul`. For more help on options, use the `-help` or `--help` option.
+This compiles the project and runs the resulting binary with option `-i <path>.yul`, which evaluates the target program without running any games. For games (and safety analysis), we use the `-g` option, which enables games, together with the `-abi` option, which defines the set methods to explore. For more help on the options available, use the `-help` or `--help` option.
+
+In practice, we use previously prepared scripts in project directories (especially for large complex projects) to automatically compile Solidity sources, link the resulting Yul objects that need linking, and provide other necessary options (like ABI and exploration parameters). See the `test/smart_contracts` directory for examples.
+
+**Note:** You need Python with the `Crypto` library (i.e. `pycryptodome`) for many of these scripts:
+
+ ```bash
+ pip install pycryptodome
+ ```
 
 ## Compilation
 To compile `YulTracer`, if you have all dependencies, run:
@@ -49,8 +52,9 @@ The dependencies are:
 - Menhir parser generator
 - Z3 package for OCaml bindings
 - Zarith package for arbitrary-precision integers
+- Yojson and `ppx_deriving_yojson`
 
-For more detailed instructions, the following were tested for Linux and macOS. `opam` is not yet officially supported for Windows.
+All the above dependencies can be obtained from Opam package manager after setting up Opam. For more detailed instructions, the following were tested for Linux and macOS. Please check the [official website](https://opam.ocaml.org/doc/Install.html) for Windows support.
 
 ### 1. Installing the OCaml Package Manager `opam`
 All dependencies are obtainable through OCaml's official package manager [`opam`](http://opam.ocaml.org/doc/Install.html). Installation of `opam` is system specific so you may need to refer to their website linked above. Instructions for some common systems are listed below:
@@ -96,7 +100,7 @@ Finally, initialising `opam` updates your `~/.profile` file, so you may have to 
 source ~/.profile
 ```
 
-### 3. Installing dependencies
+### 3. Installing Dependencies
 
 With `opam` set up, installing dependencies becomes very easy.
 ```
@@ -104,6 +108,9 @@ opam install dune
 opam install menhir
 opam install zarith
 opam install z3
+opam install ocaml-inifiles
+opam install yojson
+opam install ppx_deriving_yojson
 ```
 Note that Z3 takes a long time to install.
 
@@ -114,84 +121,75 @@ dune build
 ```
 This produces an executable binary `yult.exe` usually located at `_build/default/bin/`.
 
-## Preliminary structure:
+---
+## Directory Structure:
 This project has the following directory structure. This may change in the future.
 ```
 YulTracer/
-├── bin/
-│   ├── yult.ml                   # main file; produces executable
-|   └── dune                      # dune configuration file
-├── lib/
-│   ├── parser/                   # dialect-independent parser
-│   │   ├── lexer.mll             # tokenizer
-│   │   ├── parser.mly            # Menhir parser file
-|   |   └── dune                  # dune configuration file
-│   ├── interpreter/
-|   |   ├── yul_ast.ml            # implements the Yul AST as a Functor; 
-|   |   |                         # defines module signature for Dialects
-|   |   ├── yul_reductions.ml     # implements the reduction semantics for Yul
-|   |   |                         # in the style of CEK machines
-|   |   ├── yul_interpreter.ml    # implements the Yul interpreter by
-|   |   |                         # instantiating a dialect, AST, reductions;
-|   |   |                         # additional dialects are instantiated here
-|   |   ├── yul_pretty_printer.ml # implements Yul pretty printer as a Functor
-|   |   |                         # for a given dialect
-│   │   ├── error.ml              # module for error reporting
-|   |   └── dune                  # dune configuration file
-│   └── dialects/
-│       ├── evm_shanghai/         # Shanghai update
-│       │   ├── ...               # Shanghai-specific opcodes, etc  
-|       |   └── dune              # dune configuration file
-│       └── ...                   # additional dialect behaviours go here
-└── test/
-|   ├── programs/                 # testing Yul programs go here
-|   └── scripts/                  # testing scripts go here
-└── dune-project                  # dune project file
+├── bin/     # contains main file; produces the executable
+├── lib/     # contains implementation of Yul interpreter, EVM and Games
+└── test/    # contains our smart contract tests and yul tests.
 ```
+A typical project directory in our tests has the following structure:
+```
+<project-name>/
+├── abi/     # contains ABI (.json) files for the project
+├── scripts/ # contains scripts for pre-/post-compilation processing
+├── src/     # contains Solidity (.sol) source files
+└── Makefile # stages the compilation, processing scripts, and runs YulTracer
+```
+A `README` is provided with each example.
 
-## EVM Dialect and Opcodes
+## EVM Dialect and Instruction Set
 
-Provided in this repository is a partial implementation of the EVM based on the [Shanghai update of the EVM execution specifications](https://github.com/ethereum/execution-specs/tree/master/src/ethereum/shanghai).
+Provided in this repository is a partial implementation of the EVM based on the [Shanghai update of the EVM execution specifications](https://github.com/ethereum/execution-specs/tree/master/src/ethereum/shanghai). This means the tool supports EVM behaviours up to, without including, the addition of transient storage.
 
-At the moment, only the following EVM opcode categories are implemented and integrated with the Yul interpreter:
+Following EVM opcode categories are implemented:
 
-- Arithmetic: `add`, `sub`, `mul`, `div`, `sdiv`, `mod`, `smod`, `exp`, `addmod`, `mulmod`, `signextend`
-- Bitwise: `not`, `and`, `or`, `xor`, `byte`, `shl`, `shr`, `sar`
-- Comparison: `lt`, `gt`, `slt`, `sgt`, `eq`, `iszero`
-- Control-flow: `stop`, `pc` (placeholder value)
-- Memory: `mload`, `mstore`, `mstore8`, `msize`
-- Stack: `pop`
-- Storage: `sload`, `sstore`
+- **Arithmetic**: `add`, `sub`, `mul`, `div`, `sdiv`, `mod`, `smod`, `addmod`, `mulmod`, `exp`, `signextend`
+- **Bitwise**: `and`, `or`, `xor`, `not`, `byte`, `shl`, `shr`, `sar`
+- **Block**: `coinbase`<sup>1</sup>, `timestamp`, `chainid`<sup>1</sup>, `number`<sup>1</sup>, `gaslimit`<sup>1</sup>
+- **Comparison**: `lt`, `gt`, `slt`, `sgt`, `eq`, `iszero`
+- **Control-flow**: `stop`, `pc`<sup>1</sup>, `gas` 
+- **Data**<sup>2</sup>: `datasize`<sup>3</sup>, `dataoffset`<sup>3</sup>, `datacopy`<sup>3</sup>
+- **Environment**: `address`, `caller`, `codesize`, `callvalue`, `codecopy`, `calldataload`, `calldatasize`, `balance`, `calldatacopy`, `returndatasize`, `returndatacopy`, `extcodesize`, `WAIT`<sup>4</sup>, `MK_SYMBOL`<sup>4</sup>, `EXT_FUND`<sup>4</sup>
+- **Immutable**<sup>2</sup>: `setimmutable`<sup>3</sup>, `loadimmutable`<sup>3</sup>
+- **Keccak**: `keccak`
+- **Linker**<sup>2</sup>: `SETLINKER`<sup>4</sup>, `linkersymbol`<sup>3</sup>
+- **Log**: `log1`<sup>1</sup>, `log2`<sup>1</sup>, `log3`<sup>1</sup>, `log4`<sup>1</sup>
+- **Memory**: `mload`, `mstore`, `mstore8`, `msize`, `memoryguard`<sup>3</sup>
+- **Stack**: `pop`<sup>1</sup>
+- **Storage**: `sload`, `sstore`
+- **System**: `revert`<sup>1</sup>, `return`, `call`, `staticcall`, `delegatecall`, `create`, `create2`, `START_ANALYSIS`<sup>4</sup>/`LAUNCH_OPPONENT`<sup>4</sup>, `IMPERSONATECALL`<sup>4</sup>, `REVEAL_UINT`<sup>4</sup>, `REVEAL_ADDR`<sup>4</sup>
+- **Print**<sup>2</sup>: `PRINT`<sup>3</sup>, `PRINT_signed`<sup>3</sup>, `PRINT_HEX`<sup>3</sup>, `PRINT_hex`<sup>3</sup>, `PRINT_bin`<sup>3</sup>, `PRINT_object`<sup>3</sup>, `PRINT_IDS`<sup>3</sup>, `PRINT_names`<sup>3</sup>, `PRINT_sigma`<sup>3</sup>, `PRINT_z3`<sup>3</sup>, `PRINT_mem`<sup>3</sup>, `PRINT_ascii`<sup>3</sup>
 
-More specifically, `YulTracer` only executes *closed programs*. That is, programs which do not interact with external programs (e.g. other contracts via calls in the System opcode category) or make use blockchain-specific instructions (e.g. those in the Block, Environment or Log categories). Lastly, while our EVM dialect does provide an opcode for `keccak` in the Keccak category, it currently uses a model that requires symbolic execution, which is yet to be integrated with the interpreter.
+<sup>1</sup> instructions with simpler or dummy implementations\
+<sup>2</sup> unofficial instruction categories needed for Yul\
+<sup>3</sup> official Yul-only instructions that are not part of the EVM specs\
+<sup>4</sup> custom `YulTracer`-only instructions in all-caps
 
-## Extending YulTracer with a new dialect
+`Data`, `Immutable` and `Linker` are unofficial categories added to support official instructions specified only in the Yul documentation. These Yul-only instructions are not part of the EVM specification, but are still necessary to analyse real-world Yul objects (in particular, those produced by the Solidity compiler). Since the semantics of these instructions is not formally specified, their behaviour was inferred from the documentation. Additionally, some instructions were not compatible with Yul or not necessary for safety analysis of the contracts we checked. These were implemented as simpler or dummy versions. Lastly, a few custom opcodes were added for analysis -- these are all in uppercase. These are:
+- `WAIT(n)`: Increases the current timestamp by `n` seconds.
+- `MK_SYMBOL()`: Creates a fresh symbolic `uint`.
+- `EXT_FUND(n)`: Increases the balance of the current address by `n` wei.
+- `SETLINKER(s,n)`: Sets string `s` to point at `uint` `n` in the linker table used by the `linkersymbol` instruction.
+- `START_ANALYSIS`/`LAUNCH_OPPONENT`: Passes control to the opponent.
+- `IMPERSONATECALL(c,g,t,v,i,s1,o,s2)`: Variant of `call` that spoofs the calling address -- acts like a `call(g,t,v,i,s1,o,s2)` from address `c` instead of the current address.
+- `REVEAL_UINT(n)`: Passes the `uint` word `n` to the opponent as a value -- the opponent remembers `n` and will be able to use it as a value.
+- `REVEAL_ADDR(n)`: Passes the `uint` word `n` to the opponent as an address -- the opponent remembers `n` and will be able to use it as an address.
 
-Creating Yul dialects requires some inspection of the codebase for reference. The current structure of `YulTracer` is such that the Yul semantics is parametrised on a given dialect implementation. For this, we assume familiarity with OCaml and Dune.
-1. First, you will need to define all the machine instructions and their behaviour in `lib/dialects`, e.g. `lib/dialects/new_dialect`. Add and update `dune` files as required.
-2. This behaviour can be used to instantiate a new dialect `NewDialect` in `lib/interpreter/yul_interpreter.ml`. Dialects must follow the module signature defined in `yul_ast.ml`. e.g.
-```
-module NewDialect :(Dialect) = struct
-  open New_dialect
-  (* implement all necessary behaviours...*)
-end
-```
-3. A new interpreter can then be created by instantiating `Interpreter` with `D`. e.g.
-```
-module YulEvmInterpreter = Interpreter(NewDialect)
-```
-4. Lastly, the main file `bin/yult.ml` needs to be updated to add the new dialect to the selector function `get_dialect`. e.g.
-```
-let new_dialect = "new_dialect" (* added new dialect here *)
+The following print functions are provided to aid debugging:
+- `PRINT`: Print a `uint` word as an unsigned decimal integer.
+- `PRINT_signed`: Print a `uint` word as a signed decimal integer.
+- `PRINT_HEX`: Print a `uint` word in uppercase hexadecimal.
+- `PRINT_hex`: Print a `uint` word in lowercase hexadecimal.
+- `PRINT_bin`: Print a `uint` word in binary.
+- `PRINT_object`: Print the current object.
+- `PRINT_IDS`: Print all discovered object IDs.
+- `PRINT_names`: Print all discovered object names.
+- `PRINT_sigma`: Print the symbolic environment (`sigma`) directly.
+- `PRINT_z3`: Print the symbolic environment (`sigma`) via Z3.
+- `PRINT_mem`: Print the current memory.
+- `PRINT_ascii`: Print the ASCII string interpretation of a `uint` word.
 
-let get_dialect s :(module Yul_ast.Dialect) =
-  match s with
-  ...
-  | c with c = new_dialect ->  (module Yul_interpreter.NewDialect) (* new dialect added here *)
-  ...
-```
-Although not necessary, for user convenience the new dialect should be added to the help menu. e.g.  
-```
-("-dialect", Arg.Set_string dialect,
-  (def_msg_s "e.g. ... \"new_dialect\"" !dialect));
-```
+**note**: all `uint` words are `uint256` by default.

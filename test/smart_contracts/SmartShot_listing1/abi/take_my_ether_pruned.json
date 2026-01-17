@@ -1,0 +1,102 @@
+[
+  {
+    "name": "take_my_ether_118_deployed",
+    "abi": [
+      {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint8",
+            "name": "x",
+            "type": "uint8"
+          }
+        ],
+        "name": "Try1",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "Try1(uint8)",
+        "hash": "0xfaed6df0"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint8",
+            "name": "x",
+            "type": "uint8"
+          }
+        ],
+        "name": "Try2",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "Try2(uint8)",
+        "hash": "0xd5db31e5"
+      },
+      {
+        "inputs": [],
+        "name": "deadline",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "deadline()",
+        "hash": "0x29dcb0cf"
+      },
+      {
+        "inputs": [],
+        "name": "puzzle",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "puzzle()",
+        "hash": "0x399fac07"
+      },
+      {
+        "inputs": [],
+        "name": "puzzleHash",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "puzzleHash()",
+        "hash": "0x1565b29e"
+      },
+      {
+        "inputs": [],
+        "name": "puzzleSolved",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "puzzleSolved()",
+        "hash": "0x5d8d7dad"
+      }
+    ]
+  }
+]

@@ -1,5 +1,15 @@
 (executable
  (name yult)
- (public_name yultracer)
- (libraries yul_parser
-            yulinterpreter))
+ (public_name yult)
+ (libraries abi_parser
+            yul_parser
+            yul_semantics
+            ; inifiles
+			; ==================
+			; add dialects here:
+			; ==================
+			evm_shanghai)
+ ; (data_files scripts)
+ )
+
+(env (dev (flags (:standard -g))))

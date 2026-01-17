@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Reentrance_58_deployed",
+    "abi": [
+      {
+        "inputs": [],
+        "name": "addToBalance",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function",
+        "signature": "addToBalance()",
+        "hash": "0xc0e317fb"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "u",
+            "type": "address"
+          }
+        ],
+        "name": "getBalance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "getBalance(address)",
+        "hash": "0xf8b2cb4f"
+      },
+      {
+        "inputs": [],
+        "name": "withdrawBalance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "withdrawBalance()",
+        "hash": "0x5fd8c710"
+      }
+    ]
+  }
+]

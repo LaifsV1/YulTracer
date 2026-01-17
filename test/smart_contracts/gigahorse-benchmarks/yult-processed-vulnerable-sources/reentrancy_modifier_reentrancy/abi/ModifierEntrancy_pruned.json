@@ -1,0 +1,37 @@
+[
+  {
+    "name": "ModifierEntrancy_87_deployed",
+    "abi": [
+      {
+        "inputs": [],
+        "name": "airDrop",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "airDrop()",
+        "hash": "0xca5d0880"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "tokenBalance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "tokenBalance(address)",
+        "hash": "0xeedc966a"
+      }
+    ]
+  }
+]

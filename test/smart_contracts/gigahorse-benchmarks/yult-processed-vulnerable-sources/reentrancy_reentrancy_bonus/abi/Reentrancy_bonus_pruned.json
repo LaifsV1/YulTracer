@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Reentrancy_bonus_74_deployed",
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "getFirstWithdrawalBonus",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "getFirstWithdrawalBonus(address)",
+        "hash": "0x7d1c54f8"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "withdrawReward",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "withdrawReward(address)",
+        "hash": "0xb86e321c"
+      }
+    ]
+  }
+]
