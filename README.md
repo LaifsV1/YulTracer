@@ -50,13 +50,13 @@ To compile `YulTracer`, if you have all dependencies, run:
 dune build
 ```
 The dependencies are:
-- Opam package manager (+initialisation)
-- OCaml 4.10+ compiler
-- Dune build system for OCaml projects
-- Menhir parser generator
-- Z3 package for OCaml bindings
-- Zarith package for arbitrary-precision integers
-- Yojson and `ppx_deriving_yojson`
+- [Opam](https://opam.ocaml.org/) package manager (+initialisation)
+- [OCaml](https://ocaml.org/) 4.10+ compiler
+- [Dune](https://dune.build/) build system for OCaml projects
+- [Menhir](https://gallium.inria.fr/~fpottier/menhir/) parser generator
+- [Z3](https://github.com/Z3Prover/z3) package for OCaml bindings
+- [Zarith](https://github.com/ocaml/Zarith) package for arbitrary-precision integers
+- [Yojson](https://github.com/ocaml-community/yojson) and [`ppx_deriving_yojson`](https://github.com/ocaml-ppx/ppx_deriving_yojson)
 
 All the above dependencies can be obtained from Opam package manager after setting up Opam. For more detailed instructions, the following were tested for Linux and macOS. Please check the [official website](https://opam.ocaml.org/doc/Install.html) for Windows support.
 
@@ -125,7 +125,6 @@ dune build
 ```
 This produces an executable binary `yult.exe` usually located at `_build/default/bin/`.
 
----
 ## Directory Structure:
 This project has the following directory structure. This may change in the future.
 ```
@@ -144,6 +143,7 @@ A typical project directory in our tests has the following structure:
 ```
 A `README` is provided with each example.
 
+---
 ## EVM Dialect and Instruction Set
 
 Provided in this repository is a partial implementation of the EVM based on the [Shanghai update of the EVM execution specifications](https://github.com/ethereum/execution-specs/tree/master/src/ethereum/shanghai). This means the tool supports EVM behaviours up to, without including, the addition of transient storage.
