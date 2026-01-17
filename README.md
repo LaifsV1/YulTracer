@@ -1,13 +1,15 @@
 # YulTracer
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18280182.svg)](https://doi.org/10.5281/zenodo.18280182)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-`YulTracer` is a bounded safety checker (finds assertion violations) and interpreter for [Yul](https://docs.soliditylang.org/en/latest/yul.html). `YulTracer` performs reachability analysis for programs written in Yul and is also able to analyse smart contracts written in Solidity via the Solidity compiler -- we provide examples in this repository showing automatic tool-chains set up to analyse large code bases. For more details, see [arXiv:2512.22417](https://arxiv.org/abs/2512.22417).
+`YulTracer` is a bounded safety checker (finds assertion violations) and interpreter for [Yul](https://docs.soliditylang.org/en/latest/yul.html). `YulTracer` performs reachability analysis for programs written in Yul and is also able to analyse smart contracts written in Solidity via the Solidity compiler -- we provide examples in this repository showing automatic tool-chains set up to analyse large code bases.
 
 We envision `YulTracer` to be used in semi-automatic fashion by developers and auditors. The exploration is fully automatic, but assertions need to be added to the code to specify safety. Additionally, we expect exploration parameters need to be specified for complex projects.
 
 ---
 ### Current Release (0.2.x)
+**DOI**: [10.5281/zenodo.18280182](https://doi.org/10.5281/zenodo.18280182)\
+**Report**: [arXiv:2512.22417](https://arxiv.org/abs/2512.22417)
 
 The core technical contribution of this release is the addition of a semantically grounded attacker/environment model that exhaustively enumerates all possible traces reachable by an external user interacting with the set of contracts being analysed. We use Game Semantics to model the environment and perform an on-the-fly depth-bounded reachability analysis of the Game Semantics for said set of smart contracts. The tool constructs a finite exploration tree that is an unfolding of the interaction LTS, and reports a counterexample trace when an assertion-violating configuration is reachable within depth explored.
 
@@ -16,8 +18,9 @@ The above makes the tool sound and complete up to the bound provided and with re
 `YulTracer` currently features limited support for Symbolic Execution via Z3 BitVectors: symbolic reasoning is present for arithmetic and branching, but not for symbolic pointers. As a result, symbolic execution is not recommended at this stage and is not used in any of the smart contract use-case examples provided in this repository.
 
 ### Previous Release (0.1.x)
+**DOI**: [10.5281/zenodo.12098663](https://doi.org/10.5281/zenodo.12098663)
 
-For the previous interpreter-only version `0.1` of YulTracer, please see commit [`57f9202`](https://github.com/LaifsV1/YulTracer/tree/57f92027b94c89c76dd88f308a99b55b9ad9df41) and [release 0.1.1](https://github.com/LaifsV1/YulTracer/releases/tag/v0.1.1-alpha) ([DOI 10.5281/zenodo.12098663](https://doi.org/10.5281/zenodo.12098663)). 
+For the previous interpreter-only version `0.1` of YulTracer, please see commit [`57f9202`](https://github.com/LaifsV1/YulTracer/tree/57f92027b94c89c76dd88f308a99b55b9ad9df41) and [release 0.1.1](https://github.com/LaifsV1/YulTracer/releases/tag/v0.1.1-alpha). 
 
 ---
 ## Testing
