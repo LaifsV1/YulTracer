@@ -18,7 +18,8 @@ The above makes the tool sound and complete up to the bound provided and with re
 `YulTracer` currently features limited support for Symbolic Execution via Z3 BitVectors: symbolic reasoning is present for arithmetic and branching, but not for symbolic pointers. As a result, symbolic execution is not recommended at this stage and is not used in any of the smart contract use-case examples provided in this repository.
 
 ### Previous Release (0.1.x)
-**DOI**: [10.5281/zenodo.12098663](https://doi.org/10.5281/zenodo.12098663)
+**DOI**: [10.5281/zenodo.12098663](https://doi.org/10.5281/zenodo.12098663)\
+**Publication**: [10.1007/978-3-031-77382-2_19](https://doi.org/10.1007/978-3-031-77382-2_19)
 
 For the previous interpreter-only version `0.1` of YulTracer, please see commit [`57f9202`](https://github.com/LaifsV1/YulTracer/tree/57f92027b94c89c76dd88f308a99b55b9ad9df41) and [release 0.1.1](https://github.com/LaifsV1/YulTracer/releases/tag/v0.1.1-alpha). 
 
