@@ -167,10 +167,10 @@ Following EVM opcode categories are implemented:
 - **System**: `revert`<sup>1</sup>, `return`, `call`, `staticcall`, `delegatecall`, `create`, `create2`, `START_ANALYSIS`<sup>4</sup>/`LAUNCH_OPPONENT`<sup>4</sup>, `IMPERSONATECALL`<sup>4</sup>, `REVEAL_UINT`<sup>4</sup>, `REVEAL_ADDR`<sup>4</sup>
 - **Print**<sup>2</sup>: `PRINT`<sup>3</sup>, `PRINT_signed`<sup>3</sup>, `PRINT_HEX`<sup>3</sup>, `PRINT_hex`<sup>3</sup>, `PRINT_bin`<sup>3</sup>, `PRINT_object`<sup>3</sup>, `PRINT_IDS`<sup>3</sup>, `PRINT_names`<sup>3</sup>, `PRINT_sigma`<sup>3</sup>, `PRINT_z3`<sup>3</sup>, `PRINT_mem`<sup>3</sup>, `PRINT_ascii`<sup>3</sup>
 
-<sup>1</sup> instructions with simpler or dummy implementations\
-<sup>2</sup> unofficial instruction categories needed for Yul\
-<sup>3</sup> official Yul-only instructions that are not part of the EVM specs\
-<sup>4</sup> custom `YulTracer`-only instructions in all-caps
+<sup>1</sup> Instructions with simpler or dummy implementations.\
+<sup>2</sup> Unofficial instruction categories needed for Yul.\
+<sup>3</sup> Official Yul-only instructions that are not part of the EVM specs.\
+<sup>4</sup> Custom `YulTracer`-only instructions in all-caps.
 
 `Data`, `Immutable` and `Linker` are unofficial categories added to support official instructions specified only in the Yul documentation. These Yul-only instructions are not part of the EVM specification, but are still necessary to analyse real-world Yul objects (in particular, those produced by the Solidity compiler). Since the semantics of these instructions is not formally specified, their behaviour was inferred from the documentation. Additionally, some instructions were not compatible with Yul or not necessary for safety analysis of the contracts we checked. These were implemented as simpler or dummy versions. Lastly, a few custom opcodes were added for analysis — these are all in uppercase. These are:
 - `WAIT(n)`: Increases the current timestamp by `n` seconds.
