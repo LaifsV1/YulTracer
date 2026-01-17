@@ -2,7 +2,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18280182.svg)](https://doi.org/10.5281/zenodo.18280182)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-`YulTracer` is a bounded safety checker (finds assertion violations) and interpreter for [Yul](https://docs.soliditylang.org/en/latest/yul.html). `YulTracer` performs reachability analysis for programs written in Yul and is also able to analyse smart contracts written in Solidity via the Solidity compiler -- we provide examples in this repository showing automatic tool-chains set up to analyse large code bases.
+`YulTracer` is a bounded safety checker (finds assertion violations) and interpreter for [Yul](https://docs.soliditylang.org/en/latest/yul.html). `YulTracer` performs reachability analysis for programs written in Yul and is also able to analyse smart contracts written in Solidity via the Solidity compiler — we provide examples in this repository showing automatic tool-chains set up to analyse large code bases.
 
 We envision `YulTracer` to be used in semi-automatic fashion by developers and auditors. The exploration is fully automatic, but assertions need to be added to the code to specify safety. Additionally, we expect exploration parameters need to be specified for complex projects.
 
@@ -172,15 +172,15 @@ Following EVM opcode categories are implemented:
 <sup>3</sup> official Yul-only instructions that are not part of the EVM specs\
 <sup>4</sup> custom `YulTracer`-only instructions in all-caps
 
-`Data`, `Immutable` and `Linker` are unofficial categories added to support official instructions specified only in the Yul documentation. These Yul-only instructions are not part of the EVM specification, but are still necessary to analyse real-world Yul objects (in particular, those produced by the Solidity compiler). Since the semantics of these instructions is not formally specified, their behaviour was inferred from the documentation. Additionally, some instructions were not compatible with Yul or not necessary for safety analysis of the contracts we checked. These were implemented as simpler or dummy versions. Lastly, a few custom opcodes were added for analysis -- these are all in uppercase. These are:
+`Data`, `Immutable` and `Linker` are unofficial categories added to support official instructions specified only in the Yul documentation. These Yul-only instructions are not part of the EVM specification, but are still necessary to analyse real-world Yul objects (in particular, those produced by the Solidity compiler). Since the semantics of these instructions is not formally specified, their behaviour was inferred from the documentation. Additionally, some instructions were not compatible with Yul or not necessary for safety analysis of the contracts we checked. These were implemented as simpler or dummy versions. Lastly, a few custom opcodes were added for analysis — these are all in uppercase. These are:
 - `WAIT(n)`: Increases the current timestamp by `n` seconds.
 - `MK_SYMBOL()`: Creates a fresh symbolic `uint`.
 - `EXT_FUND(n)`: Increases the balance of the current address by `n` wei.
 - `SETLINKER(s,n)`: Sets string `s` to point at `uint` `n` in the linker table used by the `linkersymbol` instruction.
 - `START_ANALYSIS`/`LAUNCH_OPPONENT`: Passes control to the opponent.
-- `IMPERSONATECALL(c,g,t,v,i,s1,o,s2)`: Variant of `call` that spoofs the calling address -- acts like a `call(g,t,v,i,s1,o,s2)` from address `c` instead of the current address.
-- `REVEAL_UINT(n)`: Passes the `uint` word `n` to the opponent as a value -- the opponent remembers `n` and will be able to use it as a value.
-- `REVEAL_ADDR(n)`: Passes the `uint` word `n` to the opponent as an address -- the opponent remembers `n` and will be able to use it as an address.
+- `IMPERSONATECALL(c,g,t,v,i,s1,o,s2)`: Variant of `call` that spoofs the calling address — acts like a `call(g,t,v,i,s1,o,s2)` from address `c` instead of the current address.
+- `REVEAL_UINT(n)`: Passes the `uint` word `n` to the opponent as a value — the opponent remembers `n` and will be able to use it as a value.
+- `REVEAL_ADDR(n)`: Passes the `uint` word `n` to the opponent as an address — the opponent remembers `n` and will be able to use it as an address.
 
 The following print functions are provided to aid debugging:
 - `PRINT`: Print a `uint` word as an unsigned decimal integer.
