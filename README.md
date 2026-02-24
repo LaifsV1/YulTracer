@@ -44,6 +44,39 @@ In practice, we use previously prepared scripts in project directories (especial
  pip install pycryptodome
  ```
 
+On Linux, because Python and `pip` are used at the OS level, you will likely need a virtual environment. The simplest way is to use Python's own `venv`, which requires `python3`:
+
+```bash
+sudo apt update
+sudo apt install python3-venv
+```
+
+1. Create the Virtual Environment (e.g. named `myenv`):
+```bash
+python3 -m venv myenv
+```
+
+2. To activate the environment (e.g. named `myenv`):
+```bash
+source myenv/bin/activate
+(myenv) user@host:~/project$
+```
+
+3. Install packages (e.g. Crypto):
+```bash
+pip install pycryptodome
+```
+
+4. Run any number of Python scripts you need to run:
+```bash
+python script.py
+```
+
+5. To deactivate the environment (if necessary):
+```bash
+deactivate
+```
+
 ## Compilation
 To compile `YulTracer`, if you have all dependencies, run:
 ```
