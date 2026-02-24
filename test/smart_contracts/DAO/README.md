@@ -8,29 +8,13 @@ This directory contains six analyses of the **on-chain** original DAO contracts 
 
 ## Quick Start
 
-- Install Python + Crypto:
-
-   ```bash
-   pip install pycryptodome
-   ```
+- Make sure you have `Python` + `Crypto` installed (see main `README` on setting up a virtual environment on Linux).
 
 - For a Solidity harness (e.g. `solidity_deployer`):
 
    ```bash
    cd solidity_deployer
    make run
-   ```
-
-- For a Yul harness (e.g. `yul_deployer`):
-
-   ```bash
-   cd yul_deployer
-   dune exec -- yult \
-     -i yul/Deployer.yul \
-     -abi abi/Deployer_pruned.json \
-     -full-abi yul/Deployer.json \
-     -g \
-     -o-uint-domain "0,604800"
    ```
 
 - To run YulTracer on **all Solidity harnesses**, use:  
@@ -53,22 +37,41 @@ Each harness will explore the DAO split-and-withdraw logic and either find the b
 
 ## Subdirectories
 
-1. **solidity\_deployer**
+1. **solidity\_deployer**  
   Vulnerable DAO analysed with a single opponent (attacker) address. Exploit due to reentering `splitDAO` recursively before the contract’s state is updated. Entry point is a Solidity `Deployer` contract.
+Use the following command to run the harness:
+    ```
+    make run
+    ```
 
-2. **solidity\_deployer\_safe**
+2. **solidity\_deployer\_safe**  
   Patched DAO variant. The same `Deployer` solidity harness as (1) but using a safe `splitDAO` implementation so no reentrancy bug can be triggered.
+Use the following command to run the harness:
+    ```
+    make run
+    ```
 
-3. **solidity\_deployer\_transfer**
+3. **solidity\_deployer\_transfer**  
   Vulnerable DAO analysed with two opponent addresses. Demonstrates that adding a `nonReentrant` modifier on `splitDAO` can be bypassed. Two attacker-controlled addresses transfer DAO tokens back and forth between calls, avoiding the reentrancy guard yet preserving token balances. Deployer written in Solidity.
+Use the following command to run the harness:
+    ```
+    make run
+    ```
 
-4. **solidity\_deployer\_transfer\_dummy**
+4. **solidity\_deployer\_transfer\_dummy**  
   Similar to (3), but uses one opponent address plus a dummy helper contract. The dummy contract transfers tokens to the caller.
+Use the following command to run the harness:
+    ```
+    make run
+    ```
 
-5. **yul\_deployer**
-  Same as `solidity_deployer`, but the `Deployer` was manually written in Yul. This is to demonstrate how one may manually set up contracts for the analysis directly in Yul.
+### OPTIONAL low-level harnesses:
+The following two directories are OPTIONAL. Our scripts work directly with Solidity and do not require any background knowleddge on Yul. In fact, the usage of low-level harnesses directly written in Yul will disallow the use of our scripts. **These alternative harnesses are only to demonstrate direct low-level usage of Yul with our tool.**
+ 
+5. **yul\_deployer**  
+  Same as `solidity_deployer`, but the `Deployer` was manually written in Yul. This is to demonstrate how one may manually set up contracts for the analysis directly in Yul if needed.
 
-6. **yul\_deployer\_safe**
+6. **yul\_deployer\_safe** 
   Safe variant of (5), with its Deployer also manually written in Yul.
 
 ---
@@ -130,7 +133,7 @@ For more detailed instructions, see the main `README` at the root directory of t
 
 ---
 
-## Manual Yul Variants
+## Manual Low-Level Yul Harnesses
 
 The `yul_deployer` and `yul_deployer_safe` directories contain hand-written `Deployer.yul` files plus their ABIs. There is no Makefile. You'll have to run `yult` directly:
 
