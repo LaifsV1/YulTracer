@@ -126,6 +126,7 @@ solidity_deployer/
  ```bash
  pip install pycryptodome
  ```
+For more detailed instructions, see the main `README` at the root directory of this repository.
 
 ---
 
