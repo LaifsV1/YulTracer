@@ -59,20 +59,23 @@ python3 -m venv myenv
 2. To activate the environment (e.g. named `myenv`):
 ```bash
 source myenv/bin/activate
+```
+You will know the environment is active because `(myenv)` will be printed in front of the input prompt. e.g.:
+```
 (myenv) user@host:~/project$
 ```
 
-3. Install packages (e.g. Crypto):
+3. Install packages (e.g. the `Crypto` package):
 ```bash
 pip install pycryptodome
 ```
 
-4. Run any number of Python scripts you need to run:
+4. Test if `Crypto` has been installed:
 ```bash
-python script.py
+python3 -c "from Crypto.Hash import keccak; print('OK');"
 ```
 
-5. To deactivate the environment (if necessary):
+5. To deactivate the environment (when you are done running `Yultracer` tests):
 ```bash
 deactivate
 ```
