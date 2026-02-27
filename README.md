@@ -87,7 +87,7 @@ dune build
 ```
 The dependencies are:
 - [Opam](https://opam.ocaml.org/) package manager (+initialisation)
-- [OCaml](https://ocaml.org/) 4.10+ compiler
+- [OCaml](https://ocaml.org/) 4.10+ compiler (up to 4.14.2 for stable hashing of hardcoded addresses)
 - [Dune](https://dune.build/) build system for OCaml projects
 - [Menhir](https://gallium.inria.fr/~fpottier/menhir/) parser generator
 - [Z3](https://github.com/Z3Prover/z3) package for OCaml bindings
