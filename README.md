@@ -94,7 +94,7 @@ The dependencies are:
 - [Zarith](https://github.com/ocaml/Zarith) package for arbitrary-precision integers
 - [Yojson](https://github.com/ocaml-community/yojson) and [`ppx_deriving_yojson`](https://github.com/ocaml-ppx/ppx_deriving_yojson)
 
-All the above dependencies can be obtained from Opam package manager after setting up Opam. For more detailed instructions, the following were tested for Linux and macOS. Please check the [official website](https://opam.ocaml.org/doc/Install.html) for Windows support.
+All the above dependencies can be obtained from Opam package manager after setting up Opam. For more detailed instructions, the instructions below were tested on Linux and macOS. For Windows, we have tested the Ubuntu instructions on WSL (Ubuntu) under Windows 11 and observed no unexpected behaviour. For native Windows support, please refer to the [official OCaml website](https://opam.ocaml.org/doc/Install.html). We were unable to build Z3 natively through Opam+Cygwin; at present, this seems to require manually compiling Z3 with OCaml bindings.
 
 ### 1. Installing the OCaml Package Manager `opam`
 All dependencies are obtainable through OCaml's official package manager [`opam`](http://opam.ocaml.org/doc/Install.html). Installation of `opam` is system specific so you may need to refer to their website linked above. Instructions for some common systems are listed below:
