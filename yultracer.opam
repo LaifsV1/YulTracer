@@ -2,6 +2,7 @@ opam-version: "2.0"
 name: "yultracer"
 version: "0.2.0"
 license: "MIT"
+available: os != "win32"
 
 maintainer: "linhouy@tcd.ie"
 authors: ["Yu-Yang Lin"]
@@ -11,19 +12,18 @@ dev-repo: "git+https://github.com/LaifsV1/YulTracer.git"
 
 synopsis: "A bounded safety checker for Yul"
 description: """
-YulTracer is a tool that checks for assertion violations for Yul using a bounded game semantics exploration.
+YulTracer is a tool that checks Yul programs for assertion violations using bounded game-semantics exploration.
 """
-          
+
 build: [
   ["dune" "subst"] {pinned}
-  ["dune" "build" "-p" name "-j" jobs ]
+  ["dune" "build" "-p" name "-j" jobs "@install"]
 ]
 
 depends: [
-  "dune" {>= "2.8"}
+  "dune" {build & >= "2.8"}
   "ocaml" {>= "4.10.0"}
-  # Add dependencies here, for example:
-  "menhir" {>= "20200624"}
+  "menhir" {build & >= "20200624"}
 ]
 
 tags: ["yul" "evm" "interpreter" "game-semantics" "safety-checker" "assertions" "verification" "symbolic-execution" "blockchain" "ethereum"]
