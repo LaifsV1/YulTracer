@@ -4,9 +4,9 @@ pragma solidity ^0.8.0;
 
 /// @title Provides functions for deriving a pool address from the factory, tokens, and the fee
 library PoolAddress {
-    //Yult: had to change this hash, representing the hash of the Pool contract, since Yult uses a custom keccak function and code representation.
-    //Yult: replace following hash if getting the error "non-existent address called". Replace with "call_data_hash" value printed by the error.
-    bytes32 internal constant POOL_INIT_CODE_HASH = 0x0e3a832da3dfd081d69b94d94f3338902e03ab48de274facdb45434f27c4b286;
+    //Yultracer yultracer: had to change this hash, representing the hash of the Pool contract, since Yult uses a custom keccak function and code representation.
+    //Yultracer yultracer: replace following hash if getting the error "non-existent address called". Replace with "call_data_hash" value printed by the error.
+    bytes32 internal constant POOL_INIT_CODE_HASH = 0xd2bf86873331691a157cc30f866c117976fe7595cddf59740ac3806f1450ef54;
 
     /// @notice The identifying key of the pool
     struct PoolKey {

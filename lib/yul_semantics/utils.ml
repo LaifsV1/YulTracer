@@ -71,6 +71,22 @@ let rec cartesian_product = function
          List.map (fun ys -> x :: ys) rest
        ) xs
 
+let cartesian_power (choices : 'a list) (n : int) :('a list list) =
+  let rec cartesian_power_aux (paths : 'a list list) (n : int) (choices) :('a list list) =
+    (* function to add all choices to a path *)
+    let add_choices_to_one_path path acc =
+      List.fold_left (fun acc c -> (c :: path) :: acc) acc choices
+    in
+    (* if n = 0 just output the paths *)
+    if n = 0 then paths else
+      (* for every path, add all choices *)
+      cartesian_power_aux (List.fold_left (fun acc p -> add_choices_to_one_path p acc) [] paths) (n-1) choices
+  in
+  cartesian_power_aux [[]] n choices
+
+let map_uniq f xs =
+  xs |> List.map f |> List.sort_uniq compare
+
 let string_to_hex (s : string) : string =
   let hex_of_char c = Printf.sprintf "%02x" (int_of_char c) in
   "0x" ^ String.concat ""

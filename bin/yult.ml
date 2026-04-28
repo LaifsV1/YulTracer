@@ -55,6 +55,12 @@ let main =
         ("-memo", Arg.Set_int memo_size,
          (def_msg_i
             "size of memoisation set (in number of configurations remembered)" !memo_size));
+        ("-trace-length", Arg.Set_int Games.observable_trace_bound,
+         (def_msg_i
+            "maximum length for observable (no PP moves) trace allowed" !Games.observable_trace_bound));
+        ("-show-observable", Arg.Set Games.show_observable,
+         (def_msg_b
+            "show observable trace (no PP moves) instead of full trace" !Games.show_observable));
 
         (* -- Input & configuration ----------------------------------------------- *)
         ("", Arg.Unit (fun () -> ()),"\nINPUT & CONFIGURATION:"); (* DUMMY OPTION FOR LABEL *)

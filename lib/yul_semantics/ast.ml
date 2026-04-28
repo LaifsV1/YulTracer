@@ -232,29 +232,27 @@ module YulAST (D : Dialect) = struct
     | Some (_,bi) -> Block bi
     | None -> Block default
 
-  (** Function to assign NEGATIVE UID to each object in an object (including itself)
-      - UIDs are based on HASH of the PATH
-      - UIDs NEED to be NEGATIVE because the rest of the code expects object code to be NEGATIVE *)
-  let assign_negative_uids (obj : yul_object) :(yul_object)=
-    let rec traverse obj current_path =
-      let updated_members =
+  (** Assign negative UIDs by traversal order.
+      Root gets -1, then child objects get -2, -3, ... in preorder. *)
+  let assign_negative_uids (root : yul_object) : yul_object =
+    let rec traverse (next_uid : int) (obj : yul_object) : int * yul_object =
+      let my_uid = next_uid in
+      let next_uid = next_uid - 1 in
+      let next_uid, rev_members =
         List.fold_left
-          (fun acc member ->
+          (fun (next_uid, acc) member ->
             match member with
-            | Object o ->
-               let next_path = Printf.sprintf "%s.%s" current_path o.name in
-               let new_obj = traverse o next_path in
-               (Object new_obj :: acc)
             | Data d ->
-               (Data d) :: acc)
-          [] obj.members
+               (next_uid, Data d :: acc)
+            | Object o ->
+               let next_uid, o' = traverse next_uid o in
+               (next_uid, Object o' :: acc))
+          (next_uid, [])
+          obj.members
       in
-      let current_uid = Hashtbl.hash current_path in
-      (* print_endline current_path; *)
-      (* Printf.printf "ID: %d\n" current_uid; *)
-      { obj with uid = -current_uid; members = List.rev updated_members }
+      (next_uid, { obj with uid = my_uid; members = List.rev rev_members })
     in
-    traverse obj obj.name
+    snd (traverse (-1) root)
   
   (** Function to get all the names of object members.
       

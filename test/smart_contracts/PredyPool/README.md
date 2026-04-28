@@ -1,3 +1,5 @@
+> See the main [`README`](../../../README.md) for build instructions and [`GUIDE`](../../../GUIDE.md) for setting up new projects.
+
 **NOTE**: Tested for `solc` version `0.8.30+commit.73712a01.Linux.g++` and OCaml `4.10.1`,  on Ubuntu `24.04.2 LTS`.
 
 # Links:
@@ -30,18 +32,41 @@ Exploit transaction date: 14/5/2024
 - src/PredyPool-attacked-version: version running during the attack 
 - src/PredyPool-fixed-version: fixed version
 
+# Run all three variants (normal, deterministic, fixed)
+
+To run and time all three variants, use the script in this directory:
+
+```bash
+bash run-predy-tests.sh
+```
+
+This prints a summary listing every variant, whether the assertion violation was found, and the time taken. To see live YulTracer output and keep logs, use verbose mode:
+
+```bash
+bash run-predy-tests.sh -v
+```
+
+Logs are saved in a `predy-logs-YYYYmmdd-HHMMSS` directory. The default timeout per variant is **60 minutes**; override with `-t MINUTES`.
+
+> **Warning:** The `fixed` version does not find a bug and may run up to the timeout before terminating.
+
+---
+
 # Compile and run the game exploration on the vulnerable version of PredyPool
 ```bash
-make clean normal run
+make
+make run
 ```
 
 # Compile and run the game exploration on the patched version of PredyPool
 ```bash
-make clean fixed run
+make fixed
+make run
 ```
 
 # Compile and run a deterministic attack on the vulnerable version of PredyPool (no game exploration)
 ```bash
-make clean deterministic run EXTRA_ARGS="-warnings"
+make deterministic
+make run
 ```
 

@@ -87,6 +87,8 @@ let _GAS_NEW_ACCOUNT = U256.of_int(25000)
 let _GAS_CALL_VALUE = U256.of_int(9000)
 let _GAS_CALL_STIPEND = U256.of_int(2300)
 let _GAS_RETURN_DATA_COPY = U256.of_int(3)
+let _GAS_FAST_STEP = U256.of_int(5)
+
 
 (** [ExtendMemory] class from Python Execution Specs:
 {@python[

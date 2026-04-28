@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./MoneyMarket.sol";
 import "./Token.sol";
-import "./Yult.sol";
+import {Yult} from "YulTracerLib.sol";
 
 contract __Yult__Toolbox {
     MiniERC777 private token;
@@ -32,7 +32,7 @@ contract Deployer {
     constructor() {
         // 1) Deploy MiniERC777 and reveal its address
         token = new MiniERC777();
-        YultLib.__yult__revealAddress(address(token));
+        Yult.revealAddress(address(token));
 
         // 2) Deploy and configure price oracle
         //    - token priced at $1

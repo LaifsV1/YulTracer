@@ -15,14 +15,7 @@ import {IUniswapV3Pool} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Po
 
 import {PredyPool, AddPairLogic, Perp, InterestRateModel} from "src/PredyPool.sol";
 import {IPredyPool} from "src/interfaces/IPredyPool.sol";
-
-
-library YultLib {
-  function __yult__wait(uint) pure internal {}
-  function __yult__print(uint) pure internal {}
-  function __yult__printHex(uint) pure internal {}
-  function __yult__assert(bool) pure internal {}
-}
+import {Yult} from "YulTracerLib.sol";
 
 contract __Yult__Toolbox {
   UniswapV3Factory private uniswapFactory;
@@ -95,7 +88,7 @@ contract __Yult__Toolbox {
     );
 
     // hardcoded wait so that the game exploration does not need to consider all wait times.
-    YultLib.__yult__wait(3600);
+    Yult.wait(3600);
 
     return pool;
   }

@@ -59,8 +59,12 @@ let to_string_contract (c : contract) : string =
     c.name
     (to_string_list to_string_function_entry c.functions)
 
-let find_function (c : contract) (hash : string) : function_entry option =
+let find_hash (c : contract) (hash : string) : function_entry option =
   let aux function_entry = function_entry.hash = Some hash in
+  List.find_opt aux c.functions
+  
+let find_sign (c : contract) (sign : string) : function_entry option =
+  let aux function_entry = function_entry.signature = Some sign in
   List.find_opt aux c.functions
 
 let make_4byte_hex s =

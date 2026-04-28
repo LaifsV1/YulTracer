@@ -1,0 +1,66 @@
+/*
+ * @source: https://github.com/SmartContractSecurity/SWC-registry/blob/master/test_cases/reentracy/modifier_reentrancy.sol
+ * @author: - 
+ * @vulnerable_at_lines: 15
+ */
+
+pragma solidity ^0.8.0;
+
+import {Yult} from "YulTracerLib.sol";
+
+contract ModifierEntrancy {
+  mapping (address => uint256) public tokenBalance;
+  string constant name = "Nu Token";
+
+  // ADDED MUTEX
+  bool private _entered;
+  modifier nonReentrant() { 
+      require(!_entered, "reentrant");
+      _entered = true;
+      _;
+      _entered = false;
+  }
+
+
+  //If a contract has a zero balance and supports the token give them some token
+  // <yes> <report> REENTRANCY
+  function airDrop() nonReentrant hasNoBalance supportsToken public { // LEFTMOST MUTEX FIRST
+    tokenBalance[msg.sender] += 20;
+    Yult.Assert(tokenBalance[msg.sender] == 20);
+    assert(tokenBalance[msg.sender] == 20);
+  }
+
+  //Checks that the contract responds the way we want
+  modifier supportsToken() {
+    Yult.printHex(uint256(keccak256(abi.encodePacked("Nu Token"))));
+    require(keccak256(abi.encodePacked("Nu Token")) == Bank(msg.sender).supportsToken());
+    _;
+  }
+  //Checks that the caller has a zero balance
+  modifier hasNoBalance {
+      require(tokenBalance[msg.sender] == 0);
+      _;
+  }
+}
+
+// NOTE: `pure` annotation was removed. this is because in 0.8.0, this compiles to a STATICCALL
+// i.e. in 0.5.0+, the original file is actually a safe contract. STATICCALL was a change in 0.5.0.
+contract Bank{
+    function supportsToken() external returns(bytes32){ 
+        return(keccak256(abi.encodePacked("Nu Token")));
+    }
+}
+
+//contract attack{ //An example of a contract that breaks the contract above.
+//    bool hasBeenCalled;
+//    function supportsToken() external returns(bytes32){
+//        if(!hasBeenCalled){
+//            hasBeenCalled = true;
+//            ModifierEntrancy(msg.sender).airDrop();
+//        }
+//        return(keccak256(abi.encodePacked("Nu Token")));
+//    }
+//    function call(address token) public{
+//        ModifierEntrancy(token).airDrop();
+//    }
+//}

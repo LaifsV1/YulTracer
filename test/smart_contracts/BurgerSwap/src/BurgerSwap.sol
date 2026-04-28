@@ -6,7 +6,7 @@
 
 // pragma solidity >=0.5.0;
 
-import "./Yult.sol"; // ==== YULT FUNCTIONS FOR YULT ANALYSIS ==========
+import {Yult} from "YulTracerLib.sol"; // ==== YULT FUNCTIONS FOR YULT ANALYSIS ==========
 
 interface IERC20 {
     event Approval(address indexed owner, address indexed spender, uint value);
@@ -785,7 +785,7 @@ contract DemaxPair is BaseShareField {
         {
             uint256 productBefore = uint256(_reserve0) * uint256(_reserve1);
             uint256 productAfter  = balance0 * balance1;
-            YultLib.__yult__assert(productAfter >= productBefore);
+            Yult.Assert(productAfter >= productBefore);
         }
         _update(balance0, balance1, _reserve0, _reserve1);
         emit Swap(msg.sender, amount0In, amount1In, _amount0Out, _amount1Out, to);

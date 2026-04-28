@@ -64,8 +64,8 @@ contract DummyRouter {
 
     constructor() { 
         burgerToken = new BurgerToken();
-        //YultLib.__yult__revealAddress(address(burgerToken));
-        //YultLib.__yult__printHex(uint160(address(burgerToken)));
+        //Yult.revealAddress(address(burgerToken));
+        //Yult.printHex(uint160(address(burgerToken)));
         config = new ConfigStub(address(this));
         dgas = new DgasStub();
 
@@ -90,7 +90,7 @@ contract DummyRouter {
         pairs[tokenA][tokenB] = address(newPair);
         pairs[tokenB][tokenA] = address(newPair);
 
-        //YultLib.__yult__printHex(uint160(address(newPair)));
+        //Yult.printHex(uint160(address(newPair)));
         return address(newPair);
     }
 

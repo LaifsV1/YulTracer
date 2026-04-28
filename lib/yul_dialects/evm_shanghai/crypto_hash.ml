@@ -11,11 +11,14 @@
 open Z
 open Z3api
 open Base_types
+open Abi_parser
 
 (* ------------------------------------------- *)
 (* TYPES AND MODULES FOR KECCAK CONCRETISATION *)
 (* ------------------------------------------- *)
 type hash = zint
+
+let keccak256 x = "0x"^(Keccak256.keccak256 x)
 
 (** module for Keccak Sets. This is to concretise `keccak(v)` operations. *)
 module K = struct
@@ -34,11 +37,11 @@ module K = struct
   (** function to create a fresh U256 that will act as a new hash candidate.
       this fresh U256 may be made to satisfy constraints of our choice.
    *)
-  let rec fresh_hash (p : U256.t -> bool) =
-    let new_candidate = U256.random () in
+  let fresh_hash (v:Bytes.t) (p : U256.t -> bool) =
+    let new_candidate = U256.of_string (keccak256 (Bytes.to_string v)) in
     if p new_candidate
     then new_candidate
-    else fresh_hash p
+    else failwith "failed to generate a fresh hash"
 
   (** property that fresh hashes need to satisfy *)
   let p k_map (x : U256.t) =
@@ -89,7 +92,7 @@ module K = struct
           begin
             (* TODO: perhaps we need to check first whether v can be any w in dom(k_map) *)
             if Bytes.is_concrete v then                    (* if the input `v` is a concrete U256 *)
-              let z =  fresh_hash (p k_map) in             (* create fresh U256 value `z` *)
+              let z =  fresh_hash v (p k_map) in             (* create fresh U256 value `z` *)
               let k_map' = BytesMap.add v z k_map in       (* let `K'` = `K[v mapsto z]` *)
               [mk_branch z k_map' sigma]                   (* return `[z, K', sigma]` *)
             else                                           (* otherwise `v` is a symbolic S256 *)
@@ -133,7 +136,7 @@ module K = struct
                       sigma
                   in
                   if check_sigma_sat sigma_n then          (* if `SAT(sigma_n)` *)
-                    let z_n = fresh_hash (p k_map) in      (* let `z_n` = fresh U256 value *)
+                    let z_n = fresh_hash v (p k_map) in      (* let `z_n` = fresh U256 value *)
                     let k_n =                              (* let `K_n` = `K[v mapsto z_n]` *)
                       BytesMap.add v z_n k_map
                     in

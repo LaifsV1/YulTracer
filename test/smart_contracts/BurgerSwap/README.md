@@ -1,5 +1,7 @@
 # BurgerSwap Exploit — YulTracer Demo
 
+> See the main [`README`](../../../README.md) for build instructions and [`GUIDE`](../../../GUIDE.md) for setting up new projects.
+
 This directory contains demonstration on a simplification of the BurgerSwap exploit that focuses only on `DemaxPair`.
 
 **NOTE**: Tested for `solc` version `0.8.30+commit.73712a01.Linux.g++` and OCaml `4.10.1`,  on Ubuntu `24.04.2 LTS`.
@@ -20,16 +22,25 @@ To demonstrate the exploit, YulTracer has to automatically find a trace containi
 
 ## Running the Demo
 
-1. Ensure you have Python and the Crypto library installed:
+1. Ensure you have Python.
+
+2. Set `YULTRACER_ROOT` to the YulTracer root directory:
 
    ```bash
-   pip install pycryptodome
+   export YULTRACER_ROOT=/path/to/YulTracer
    ```
-   You may need to set up a virtual environment in Linux using `venv`.
 
-2. From the `Lendf.me/` directory, run:
+3. From the `BurgerSwap/` directory, build and run:
 
    ```bash
+   make
    make run
    ```
    To run YulTracer and explore the BurgerSwap `DemaxPair` contract.
+
+   To build and run the deterministic attack demo (`Deployer.sol`):
+
+   ```bash
+   make build-det
+   make run-det
+   ```

@@ -5,4 +5,5 @@
  (libraries zarith
             z3
 	        yul_semantics
-            yul_parser))
+            yul_parser
+            abi_parser))

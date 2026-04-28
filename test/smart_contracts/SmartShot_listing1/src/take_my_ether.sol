@@ -7,8 +7,8 @@ contract take_my_ether {
     bytes32 public puzzleHash;
     bool public puzzleSolved;
 
-    constructor() {
-        puzzleHash = keccak256(abi.encode(puzzle));
+    constructor(bytes32 _puzzleHash) {
+        puzzleHash = _puzzleHash;
         puzzleSolved = false;
         deadline = block.timestamp + 30 days;
     }

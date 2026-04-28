@@ -161,6 +161,16 @@ def origin(evm: Evm) -> None:
     # PROGRAM COUNTER
     evm.pc += 1
  *)
+let origin (evm : EVM.t) :EVM.t =
+  match evm.stack with
+  (* # STACK *)
+  | [] ->
+     (* # GAS *)
+     let evm = charge_gas(evm, _GAS_BASE) in
+     
+     (* # OPERATION *)
+     EVM.push evm (U256_val (Bytes.to_U256 evm.env.origin))
+  | _ -> assert(false) (* TODO: result monad or error type *)
 
 (**
 def caller(evm: Evm) -> None:
@@ -780,8 +790,9 @@ def extcodehash(evm: Evm) -> None:
 
     # PROGRAM COUNTER
     evm.pc += 1
+ *)
 
-
+(**
 def self_balance(evm: Evm) -> None:
     """
     Pushes the balance of the current address to the stack.
@@ -806,8 +817,23 @@ def self_balance(evm: Evm) -> None:
 
     # PROGRAM COUNTER
     evm.pc += 1
+ *)
+let self_balance (evm : EVM.t) :EVM.t =
+  match evm.stack with
+  (* # STACK *)
+  | [] ->
+     
+     (* # GAS *)
+     let evm = charge_gas(evm, _GAS_FAST_STEP) in
+     
+     (* # OPERATION *)
+     (* # Non-existent accounts default to EMPTY_ACCOUNT, which has balance 0. *)
+     let balance = (get_account evm.env.state evm.message.current_target : Account.t).balance in
+     
+     {evm with stack = [U256_val balance]}
+  | _ -> assert(false) (* TODO: result monad or error type *)
 
-
+(**
 def base_fee(evm: Evm) -> None:
     """
     Pushes the base fee of the current block on to the stack.

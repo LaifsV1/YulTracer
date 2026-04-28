@@ -3,7 +3,7 @@
 */
 pragma solidity ^0.8.24;
 
-import "./Yult.sol"; // TOOLS FOR YULT ANALYSIS
+import {Yult} from "YulTracerLib.sol"; // TOOLS FOR YULT ANALYSIS
 
 abstract contract PriceOracleInterface {
 
@@ -1554,7 +1554,7 @@ contract MoneyMarket is Exponential, SafeToken {
         }
 
         // YULT: assert nobody re‑entered and poked at the balance
-        YultLib.__yult__assert(balance.principal == prePrincipal); // ADDED FOR YULT ANALYSIS ****
+        Yult.Assert(balance.principal == prePrincipal); // ADDED FOR YULT ANALYSIS ****
         
         // Save market updates
         market.blockNumber = getBlockNumber();

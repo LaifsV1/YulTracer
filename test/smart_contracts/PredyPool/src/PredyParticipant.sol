@@ -4,7 +4,7 @@ import {IUniswapV3Pool} from "@uniswap/v3-core/contracts/interfaces/IUniswapV3Po
 import {IHooks} from "src/interfaces/IHooks.sol";
 import {IPredyPool} from "src/interfaces/IPredyPool.sol";
 
-import {__Yult__Toolbox, YultLib} from "Yult.sol";
+import {__Yult__Toolbox} from "Yult.sol";
 import {AERC20} from "AERC20.sol";
 
 contract PredyParticipant is IHooks {

@@ -75,7 +75,7 @@ let parse_contract json =
       inputs           = []; 
       outputs          = [];
       state_mutability = json |> member "stateMutability" |> to_option to_string;
-      hash             = Some "0x00000000";
+      hash             = Some "0xdeadbeef"; (* having a hash makes it callable. collisions are unlikely *)
       signature        = Some "fallback()";
       (* name             = json |> member "name"            |> to_option to_string; *)
       (* type_            = json |> member "type"            |> to_string; *)
@@ -91,7 +91,7 @@ let parse_contract json =
       inputs           = [];
       outputs          = [];
       state_mutability = json |> member "stateMutability" |> to_option to_string;
-      hash             = None;
+      hash             = Some "NULL"; (* receive() has no hash, so this is a sentinel string for traces *)
       signature        = Some "receive()";
     }
   in

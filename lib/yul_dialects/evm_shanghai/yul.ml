@@ -303,6 +303,7 @@ module EvmDialect =
     | Mcopy   -> exec_void_op Memory.mcopy
     (* ENVIRONMENT *)
     | Address -> exec_val_op  Environment_opcodes.address
+    | Origin  -> exec_val_op  Environment_opcodes.origin
     | Caller  -> exec_val_op  Environment_opcodes.caller
     | Csize   -> exec_val_op  Environment_opcodes.codesize
     | Cvalue  -> exec_val_op  Environment_opcodes.callvalue
@@ -310,11 +311,12 @@ module EvmDialect =
     | Cdload  -> exec_val_op  Environment_opcodes.calldataload
     | Cdsize  -> exec_val_op  Environment_opcodes.calldatasize
     | Bal     -> exec_val_op  Environment_opcodes.balance
+    | Sbal    -> exec_val_op  Environment_opcodes.self_balance
     | Cdcode  -> exec_void_op Environment_opcodes.calldatacopy
     | Rdsize  -> exec_val_op  Environment_opcodes.returndatasize
     | Rdcopy  -> exec_void_op Environment_opcodes.returndatacopy
     | Ecsize  -> exec_val_op  Environment_opcodes.extcodesize
-    | Wait -> exec_void_op Environment_opcodes.wait_ms
+    | Wait    -> exec_void_op Environment_opcodes.wait_ms
     (* LOGS *) (* TODO: NOP FOR NOW *)
     | Log0 | Log1 | Log2 | Log3 | Log4 -> exec_void_op (fun evm -> {evm with stack = []})
     (* YUL-SPECIFIC OPCODES *)
@@ -400,7 +402,6 @@ module EvmDialect =
     (*
       | Sbal   (* selfbalance()        I| equivalent to balance(address()), but cheaper                   *)
       | Bfree  (* basefee()            L| current block’s base fee (EIP-3198 and EIP-1559)                *)
-      | Origin (* origin()             F| transaction sender                                              *)
       | Gprice (* gasprice()           F| gas price of the transaction                                    *)
       | Eccopy (* extcodecopy(a,t,f,s)-F| like codecopy(t, f, s) but take code at address a               *)
       | Echash (* extcodehash(a)       C| code hash of address a                                          *)

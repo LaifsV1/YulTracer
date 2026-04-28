@@ -24,6 +24,8 @@ let deployer_funds = ref "123456789_000_000_000_000_000_000"
 
 (* game exploration options *)
 let root_object = ref None
+let observable_trace_bound = ref 20
+let show_observable = ref false
 
 (* time and wait options *)
 let one_day       = Z.of_int 86_400
@@ -43,6 +45,7 @@ let o_symbolic_values   = ref false
 let o_domains_addrs     = ref ""
 let o_domains_uints     = ref "0x0,1,1_000"
 let o_wait_first        = ref false
+
 
 (**********************************************)
 (* Initialise our EVM flavoured Yul semantics *)
@@ -235,6 +238,8 @@ type move = OWait
           | PORet   of Bytes.t
           | Deploy  of name * address
           | StartAnalysis
+
+(* to string functions *)
 let string_of_move = function
   | PPRet b -> Printf.sprintf "\x1b[1mpp-ret\x1b[0m(%s)"    (Bytes.to_string b)
   | PORet b -> Printf.sprintf "\x1b[1;32mpo-ret\x1b[0m(%s)" (Bytes.to_string b)
@@ -253,15 +258,22 @@ let string_of_move = function
                   |> U256.to_hex_string
                   |> make_4byte_hex
        in
-       let f = o.full_abi >>= fun abi -> find_function abi hash in
-       match f with
+       match o.full_abi with
        | None -> "<ABI not found>"
-       | Some f ->
-          begin
-            match f.signature with
-            | None -> print_error "[string of move]: no signature found for PP-Call!"
-            | Some signature -> signature
-          end
+       | Some abi -> 
+          match find_hash abi hash with
+          | None ->
+             begin
+               match b , find_sign abi "receive()" with
+               | [] , Some _ -> "receive()"
+               | _ -> "fallback()"
+             end
+          | Some f ->
+             begin
+               match f.signature with
+               | None -> print_error "[string of move]: no signature found for PP-Call!"
+               | Some signature -> signature
+             end
      in
      Printf.sprintf
        "\x1b[1mpp-call\x1b[0m(mode:<\x1b[1m%s\x1b[0m> , target:<\x1b[1m%s\x1b[0m> , sig:<\x1b[1m%s\x1b[0m> , args:<%s>)"
@@ -269,7 +281,6 @@ let string_of_move = function
        o.name
        signature
        (Bytes.to_string b)
-
   | POCall a ->
      Printf.sprintf
        "\x1b[1;32mpo-call\x1b[0m(%s)"
@@ -299,9 +310,33 @@ let string_of_move = function
      end
 let print_move m = pr (string_of_move m)
 
+(* traces *)
 type trace = move list
-let string_of_trace (tr : trace) :(string) = string_of_list string_of_move "\n --> " (List.rev tr)
-let print_trace (tr : trace) = print_list print_move (fun () -> pr " --> "; force_newline ()) (List.rev tr)
+
+(* block of functions to keep only observable moves *)
+let is_observable = function
+  | PPCall _ | Create _ | Create2 _ | PPRet _ -> false
+  | OWait
+  | OCall _
+  | ORet _
+  | POCall _
+  | PORet _
+  | Deploy _
+  | StartAnalysis -> true
+
+let filter_observable (t:trace) :trace =
+  List.filter is_observable t
+
+let count_observable (t:trace) =
+  List.length (filter_observable t)
+
+(* to string functions *)
+let string_of_trace (tr : trace) :(string) =
+  let tr = if !show_observable then filter_observable tr else tr in
+  string_of_list string_of_move "\n --> " (List.rev tr)
+let print_trace (tr : trace) =
+  let tr = if !show_observable then filter_observable tr else tr in
+  print_list print_move (fun () -> pr " --> "; force_newline ()) (List.rev tr)
 
 (* function to report errors *)
 let report_error_w_trace msg tr =
@@ -343,7 +378,14 @@ let string_to_32_bytes (string : string) :(Bytes.t) =
 let int_to_32_bytes (i : int) :(Bytes.t) =
   i |> U256.of_int |> Bytes.of_U256 (* this is already left-padded with 0s *)
 
-(** type for the width of arguments expected from the opponent: either 32 or dynamic *)
+(** type for the width of arguments expected from the opponent: either 32 or dynamic.
+    for dynamic (variable) data, you have Variable(s,b)  where:
+    - s is the logical length of the data
+    - b the bytes of the data
+    logical size of dynamic data depends on its specific type:
+    - for strings, s is the size in bytes and b the string itself in bytes.
+    - for address[], s is the number of addresses, and b the 32-byte aligned addresses.
+ *)
 type op_type_width  = Fixed of Bytes.t | Variable of Bytes.t * Bytes.t
 type op_type_domain = op_type_width list
 type op_domains = { u256    : op_type_domain ;
@@ -461,6 +503,21 @@ let clamp_bytesN (n : int) tr : op_type_width -> op_type_width = function
      Fixed (take n bytes32 @ List.init (32 - n) (fun _ -> (U8 Z.zero)))
   | _ -> report_error_w_trace "[clamp_bytesN]: encountered variable type in fixed-width domain" tr
 
+(** function to check if the type is a tuple (fixed array) *)
+let is_fixed_array_like (s : string) : (string * int) option =
+  let len = String.length s in
+  if len < 4 || s.[len - 1] <> ']' then
+    None
+  else
+    match String.rindex_opt s '[' with
+    | None -> None
+    | Some i ->
+        let base = String.sub s 0 i in
+        let n_str = String.sub s (i + 1) (len - i - 2) in
+        match int_of_string_opt n_str with
+        | Some n when n >= 0 && base <> "" -> Some (base, n)
+        | _ -> None
+
 (** function used to build the list of opponent arguments based on the type from the ABI
     NOTE: uint256 and bytes32 are synonymns in this analysis.
     For all uint-like and bytesN-like values, we just prune the u256 domain.
@@ -471,17 +528,41 @@ let type_selector op_domains tr signature (typ : string) =
   | "bool"    -> op_domains.bool
   | "address" -> op_domains.address
   | "string"  -> op_domains.string
-  | "bytes" -> op_domains.bytes
-  | "uint256[2]" | "bytes32[2]" -> [ Fixed (Bytes.of_U256 (U256.one) @ Bytes.of_U256 (U256.one)) ]
+  | "bytes"   -> op_domains.bytes
+  | "address[]" ->
+     List.filter_map (function (Fixed b) -> Some (Variable (int_to_32_bytes 1 , b)) | Variable _ -> None)
+       op_domains.address
   | _ ->
-     match is_uint_like typ with
-     | Some bits -> List.map (clamp_uintN (bits/8) tr) op_domains.u256
+     match is_fixed_array_like typ with
+     | Some (typ, len) ->
+        begin (* TODO: test the cartesian power for types *)
+          let cartesian_power_aux sub_domain =
+             let choices =
+               List.filter_map (function Fixed b -> Some b | Variable _ -> None) sub_domain
+             in
+             cartesian_power choices len |> List.map (fun xs -> Fixed (List.flatten xs))
+          in
+          match typ with
+          | "uint256" | "uint" | "bytes32" -> cartesian_power_aux op_domains.u256
+          | _ ->
+             match is_uint_like typ with
+             | Some bits -> map_uniq (clamp_uintN (bits/8) tr) op_domains.u256 |> cartesian_power_aux
+             | None ->
+                match is_bytesN_like typ with
+                | Some n -> map_uniq (clamp_bytesN n tr) op_domains.u256 |> cartesian_power_aux
+                | None ->
+                   report_error_w_trace
+                     (Printf.sprintf "tuple of sub-type <%s> is not supported in call <%s>." typ signature) tr
+        end
      | None ->
-        match is_bytesN_like typ with
-        | Some n -> List.map (clamp_bytesN n tr) op_domains.u256
+        match is_uint_like typ with
+        | Some bits -> map_uniq (clamp_uintN (bits/8) tr) op_domains.u256
         | None ->
-           report_error_w_trace
-             (Printf.sprintf "type <%s> is not supported in call <%s>." typ signature) tr
+           match is_bytesN_like typ with
+           | Some n -> map_uniq (clamp_bytesN n tr) op_domains.u256
+           | None ->
+              report_error_w_trace
+                (Printf.sprintf "type <%s> is not supported in call <%s>." typ signature) tr
 
 (* ---------------- END: BLOCK OF FUNCTIONS FOR OP-DOMAIN TYPE SELECTION ---------------- *)
 
@@ -930,7 +1011,10 @@ let p_o_call ({parent; child} : System.process_message_result) (c : game_conf) (
   (* print ACCESS CONTROL for DELEGATECALL *)
   begin
     match cy.g.stuck_mode with
-    | Some Call (Delegate,_) -> print_endline "\n\x1b[1;31mACCESS CONTROL!\x1b[0m delegatecall to opponent!!!"
+    | Some Call (Delegate,_) ->
+       report_error_w_trace
+         "[ACCESS CONTROL ERROR]: delegatecall into untrusted code! state corrupted!"
+         c.trace
     | _ -> ()
   end;
   
@@ -993,7 +1077,10 @@ let pr_move_selector (game_conf : game_conf) (cy : yul_conf) =
            | Impersonate -> System.impersonate_call
          in
          let msg_result = opcode cy.g in
-         let target = msg_result.child.message.target in
+         let target = match msg_result.child.message.code_address with
+           | Some a -> a 
+           | None -> print_error "[PR move selector error]: CALL missing code_address"
+         in
          (* if it's not a P address, it could be an O address, a spurious call, or an error in the contract *)
          if List.exists (fun (a,_) -> a = target) game_conf.addresses.p
          then p_p_move msg_result             (* [ PR-PR: CALL ] *)    (* TODO: check is_static? *)
@@ -1004,7 +1091,7 @@ let pr_move_selector (game_conf : game_conf) (cy : yul_conf) =
     pr_move game_conf cy
   with
   | EVMError(Exception.AssertionError,msg) ->
-     report_error_w_trace ("[EVM ASSERTION ERROR]: "^msg) game_conf.trace
+     report_error_w_trace ("[EVM INVARIANT ERROR]: "^msg) game_conf.trace
   | EVMError(Exception.OutOfGasError,msg) ->
      !print_warning (warning_str ^ " [EVM OutOfGas ERROR]: "^msg); None
 
@@ -1059,6 +1146,32 @@ let op_return (c : game_conf) (g : evm_conf) :(game_conf list) =
 (* OP-CALL *)
 (*---------*)
 
+(** helper function to create a stack for calls *)
+let mk_plain_call_stack
+      ~(gas_left : U256.t)
+      ~(to_ : address)
+      ~(value : U256.t)
+      ~(in_start : U256.t)
+      ~(in_size : U256.t)
+      ~(out_start : U256.t)
+      ~(out_size : U256.t)
+    : EvmVal.t list =
+  let call_gas          = U256_val gas_left in
+  let call_to           = U256_val (Bytes.to_U256 to_) in
+  let call_value        = U256_val value in
+  let call_input_start  = U256_val in_start in
+  let call_input_size   = U256_val in_size in
+  let call_output_start = U256_val out_start in
+  let call_output_size  = U256_val out_size in
+  call_gas
+  :: call_to
+  :: call_value
+  :: call_input_start
+  :: call_input_size
+  :: call_output_start
+  :: call_output_size
+  :: []
+
 (** function to set up all the arguments for the function call. this is a hard function to
     implement, because we have to reverse engineer what the OPCODE is setting up. perhaps there
     is an alternative approach where we call the opcode directly with the correct parameters.
@@ -1084,84 +1197,86 @@ let set_args
       (g : evm_conf) (ap : address) (op_domains : op_domains)
       ((hash, f) : string * function_entry) tr
     :((Bytes.t * evm_conf) list) =
-  
-  let arg_types =
-    List.map (fun io -> type_selector op_domains tr (Option.get f.signature) io.internal_type) f.inputs
-  in
-  let arg_variants = cartesian_product arg_types in (* execution paths *)
 
-  (* function to flatten the list of args into a single bytes list.
-     adds variable width at the end. *)
-  let rec build_abi_args tail_offset (res_bytes , var_bytes) variant =
-    match variant with
-    | [] -> List.rev_append res_bytes (List.rev var_bytes)
-    | Fixed bytes :: xs -> build_abi_args tail_offset (List.rev_append bytes res_bytes , var_bytes) xs
-    | Variable (size , bytes) :: xs ->
-       report_error_w_trace_if (List.length size  <> 32)
-         "[building ABI args]: size is not encoded in 32 bytes" tr;
-       report_error_w_trace_if (List.length bytes <> 32)
-         "[building ABI args]: length is not encoded in 32 bytes" tr;
-       build_abi_args (tail_offset+64)
-         (res_bytes |> List.rev_append (int_to_32_bytes tail_offset),
-          var_bytes |> List.rev_append size |> List.rev_append bytes) xs
-  in
+  (* create a list of possible arguments for the function *)
   let abi_args_variants =
-    let hash = (U256.of_string hash) |> Bytes.of_U256 |> drop 28 in
+    (* if receive(), then empty calldata -- this is a hack, depends on receive() having a dummy hash *)
+    if f.signature = (Some "receive()") then []::[]
+    else
+      begin
+        let arg_types =
+          List.map (fun io -> type_selector op_domains tr (Option.get f.signature) io.internal_type) f.inputs
+        in
+        let arg_variants = cartesian_product arg_types in (* execution paths *)
 
-    let aux variant =
-      (* offset for the start of the block of dynamic bytes *)
-      let tail_offset = List.length variant * 32 in
+        (* function to flatten the list of args into a single bytes list.
+           adds variable width at the end. *)
+        let rec build_abi_args tail_offset (res_bytes , var_bytes) variant =
+          match variant with
+          | [] -> List.rev_append res_bytes (List.rev var_bytes)
+          | Fixed bytes :: xs -> build_abi_args tail_offset (List.rev_append bytes res_bytes , var_bytes) xs
+          | Variable (size , bytes) :: xs ->
+             report_error_w_trace_if (List.length size  <> 32)
+               "[building ABI args]: size is not encoded in 32 bytes" tr;
+             report_error_w_trace_if (List.length bytes <> 32)
+               "[building ABI args]: length is not encoded in 32 bytes" tr;
+             build_abi_args (tail_offset+64)
+               (res_bytes |> List.rev_append (int_to_32_bytes tail_offset),
+                var_bytes |> List.rev_append size |> List.rev_append bytes) xs
+        in
+        let hash = (U256.of_string hash) |> Bytes.of_U256 |> drop 28 in
+        let aux variant =
+          (* offset for the start of the block of dynamic bytes *)
+          let tail_offset = List.length variant * 32 in
 
-      let abi_variant = build_abi_args tail_offset ( List.rev hash , [] ) variant in
-      abi_variant
-    in
-    List.map aux arg_variants
+          let abi_variant = build_abi_args tail_offset ( List.rev hash , [] ) variant in
+          abi_variant
+        in
+        List.map aux arg_variants
+      end
   in
 
   (* starting position in MEMORY for each G *)
   let start_position = Z.zero in
 
-  (* function to store a list of bytes into start_position in g.mem *)
-  let mstore_args bytes =
-     let extend_memory = Gas.calculate_gas_extend_memory
-                           g.memory [(start_position, U256.of_int(List.length bytes))]
-     in
-     let evm = charge_gas(g, Z.add _GAS_VERY_LOW extend_memory.cost) in
+  (* function to store a list of calldata (bytes) into start_position in g.mem *)
+  let mstore_args calldata =
+    let memory,evm =
+      begin
+        if calldata = [] then g.memory,g
+        else
+          let extend_memory = Gas.calculate_gas_extend_memory
+                                g.memory [(start_position, U256.of_int(List.length calldata))]
+          in
+          let evm = charge_gas(g, Z.add _GAS_VERY_LOW extend_memory.cost) in
+          let memory = Mem.extend evm.memory extend_memory.expand_by in
+          let memory = Mem.write memory start_position calldata in
+          memory,evm
+      end 
+    in
+    (* has to be "payable", "nonpayable", "pure"/"view" in some versions *)
+    let values_payable =
+      match f.state_mutability , g.message.is_static with
+      | Some "payable" , false -> [!o_default_spending ; U256.zero]
+      | _ -> [U256.zero]
+    in
 
-     let memory = Mem.extend evm.memory extend_memory.expand_by in
-     let memory = Mem.write memory start_position bytes in
-
-     (* has to be "payable", "nonpayable", "pure"/"view" in some versions *)
-     let values_payable =
-       match f.state_mutability , g.message.is_static with
-       | Some "payable" , false -> [!o_default_spending ; U256.zero]
-       | _ -> [U256.zero]
-     in
-
-     (* STACK ARGS FOR CALL OPCODE *)
-     let aux value_payable =
-       let call_gas          = U256_val (evm.gas_left) in
-       let call_to           = U256_val (Bytes.to_U256 ap) in
-       let call_value        = U256_val value_payable in
-       let call_input_start  = U256_val start_position in
-       let call_input_size   = U256_val (U256.of_int (List.length bytes)) in
-       let call_output_start = U256_val U256.zero in
-       let call_output_size  = U256_val U256.zero in
-
-       bytes ,
-       {evm with
-         memory = memory;
-         stack = call_gas
-                 :: call_to
-                 :: call_value
-                 :: call_input_start
-                 :: call_input_size
-                 :: call_output_start
-                 :: call_output_size
-                 :: []
-       }
-     in
-     List.map aux values_payable
+    (* STACK ARGS FOR CALL OPCODE *)
+    let aux value_payable =
+      let in_size = U256.of_int (List.length calldata) in
+      let stack =
+        mk_plain_call_stack
+          ~gas_left:evm.gas_left
+          ~to_:ap
+          ~value:value_payable
+          ~in_start:start_position
+          ~in_size
+          ~out_start:U256.zero
+          ~out_size:U256.zero
+      in
+      calldata, { evm with memory; stack }
+    in
+    List.map aux values_payable
   in
   let abi_encoded_g_variants = List.map mstore_args abi_args_variants in
   List.flatten abi_encoded_g_variants
@@ -1319,9 +1434,13 @@ let rec play_game (frontier : game_conf list) check_memo =
   match frontier with
   | [] -> print_endline "===== GAME DONE =====" (* [ END ] *)
   | c :: xs ->
-     (* attempt memoisation (if enabled): if it's true, it succeeded, so c not already in memo_cache *)
-     if check_memo c then
 
+     (* check trace length *)
+     let trace_length_allowed = List.length (filter_observable (c : game_conf).trace) < !observable_trace_bound in
+     
+     (* attempt memoisation (if enabled): if it's true, it succeeded, so c not already in memo_cache *)
+     if check_memo c && trace_length_allowed then
+       
        (* select search strategy *)
        let new_frontier cs =
          match !search_strat with
@@ -1330,7 +1449,6 @@ let rec play_game (frontier : game_conf list) check_memo =
        in
        (* let new_frontier cs = cs @ xs in (* DFS *) *)
        begin
-
          (* debug printing before playing game *)
          debug_print_conf c;
          debug_print_trace c;

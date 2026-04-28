@@ -41,6 +41,7 @@ from .precompiled_contracts import RIPEMD160_ADDRESS
 
 let init_time = U256.of_int 0   (* for 2016 use: 1451610061 *)
 let print_warning = ref (fun (_ : string) -> ())
+let origin_address = ref "0xbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef"
 
 (**
 @dataclass
@@ -93,11 +94,13 @@ module Environment = struct
     Printf.sprintf "Env{\ncaller = %s;\norigin = %s;\nstate = %s\n;\nkeccak_env = %s\n}"
       caller origin state keccak_env
 
+  let set_origin env addr = {env with origin = addr}
+  
   (* TODO: dummy *)
   let init = {
       caller = [];
       (* block_hashes = []; *)
-      origin = [];
+      origin = (Utils_address.to_address (U256.of_string !origin_address));
       coinbase = [];
       number = U256.zero;
       base_fee_per_gas = U256.zero;
@@ -199,8 +202,8 @@ module Message = struct
 
   (* transactional deployment init *)
   let init deploy_address deploy_gas=
-    {
-      caller = Bytes.dummy_address;         (* Set to 000000... for now *)
+    {                                       (* Set initial caller to match tx.origin??? *)
+      caller = (Utils_address.to_address (U256.of_string !origin_address));
       target = [];                          (* No specific target in a deployment *)
       current_target = deploy_address;      (* initial deployment address *)
       gas = deploy_gas;                     (* initial deployment gas *)

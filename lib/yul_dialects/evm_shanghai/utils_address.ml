@@ -54,8 +54,13 @@ def to_address(data: Union[Uint, U256]) -> Address:
  *)
 let to_address (data : U256.t) :(address) = drop 12 (Bytes.of_U256 data) (* drop 32 - 20 *)
 
-(** function to mimic the encoding. this flattens the list for hashing, because hashing only takes 10 items *)
-let rlp_encode (bytes, nonce) = (Bytes.to_string bytes , nonce)
+(** function to mimic the encoding. this flattens the list for hashing, because hashing only takes 10 items
+    old function: let rlp_encode (bytes, nonce) = (Bytes.to_string bytes , nonce)
+    now because we use keccak on strings, we need delimiters to avoid ambiguity.
+ *)
+let rlp_encode (bytes, nonce) =
+  let s = Bytes.to_string bytes in
+  Printf.sprintf "%d:%s:%s" (String.length s) s (U256.to_string nonce)
 
 (**
 def compute_contract_address(address: Address, nonce: Uint) -> Address:
@@ -83,7 +88,7 @@ def compute_contract_address(address: Address, nonce: Uint) -> Address:
 let compute_contract_address (address : address) (nonce : U256.t) :address =
   (* We use Hashtbl.hash because we do not need the Keccak model for this. This is just to generate
      a new (hopefully) unique address. Produces a small int. Perhaps we can use Z.hash instead. *)
-  let computed_address = U256.of_int(Hashtbl.hash(rlp_encode(address, nonce))) in (* always 32 bytes long *)
+  let computed_address = U256.of_string(keccak256(rlp_encode(address, nonce))) in (* always 32 bytes long *)
   let canonical_address = to_address computed_address in (* drop 12 to keep 20 *)
   assert(List.length canonical_address = 20); (* no padding needed, but check padding just in case *)
   canonical_address (* Return the BIG ENDIAN 20-byte address *)
