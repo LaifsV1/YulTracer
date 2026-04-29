@@ -4,7 +4,7 @@
 
 `YulTracer` is a bounded safety checker (finds assertion violations) and interpreter for [Yul](https://docs.soliditylang.org/en/latest/yul.html). `YulTracer` performs reachability analysis for programs written in Yul and is also able to analyse smart contracts written in Solidity via the Solidity compiler --- we provide examples in this repository showing automatic tool-chains set up to analyse large code bases.
 
-We envision `YulTracer` to be used in semi-automatic fashion by developers and auditors. The exploration is fully automatic, but assertions need to be added to the code to specify safety. Additionally, we expect exploration parameters need to be specified for complex projects.
+`YulTracer` is intended for semi-automatic use by developers and auditors. It automatically explores possible executions and detects a range of runtime failures, including failed value transfers due to insufficient balance. Users can additionally specify project-specific safety properties with assertions, and may configure exploration parameters for larger or more complex projects.
 
 ---
 
@@ -32,14 +32,16 @@ We envision `YulTracer` to be used in semi-automatic fashion by developers and a
 ## Releases
 
 ### Current Release (0.2.x)
-**DOI**: [10.5281/zenodo.18280182](https://doi.org/10.5281/zenodo.18280182)<br>
+**DOI**: [10.5281/zenodo.19868351](https://doi.org/10.5281/zenodo.19868351)<br>
 **Report**: [arXiv:2512.22417](https://arxiv.org/abs/2512.22417)
 
-The core technical contribution of this release is the addition of a semantically grounded attacker/environment model that exhaustively enumerates all possible traces reachable by an external user interacting with the set of contracts being analysed. We use Game Semantics to model the environment and perform an on-the-fly depth-bounded reachability analysis of the Game Semantics for said set of smart contracts. The tool constructs a finite exploration tree that is an unfolding of the interaction LTS, and reports a counterexample trace when an assertion-violating configuration is reachable within depth explored.
+The 0.2.x release series introduces a Game Semantics-based attacker/environment model that drives `YulTracer`’s trace exploration. This model represents the possible interactions between external users and the contracts under analysis, allowing the tool to enumerate all reachable traces within a user-provided exploration bound. The current 0.2.1 release improves the analysis pipeline and scripts, and includes several bug fixes.
 
-The above makes the tool sound and complete up to the bound provided and with respect to the fidelity of our Yul interpreter and EVM model; i.e. `YulTracer` is precise with regards to the trace enumeration (no false positives up to the contraints mentioned). Our Yul interpreter implements a CEK machine based on our formal small-step operational semantics for Yul (see [10.1007/978-3-031-77382-2_19](https://doi.org/10.1007/978-3-031-77382-2_19)). Our EVM model is a line-by-line port of the Shanghai fork of the [Ethereum Execution Client Specifications](https://github.com/ethereum/execution-specs), extended with Symbolic Execution and abstracted for compatibility with Yul and our Games. 
+During analysis, `YulTracer` performs an on-the-fly bounded reachability analysis over the Game Semantics model of the analysed contracts. It constructs a finite exploration tree, corresponding to an unfolding of the interaction LTS, and reports a counterexample trace whenever an assertion-violating configuration is reachable within the explored depth.
 
-`YulTracer` currently features limited support for Symbolic Execution via Z3 BitVectors: symbolic reasoning is present for arithmetic and branching, but not for symbolic pointers. As a result, symbolic execution is not recommended at this stage and is not used in any of the smart contract use-case examples provided in this repository.
+Subject to the exploration bound and the fidelity of our Yul interpreter and EVM model, `YulTracer` is sound and complete for trace enumeration: counterexample traces are not introduced by over-approximate trace generation. The Yul interpreter implements a CEK machine based on our formal small-step operational semantics for Yul (see [10.1007/978-3-031-77382-2_19](https://doi.org/10.1007/978-3-031-77382-2_19)). The EVM model is a line-by-line port of the Shanghai fork of the [Ethereum Execution Client Specifications](https://github.com/ethereum/execution-specs), extended with symbolic execution and abstracted for compatibility with Yul and the Game Semantics model.
+
+Symbolic execution is currently supported only in a limited form, via Z3 BitVectors. Symbolic reasoning is implemented for arithmetic and branching, but not for symbolic pointers. Consequently, symbolic execution is not recommended at this stage and is not used in any of the smart contract use-case examples provided in this repository.
 
 ### Previous Release (0.1.x)
 **DOI**: [10.5281/zenodo.12511493](https://doi.org/10.5281/zenodo.12511493)<br>
