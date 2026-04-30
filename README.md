@@ -35,7 +35,7 @@
 **DOI**: [10.5281/zenodo.19868351](https://doi.org/10.5281/zenodo.19868351)<br>
 **Report**: [arXiv:2512.22417](https://arxiv.org/abs/2512.22417)
 
-The 0.2.x release series introduces a Game Semantics-based attacker/environment model that drives `YulTracer`’s trace exploration. This model represents the possible interactions between external users and the contracts under analysis, allowing the tool to enumerate all reachable traces within a user-provided exploration bound. The current 0.2.1 release improves the analysis pipeline and scripts, and includes several bug fixes.
+The 0.2.x release series introduces an attacker/environment model, based on Game Semantics, that drives `YulTracer`’s trace exploration. This model represents the possible interactions between external users and the contracts under analysis, allowing the tool to enumerate all reachable traces within a user-provided exploration bound. The current 0.2.1 release improves the analysis pipeline and scripts, and includes several bug fixes.
 
 During analysis, `YulTracer` performs an on-the-fly bounded reachability analysis over the Game Semantics model of the analysed contracts. It constructs a finite exploration tree, corresponding to an unfolding of the interaction LTS, and reports a counterexample trace whenever an assertion-violating configuration is reachable within the explored depth.
 
